@@ -34,7 +34,22 @@ public class Lexer
             case "layout":
                 lexerObject.FunctionType = "0xc88";
                 lexerObject.FunctionName = split[0];
-                lexerObject.
+                lexerObject.Arguments = split[1];
+                break;
+            case "stages":
+                lexerObject.FunctionType = "0x054";
+                lexerObject.FunctionName = split[0];
+                lexerObject.Arguments = split[1];
+                break;
         }
+
+        if (split[0].StartsWith('!'))
+        {
+            lexerObject.FunctionType = "0x700";
+            lexerObject.FunctionName = split[0];
+            lexerObject.Arguments = split[1];
+        }
+        
+        return lexerObject;
     }
 }
