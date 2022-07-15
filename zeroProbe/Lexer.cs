@@ -5,7 +5,7 @@ namespace zeroProbe;
 
 public class Lexer
 {
-    public LexerObject Lex(string line)
+    public static LexerObject Lex(string line)
     {
         /*
          * Functions type:
@@ -16,6 +16,12 @@ public class Lexer
          */
         
         LexerObject lexerObject = new LexerObject();
+        if (line == "")
+        {
+            lexerObject.FunctionType = "0x11f";
+            return lexerObject;
+        }
+        
         if (line.StartsWith("/*") && line.EndsWith("*/"))
         {
             lexerObject.FunctionType = "0x11f";
@@ -27,7 +33,8 @@ public class Lexer
             FuncV.ThrowError($"bad expression -> {line}");
         }
         
-        string[] split = line.Split(":", 1);
+        string[] split = line.Split(":", 2);
+        Console.WriteLine(split.Length);
 
         switch (split[0])
         {

@@ -10,10 +10,12 @@ internal class Program
             Environment.Exit(0);
         }
 
+        Actions acts = new Actions();
         switch (args[0])
         {
             case "run":
-                
+                acts.RunStages();
+                break;
         }
     }
 }
