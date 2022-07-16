@@ -59,4 +59,29 @@ public class Actions
         }
         Console.WriteLine("** GOOD: Test passed.");
     }
+
+    public void WriteConfig()
+    {
+        if (File.Exists("stages.conf"))
+        {
+            Console.WriteLine("You already have configuration file.");
+            Environment.Exit(0);
+        }
+        
+        Console.WriteLine("Writing new config file...");
+        File.Create("stages.conf").Close();
+        File.WriteAllText("stages.conf", @"/* Layouts: */
+/* std - Standart for most projects */
+layout: std
+
+/* Stages */
+/* Warning: stage will be executed in queue that you typed after 'stages' */
+stages: restore, build
+
+/* Setting commands for stages */
+/* To setup command to execute for stage you must start line with '!' operator. */
+!restore: echo 'Restore'
+!build: echo 'Build'");
+        Console.WriteLine("Template config ready!");
+    }
 }

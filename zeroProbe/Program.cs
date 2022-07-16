@@ -16,6 +16,10 @@ internal class Program
             case "run":
                 acts.RunStages();
                 break;
+            case "writeconfig":
+                acts.WriteConfig();
+                break;
+            
         }
     }
 }
