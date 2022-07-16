@@ -7,7 +7,7 @@ public class Parser
 {
     public Dictionary<string, string> StagesDict = new Dictionary<string, string>();
     public string LayoutType;
-    public List<string>? Stages = new List<string>();
+    public List<string> Stages = new List<string>();
 
     public void ParseLine(string line)
     {
@@ -48,6 +48,9 @@ public class Parser
                 {
                     FuncV.ThrowError($"stage '{stg}' not defined.");
                 }
+                break;
+            default:
+                FuncV.ThrowError($"Illegal instruction called -> {obj.FunctionType}");
                 break;
         }
     }
