@@ -1,6 +1,4 @@
 using System.Diagnostics;
-using System.Net;
-using System.Reflection.Metadata;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
