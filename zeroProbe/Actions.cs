@@ -63,7 +63,6 @@ public class Actions
                     Console.WriteLine(errs);
                     Environment.Exit(0);
                 }
-
             }
         }
         Console.WriteLine("** GOOD: Test passed.");

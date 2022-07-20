@@ -12,17 +12,11 @@ public class Lexer
          * 0x11f - Comment
          * 0xc88 - Layout
          * 0x054 - Stages
-         * 0x700 - Set command to stage
+         * 0x700 - Set command to stage Miscellaneous 
          */
         
         LexerObject lexerObject = new LexerObject();
-        if (line == "")
-        {
-            lexerObject.FunctionType = "0x11f";
-            return lexerObject;
-        }
-        
-        if (line.StartsWith("/*") && line.EndsWith("*/"))
+        if ((line.StartsWith("/*") && line.EndsWith("*/")) || line == "")
         {
             lexerObject.FunctionType = "0x11f";
             return lexerObject;
