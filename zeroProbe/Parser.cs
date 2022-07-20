@@ -12,7 +12,7 @@ public class Parser
     public void ParseLine(string line)
     {
         var obj = Lexer.Lex(line);
-        Console.WriteLine(obj.FunctionType);
+        // Console.WriteLine(obj.FunctionType);
         switch (obj.FunctionType)
         {
             case "0x11f":
@@ -32,9 +32,16 @@ public class Parser
             case "0x054":
                 string stages = obj.Arguments.Trim();
                 var split = stages.Split(",");
-                foreach (var stage in split)
+                if (!stages.Contains(','))
                 {
-                    Stages.Add(stage.Trim());
+                    Stages.Add(stages.Trim());
+                }
+                else
+                {
+                    foreach (var stage in split)
+                    {
+                        Stages.Add(stage.Trim());
+                    } 
                 }
                 break;
             case "0x700":

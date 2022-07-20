@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Diagnostics;
 using zeroProbe.Utils;
 
@@ -91,5 +92,66 @@ stages: restore, build
 !restore: echo 'Restore'
 !build: echo 'Build'");
         Console.WriteLine("Template config ready!");
+    }
+
+    public void InspectStages()
+    {
+        if (!File.Exists("stages.conf"))
+        {
+            Console.WriteLine("Cannot find stages.conf file for inspect.");
+            Environment.Exit(0x0);
+        }
+        Parser pr = new Parser();
+        string[] allLines = File.ReadAllLines("stages.conf");
+        foreach (var line in allLines)
+        {
+            pr.ParseLine(line);
+        }
+        
+        // // Inspecting our details
+        // Preparing variables
+        string inspectLayout = pr.LayoutType;
+        List<string> inspectStages = pr.Stages;
+        string inspectStagesCount = inspectStages.Count.ToString();
+        bool inspectNoStages = false;
+        string strStages = "";
+        
+        if (inspectStages.Count == 0)
+        {
+            inspectNoStages = true;
+        }
+        
+        
+        Console.WriteLine(":::: Inspection results");
+        Console.WriteLine(":: Basic");
+        Console.WriteLine($"Layout: {inspectLayout}\n");
+        if (inspectNoStages)
+        {
+            Console.WriteLine(":: Stages");
+            Console.WriteLine($"No stages in this configuration!");
+            Environment.Exit(0);
+        }
+        if (inspectStages.Count == 1)
+        {
+            strStages = inspectStages[0];
+        }
+        else
+        {
+            foreach (var stage in inspectStages)
+            {
+                strStages = strStages + $"{stage}, ";
+            }
+
+            strStages.TrimEnd();
+            strStages.TrimEnd(',');
+        }
+        Console.WriteLine(":: Stages");
+        Console.WriteLine($"Stages: {strStages}");
+        Console.WriteLine($"Count:  {inspectStagesCount}\n");
+        Console.WriteLine(":: Stages commands");
+        foreach (var stage in inspectStages)
+        {
+            Console.WriteLine($"{stage}: {pr.StagesDict[stage]}");
+        }        
     }
 }

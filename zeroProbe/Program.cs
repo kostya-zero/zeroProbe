@@ -19,6 +19,9 @@ internal class Program
             case "writeconfig":
                 acts.WriteConfig();
                 break;
+            case "inspect":
+                acts.InspectStages();
+                break;
             default:
                 Console.WriteLine($"zeroProbe: unknown argument -> {args[0]}");
                 Environment.Exit(0);

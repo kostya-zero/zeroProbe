@@ -12,7 +12,7 @@ public class Lexer
          * 0x11f - Comment
          * 0xc88 - Layout
          * 0x054 - Stages
-         * 0x700 - Set command to stage Miscellaneous 
+         * 0x700 - Set command to stage
          */
         
         LexerObject lexerObject = new LexerObject();
@@ -28,7 +28,7 @@ public class Lexer
         }
         
         string[] split = line.Split(":", 2);
-        Console.WriteLine(split.Length);
+        // Console.WriteLine(split.Length);
 
         switch (split[0])
         {
