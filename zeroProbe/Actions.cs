@@ -37,7 +37,10 @@ public class Actions
                 proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
                 proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
                 procInfo.CreateNoWindow = true;
-                Console.WriteLine($"* Running stage: {stage}");
+                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.Write("* ");
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.WriteLine($"Running stage: {stage}");
                 proc.StartInfo = procInfo;
                 proc.Start();
                 proc.BeginOutputReadLine();
@@ -45,12 +48,18 @@ public class Actions
                 proc.WaitForExit();
                 if (errs == "")
                 {
-                    Console.WriteLine("** GOOD: No errors provided. Stage passed.");
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write("** ");
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.WriteLine("GOOD: No errors provided. Stage passed.");
                     File.Delete($"tmp_stage_{stage}.sh");
                 }
                 else
                 {
-                    Console.WriteLine("** FATAL: Stage not passed due an error:");
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write("** ");
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.WriteLine("FATAL: Stage not passed due an error:");
                     Console.WriteLine(errs);
                     Environment.Exit(0);
                 }
