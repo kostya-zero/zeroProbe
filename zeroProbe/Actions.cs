@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Text;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
@@ -136,11 +137,12 @@ stages: restore, build
         }
         else
         {
+            StringBuilder stringBuilder = new StringBuilder();
             foreach (var stage in inspectStages)
             {
-                strStages = strStages + $"{stage}, ";
+                stringBuilder.Append($"{stage}, ");
             }
-
+            strStages = stringBuilder.ToString();
             strStages = strStages.TrimEnd();
             strStages = strStages.TrimEnd(',');
         }
