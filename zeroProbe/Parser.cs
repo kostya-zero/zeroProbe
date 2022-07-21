@@ -17,7 +17,6 @@ public class Parser
     public void ParseLine(string line)
     {
         var obj = Lexer.Lex(line);
-        // Console.WriteLine(obj.FunctionType);
         switch (obj.FunctionType)
         {
             case "0x11f":
