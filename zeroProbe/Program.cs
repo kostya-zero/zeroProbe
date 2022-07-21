@@ -22,6 +22,15 @@ internal class Program
             case "inspect":
                 acts.InspectStages();
                 break;
+            case "runstage":
+                if (args.Length != 2)
+                {
+                    Console.WriteLine("To run stage you need to enter name of stage you want to run.");
+                    Console.WriteLine("Example: zeroProbe runstage build (where 'build' - name of stage).");
+                    Environment.Exit(0);
+                }
+                acts.RunStage(args[1]);
+                break;
             default:
                 Console.WriteLine($"zeroProbe: unknown argument -> {args[0]}");
                 Environment.Exit(0);

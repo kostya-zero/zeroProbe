@@ -38,9 +38,9 @@ public class Actions
                 proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
                 proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
                 procInfo.CreateNoWindow = true;
-                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("* ");
-                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Running stage: {stage}");
                 proc.StartInfo = procInfo;
                 proc.Start();
@@ -49,17 +49,17 @@ public class Actions
                 proc.WaitForExit();
                 if (errs == "")
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("** ");
-                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("GOOD: No errors provided. Stage passed.");
                     File.Delete($"tmp_stage_{stage}.sh");
                 }
                 else
                 {
-                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("** ");
-                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("FATAL: Stage not passed due an error:");
                     Console.WriteLine(errs);
                     Environment.Exit(0);
@@ -99,7 +99,7 @@ stages: restore, build
         if (!File.Exists("stages.conf"))
         {
             Console.WriteLine("Cannot find stages.conf file for inspect.");
-            Environment.Exit(0x0);
+            Environment.Exit(0);
         }
         Parser pr = new Parser();
         string[] allLines = File.ReadAllLines("stages.conf");
@@ -153,5 +153,67 @@ stages: restore, build
         {
             Console.WriteLine($"{stage}: {pr.StagesDict[stage]}");
         }        
+    }
+
+    public void RunStage(string name)
+    {
+        if (!File.Exists("stages.conf"))
+        {
+            Console.WriteLine("Cannot find stages.conf file for inspect.");
+            Environment.Exit(0);
+        }
+        Parser pr = new Parser();
+        string[] allLines = File.ReadAllLines("stages.conf");
+        foreach (var line in allLines)
+        {
+            pr.ParseLine(line);
+        }
+        
+        if (pr.StagesDict.ContainsKey(name))
+        {
+            var cmd = pr.StagesDict[name];
+            File.Create($"tmp_stage_{name}.sh").Close();
+            File.WriteAllText($"tmp_stage_{name}.sh",$"#!/bin/sh\n{cmd}");
+            Process proc = new Process();
+            ProcessStartInfo procInfo = new ProcessStartInfo();
+            procInfo.FileName = "/bin/sh";
+            procInfo.Arguments = $"tmp_stage_{name}.sh";
+            procInfo.RedirectStandardError = true;
+            procInfo.RedirectStandardOutput = true;
+            procInfo.RedirectStandardInput = true;
+            proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
+            proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
+            procInfo.CreateNoWindow = true;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("* ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Running stage: {name}");
+            proc.StartInfo = procInfo;
+            proc.Start();
+            proc.BeginOutputReadLine();
+            string errs = proc.StandardError.ReadToEnd();
+            proc.WaitForExit();
+            if (errs == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("** ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("GOOD: No errors provided. Stage passed.");
+                File.Delete($"tmp_stage_{name}.sh");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("** ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("FATAL: Stage not passed due an error:");
+                Console.WriteLine(errs);
+                Environment.Exit(0);
+            }
+        }
+        else
+        {
+            Console.WriteLine($"No stage found with name '{name}'.");
+        }
     }
 }
