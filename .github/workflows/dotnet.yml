@@ -23,7 +23,3 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: UnitTest: Create stages.conf
-      run: ./zeroProbe writeconfig
-    - name: UnitTest: Inspect
-      run: ./zeroProbe inspect
