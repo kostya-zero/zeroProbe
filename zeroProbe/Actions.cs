@@ -15,7 +15,6 @@ public class Actions
 
         string[] lines = File.ReadAllLines("stages.conf");
         Parser pr = new Parser();
-        Handlers hdl = new Handlers();
         foreach (var line in lines)
         {
             pr.ParseLine(line);
