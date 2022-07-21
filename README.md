@@ -1,6 +1,7 @@
 # zeroProbe
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ee24203115c542b08553b7e071a14b88)](https://www.codacy.com/gl/kostya-zero/zeroprobe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/zeroprobe&amp;utm_campaign=Badge_Grade)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kostya-zero/zeroProbe/.NET)
+[![.github/workflows/dotnet.yml](https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml)
 
 Advanced utility to create, run and manage tests. 
 This tool allows you to create your own pipelines and run it.
