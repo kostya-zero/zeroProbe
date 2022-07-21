@@ -1,13 +1,18 @@
-using System.Net.Http.Headers;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
 
 public class Parser
 {
-    public Dictionary<string, string> StagesDict = new Dictionary<string, string>();
-    public string LayoutType;
-    public List<string> Stages = new List<string>();
+    public Dictionary<string, string> StagesDict { get; }
+    public List<string> Stages  { get; }
+    public string LayoutType  { get; private set; }
+
+    public Parser()
+    {
+        StagesDict = new Dictionary<string, string>();
+        Stages = new List<string>();
+    }
 
     public void ParseLine(string line)
     {
@@ -34,7 +39,7 @@ public class Parser
                 var split = stages.Split(",");
                 if (!stages.Contains(','))
                 {
-                    Stages.Add(stages.Trim());
+                    this.Stages.Add(stages.Trim());
                 }
                 else
                 {
@@ -61,4 +66,6 @@ public class Parser
                 break;
         }
     }
+
+    
 }

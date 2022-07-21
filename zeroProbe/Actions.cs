@@ -142,8 +142,8 @@ stages: restore, build
                 strStages = strStages + $"{stage}, ";
             }
 
-            strStages.TrimEnd();
-            strStages.TrimEnd(',');
+            strStages = strStages.TrimEnd();
+            strStages = strStages.TrimEnd(',');
         }
         Console.WriteLine(":: Stages");
         Console.WriteLine($"Stages: {strStages}");
