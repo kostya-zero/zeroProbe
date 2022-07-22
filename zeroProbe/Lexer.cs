@@ -11,6 +11,7 @@ public class Lexer {
          * 0x11f - Comment
          * 0xc88 - Layout
          * 0x054 - Stages
+         * 0x805 - Internal decree
          * 0x700 - Set command to stage
          */
         
@@ -18,6 +19,14 @@ public class Lexer {
         if ((line.StartsWith("/*") && line.EndsWith("*/")) || line == "")
         {
             lexerObject.FunctionType = "0x11f";
+            return lexerObject;
+        }
+
+        if (line.StartsWith("@"))
+        {
+            lexerObject.FunctionType = "0x805";
+            lexerObject.FunctionName = line;
+            lexerObject.Arguments = "";
             return lexerObject;
         }
 
