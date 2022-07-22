@@ -1,4 +1,6 @@
-﻿namespace zeroProbe;
+﻿using zeroProbe.Utils;
+
+namespace zeroProbe;
 
 internal class Program
 {
@@ -7,7 +9,7 @@ internal class Program
         if (args.Length == 0)
         {
             Console.WriteLine("zeroProbe: no argument provided.");
-            Environment.Exit(0);
+            App.End();
         }
 
         Actions acts = new Actions();
@@ -27,13 +29,19 @@ internal class Program
                 {
                     Console.WriteLine("To run stage you need to enter name of stage you want to run.");
                     Console.WriteLine("Example: zeroProbe runstage build (where 'build' - name of stage).");
-                    Environment.Exit(0);
+                    App.End();
                 }
                 acts.RunStage(args[1]);
                 break;
             default:
                 Console.WriteLine($"zeroProbe: unknown argument -> {args[0]}");
-                Environment.Exit(0);
+                App.End();
+                break;
+            case "help":
+                HelpMessages.Help();
+                break;
+            case "version":
+                HelpMessages.Version();
                 break;
         }
     }

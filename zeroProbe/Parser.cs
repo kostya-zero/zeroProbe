@@ -7,6 +7,7 @@ public class Parser
     public Dictionary<string, string> StagesDict { get; }
     public List<string> Stages  { get; }
     public string LayoutType  { get; private set; }
+    private bool Comments { get; set; }
 
     public Parser()
     {
@@ -20,6 +21,11 @@ public class Parser
         switch (obj.FunctionType)
         {
             case "0x11f":
+                if (!Comments)
+                {
+                    FuncV.ThrowWarning("Use comments less. It slows zeroProbe.");
+                    Comments = true;
+                }
                 break;
             case "0xc88":
                 string layout = obj.Arguments.Trim();

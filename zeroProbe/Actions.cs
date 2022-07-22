@@ -61,7 +61,7 @@ public class Actions
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("FATAL: Stage not passed due an error:");
                     Console.WriteLine(errs);
-                    Environment.Exit(0);
+                    App.End();
                 }
             }
         }
@@ -73,7 +73,7 @@ public class Actions
         if (File.Exists("stages.conf"))
         {
             Console.WriteLine("You already have configuration file.");
-            Environment.Exit(0);
+            App.End();
         }
         
         Console.WriteLine("Writing new config file...");
@@ -98,7 +98,7 @@ stages: restore, build
         if (!File.Exists("stages.conf"))
         {
             Console.WriteLine("Cannot find stages.conf file for inspect.");
-            Environment.Exit(0);
+            App.End();
         }
         Parser pr = new Parser();
         string[] allLines = File.ReadAllLines("stages.conf");
@@ -128,7 +128,7 @@ stages: restore, build
         {
             Console.WriteLine(":: Stages");
             Console.WriteLine($"No stages in this configuration!");
-            Environment.Exit(0);
+            App.End();
         }
         if (inspectStages.Count == 1)
         {
@@ -160,7 +160,7 @@ stages: restore, build
         if (!File.Exists("stages.conf"))
         {
             Console.WriteLine("Cannot find stages.conf file for inspect.");
-            Environment.Exit(0);
+            App.End();
         }
         Parser pr = new Parser();
         string[] allLines = File.ReadAllLines("stages.conf");
@@ -208,7 +208,7 @@ stages: restore, build
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("FATAL: Stage not passed due an error:");
                 Console.WriteLine(errs);
-                Environment.Exit(0);
+                App.End();
             }
         }
         else

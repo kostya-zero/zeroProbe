@@ -3,8 +3,7 @@ using zeroProbe.Utils;
 
 namespace zeroProbe;
 
-public class Lexer
-{
+public class Lexer {
     public static LexerObject Lex(string line)
     {
         /*
