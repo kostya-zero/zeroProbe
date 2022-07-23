@@ -33,15 +33,18 @@ internal class Program
                 }
                 acts.RunStage(args[1]);
                 break;
-            default:
-                Console.WriteLine($"zeroProbe: unknown argument -> {args[0]}");
-                App.End();
-                break;
             case "help":
                 HelpMessages.Help();
                 break;
             case "version":
                 HelpMessages.Version();
+                break;
+            case "info":
+                HelpMessages.Info();
+                break;
+            default:
+                Console.WriteLine($"zeroProbe: unknown argument -> {args[0]}");
+                App.End();
                 break;
         }
     }

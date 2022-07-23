@@ -45,7 +45,7 @@ public class Parser
                 var split = stages.Split(",");
                 if (!stages.Contains(','))
                 {
-                    this.Stages.Add(stages.Trim());
+                    Stages.Add(stages.Trim());
                 }
                 else
                 {

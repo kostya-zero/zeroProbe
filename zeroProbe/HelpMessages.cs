@@ -24,4 +24,10 @@ public class HelpMessages
         Console.WriteLine("1.0");
         App.End();
     }
+
+    public static void Info()
+    {
+        Console.WriteLine("OS Is 64-bit: " + ((Environment.Is64BitOperatingSystem) ? "Yes" : "No"));
+        App.End();
+    }
 }
