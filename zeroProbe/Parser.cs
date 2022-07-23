@@ -1,4 +1,3 @@
-using zeroProbe.Internal;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
@@ -66,10 +65,6 @@ public class Parser
                 {
                     FuncV.ThrowError($"stage '{stg}' not defined.");
                 }
-                break;
-            case "0x805":
-                DecreesResolver decreesResolver = new DecreesResolver();
-                decreesResolver.Resolve(obj.FunctionName);
                 break;
             default:
                 FuncV.ThrowError($"Illegal instruction called -> {obj.FunctionType}");

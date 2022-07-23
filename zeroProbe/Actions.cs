@@ -28,15 +28,17 @@ public class Actions
                 File.Create($"tmp_stage_{stage}.sh").Close();
                 File.WriteAllText($"tmp_stage_{stage}.sh",$"#!/bin/sh\n{cmd}");
                 Process proc = new Process();
-                ProcessStartInfo procInfo = new ProcessStartInfo();
-                procInfo.FileName = "/bin/sh";
-                procInfo.Arguments = $"tmp_stage_{stage}.sh";
-                procInfo.RedirectStandardError = true;
-                procInfo.RedirectStandardOutput = true;
-                procInfo.RedirectStandardInput = true;
+                ProcessStartInfo procInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/sh",
+                    Arguments = $"tmp_stage_{stage}.sh",
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardInput = true,
+                    CreateNoWindow = true
+                };
                 proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
                 proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
-                procInfo.CreateNoWindow = true;
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("* ");
                 Console.ForegroundColor = ConsoleColor.White;

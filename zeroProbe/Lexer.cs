@@ -11,8 +11,8 @@ public class Lexer {
          * 0x11f - Comment
          * 0xc88 - Layout
          * 0x054 - Stages
-         * 0x805 - Internal decree
          * 0x700 - Set command to stage
+         * 0xa33 - Setup
          */
         
         LexerObject lexerObject = new LexerObject();
@@ -43,16 +43,16 @@ public class Lexer {
             lexerObject.FunctionName = split[0];
             lexerObject.Arguments = split[1];
         }
-        else
+        else if (split[0].StartsWith("&"))
         {
             switch (split[0])
             {
-                case "layout":
+                case "&layout":
                     lexerObject.FunctionType = "0xc88";
                     lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
-                case "stages":
+                case "&stages":
                     lexerObject.FunctionType = "0x054";
                     lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
