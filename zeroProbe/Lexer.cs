@@ -13,6 +13,7 @@ public class Lexer {
          * 0x054 - Stages
          * 0x700 - Set command to stage
          * 0xa33 - Setup
+         * 0x805 - Shell command
          */
         
         LexerObject lexerObject = new LexerObject();
@@ -22,13 +23,7 @@ public class Lexer {
             return lexerObject;
         }
 
-        if (line.StartsWith("@"))
-        {
-            lexerObject.FunctionType = "0x805";
-            lexerObject.FunctionName = line;
-            lexerObject.Arguments = "";
-            return lexerObject;
-        }
+        
 
         if (!line.Contains(':'))
         {
@@ -61,6 +56,13 @@ public class Lexer {
                     FuncV.ThrowError($"Unknown expression called -> {split[0]}");
                     break;
             }
+        }    
+        else if (split[0].StartsWith("@"))
+        {
+            lexerObject.FunctionType = "0x805";
+            lexerObject.FunctionName = split[0];
+            lexerObject.Arguments = split[1];
+            return lexerObject;
         }
         
         return lexerObject;

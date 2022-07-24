@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text;
 using zeroProbe.Utils;
 
@@ -25,30 +24,20 @@ public class Actions
             if (pr.StagesDict.ContainsKey(stage))
             {
                 var cmd = pr.StagesDict[stage];
-                File.Create($"tmp_stage_{stage}.sh").Close();
-                File.WriteAllText($"tmp_stage_{stage}.sh",$"#!/bin/sh\n{cmd}");
-                Process proc = new Process();
-                ProcessStartInfo procInfo = new ProcessStartInfo
+                ScriptHandler script = new ScriptHandler
                 {
-                    FileName = "/bin/sh",
-                    Arguments = $"tmp_stage_{stage}.sh",
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardInput = true,
-                    CreateNoWindow = true
+                    ScriptPath = $"tmp_stage_{stage}.sh",
+                    ScriptContent = $"#!/bin/sh\n{cmd}"
                 };
-                proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
-                proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
+                script.GenScript();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("* ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Running stage: {stage}");
-                proc.StartInfo = procInfo;
-                proc.Start();
-                proc.BeginOutputReadLine();
-                string errs = proc.StandardError.ReadToEnd();
-                proc.WaitForExit();
-                if (errs == "")
+                Shell sh = new Shell();
+                var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
+                
+                if (res.GotErrors == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("** ");
@@ -62,7 +51,7 @@ public class Actions
                     Console.Write("** ");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("FATAL: Stage not passed due an error:");
-                    Console.WriteLine(errs);
+                    Console.WriteLine(res.Error);
                     App.End();
                 }
             }
@@ -81,7 +70,7 @@ public class Actions
         Console.WriteLine("Writing new config file...");
         File.Create("stages.conf").Close();
         File.WriteAllText("stages.conf", @"/* Layouts: */
-/* std - Standart for most projects */
+/* std - Standard for most projects */
 layout: std
 
 /* Stages */
@@ -109,8 +98,6 @@ stages: restore, build
             pr.ParseLine(line);
         }
         
-        // // Inspecting our details
-        // Preparing variables
         string inspectLayout = pr.LayoutType;
         List<string> inspectStages = pr.Stages;
         string inspectStagesCount = inspectStages.Count.ToString();
@@ -174,28 +161,20 @@ stages: restore, build
         if (pr.StagesDict.ContainsKey(name))
         {
             var cmd = pr.StagesDict[name];
-            File.Create($"tmp_stage_{name}.sh").Close();
-            File.WriteAllText($"tmp_stage_{name}.sh",$"#!/bin/sh\n{cmd}");
-            Process proc = new Process();
-            ProcessStartInfo procInfo = new ProcessStartInfo();
-            procInfo.FileName = "/bin/sh";
-            procInfo.Arguments = $"tmp_stage_{name}.sh";
-            procInfo.RedirectStandardError = true;
-            procInfo.RedirectStandardOutput = true;
-            procInfo.RedirectStandardInput = true;
-            proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
-            proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
-            procInfo.CreateNoWindow = true;
+            ScriptHandler script = new ScriptHandler
+            {
+                ScriptPath = $"tmp_stage_{name}.sh",
+                ScriptContent = $"#!/bin/sh\n{cmd}"
+            };
+            script.GenScript();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("* ");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Running stage: {name}");
-            proc.StartInfo = procInfo;
-            proc.Start();
-            proc.BeginOutputReadLine();
-            string errs = proc.StandardError.ReadToEnd();
-            proc.WaitForExit();
-            if (errs == "")
+            Shell sh = new Shell();
+            var res = sh.Execute("/bin/sh", $"tmp_stage_{name}.sh");
+                
+            if (res.GotErrors == false)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("** ");
@@ -209,7 +188,7 @@ stages: restore, build
                 Console.Write("** ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("FATAL: Stage not passed due an error:");
-                Console.WriteLine(errs);
+                Console.WriteLine(res.Error);
                 App.End();
             }
         }
