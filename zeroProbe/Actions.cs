@@ -5,14 +5,14 @@ namespace zeroProbe;
 
 public class Actions
 {
-    public void RunStages()
+    public void RunStages(string filePath)
     {
-        if (!File.Exists("stages.conf"))
+        if (!File.Exists(filePath))
         {
-            FuncV.ThrowError("no stages.conf file found.");
+            FuncV.ThrowError($"no {filePath} file found.");
         }
 
-        string[] lines = File.ReadAllLines("stages.conf");
+        string[] lines = File.ReadAllLines(filePath);
         Parser pr = new Parser();
         foreach (var line in lines)
         {
@@ -30,38 +30,29 @@ public class Actions
                     ScriptContent = $"#!/bin/sh\n{cmd}"
                 };
                 script.GenScript();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("* ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"Running stage: {stage}");
+                Messages.Work($"Running stage: {stage}");
                 Shell sh = new Shell();
                 var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
                 
                 if (res.GotErrors == false)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("** ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("GOOD: No errors provided. Stage passed.");
+                    Messages.Good("No errors provided. Stage passed.");
                     File.Delete($"tmp_stage_{stage}.sh");
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("** ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("FATAL: Stage not passed due an error:");
+                    Messages.Fatal("Stage not passed due an error:");
                     Console.WriteLine(res.Error);
                     App.End();
                 }
             }
         }
-        Console.WriteLine("** GOOD: Test passed.");
+        Messages.Good("Test passed.");
     }
 
-    public void WriteConfig()
+    public void WriteConfig(string filePath)
     {
-        if (File.Exists("stages.conf"))
+        if (File.Exists(filePath))
         {
             Console.WriteLine("You already have configuration file.");
             App.End();
@@ -84,15 +75,15 @@ stages: restore, build
         Console.WriteLine("Template config ready!");
     }
 
-    public void InspectStages()
+    public void InspectStages(string filePath)
     {
-        if (!File.Exists("stages.conf"))
+        if (!File.Exists(filePath))
         {
-            Console.WriteLine("Cannot find stages.conf file for inspect.");
+            Console.WriteLine($"Cannot find {filePath} file for inspect.");
             App.End();
         }
         Parser pr = new Parser();
-        string[] allLines = File.ReadAllLines("stages.conf");
+        string[] allLines = File.ReadAllLines(filePath);
         foreach (var line in allLines)
         {
             pr.ParseLine(line);
@@ -144,15 +135,15 @@ stages: restore, build
         }        
     }
 
-    public void RunStage(string name)
+    public void RunStage(string name, string filePath)
     {
-        if (!File.Exists("stages.conf"))
+        if (!File.Exists(filePath))
         {
-            Console.WriteLine("Cannot find stages.conf file for inspect.");
+            Console.WriteLine($"Cannot find {filePath} file for inspect.");
             App.End();
         }
         Parser pr = new Parser();
-        string[] allLines = File.ReadAllLines("stages.conf");
+        string[] allLines = File.ReadAllLines(filePath);
         foreach (var line in allLines)
         {
             pr.ParseLine(line);
@@ -167,34 +158,25 @@ stages: restore, build
                 ScriptContent = $"#!/bin/sh\n{cmd}"
             };
             script.GenScript();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("* ");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Running stage: {name}");
+            Messages.Work($"Running stage: {name}");
             Shell sh = new Shell();
             var res = sh.Execute("/bin/sh", $"tmp_stage_{name}.sh");
                 
             if (res.GotErrors == false)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("** ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("GOOD: No errors provided. Stage passed.");
+                Messages.Good("No errors provided. Stage passed.");
                 File.Delete($"tmp_stage_{name}.sh");
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("** ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("FATAL: Stage not passed due an error:");
+                Messages.Fatal("Stage not passed due an error:");
                 Console.WriteLine(res.Error);
                 App.End();
             }
         }
         else
         {
-            Console.WriteLine($"No stage found with name '{name}'.");
+            Messages.Fatal($"No stage found with name '{name}'.");
         }
     }
 }
