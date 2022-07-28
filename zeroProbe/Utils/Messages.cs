@@ -33,4 +33,20 @@ public class Messages
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine($"WORK: {text}");
     }
+    
+    public static void Info(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("** ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"INFO: {text}");
+    }
+    
+    public static void Debug(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.Write("** ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"DEBUG: {text}");
+    }
 }
