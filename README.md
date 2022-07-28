@@ -8,7 +8,7 @@ Tool written on C# with .NET 6.
 To run zeroProbe `dotnet-runtime` are required.
 It functionality will increase with every update.
 
-![img.png](https://gitlab.com/kostya-zero/zeroprobe/-/tree/main/img.png)
+![img.png](img.png)
 
 ## Features
 ### Test local
