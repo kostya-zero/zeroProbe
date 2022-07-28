@@ -5,6 +5,13 @@ namespace zeroProbe;
 
 public class Actions
 {
+    public bool Debug { get; set; }
+
+    public Actions(bool dbg)
+    {
+        Debug = dbg;
+    }
+    
     public void RunStages(string filePath)
     {
         if (!File.Exists(filePath))
@@ -13,12 +20,17 @@ public class Actions
         }
 
         string[] lines = File.ReadAllLines(filePath);
-        Parser pr = new Parser();
+        Parser pr = new Parser
+        {
+            Debug = Debug
+        };
+        
         foreach (var line in lines)
         {
             pr.ParseLine(line);
         }
 
+        Messages.Info($"Running project: {pr.ProjectName}");
         foreach (var stage in pr.Stages)
         {
             if (pr.StagesDict.ContainsKey(stage))
@@ -149,6 +161,7 @@ stages: restore, build
             pr.ParseLine(line);
         }
         
+        Messages.Info($"Running stage of project: {pr.ProjectName}");
         if (pr.StagesDict.ContainsKey(name))
         {
             var cmd = pr.StagesDict[name];

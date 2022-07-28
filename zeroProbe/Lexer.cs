@@ -14,6 +14,7 @@ public class Lexer {
          * 0x700 - Set command to stage
          * 0xa33 - Setup
          * 0x805 - Shell command
+         * 0xccf - Project name
          */
         
         LexerObject lexerObject = new LexerObject();
@@ -22,8 +23,6 @@ public class Lexer {
             lexerObject.FunctionType = "0x11f";
             return lexerObject;
         }
-
-        
 
         if (!line.Contains(':'))
         {
@@ -49,6 +48,21 @@ public class Lexer {
                     break;
                 case "&stages":
                     lexerObject.FunctionType = "0x054";
+                    lexerObject.FunctionName = split[0];
+                    lexerObject.Arguments = split[1];
+                    break;
+                case "&setup":
+                    lexerObject.FunctionType = "0xa33";
+                    lexerObject.FunctionName = split[0];
+                    lexerObject.Arguments = split[1];
+                    break;
+                case "&shell":
+                    lexerObject.FunctionType = "0x805";
+                    lexerObject.FunctionName = split[0];
+                    lexerObject.Arguments = split[1];
+                    break;
+                case "&project":
+                    lexerObject.FunctionType = "0xccf";
                     lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;

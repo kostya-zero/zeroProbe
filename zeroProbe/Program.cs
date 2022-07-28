@@ -7,8 +7,8 @@ internal class Program
     public static void Main(string[] args)
     {
         string ConfigFileName = "stages.conf";
-        
-    
+        bool Dbg = false;
+
         if (args.Length == 0)
         {
             Console.WriteLine("zeroProbe: no argument provided.");
@@ -28,14 +28,16 @@ internal class Program
                             Messages.Fatal($"Cannot find file by given path: {splitStrings[1]}");
                             Environment.Exit(0);
                         }
-
                         ConfigFileName = splitStrings[1];
+                        break;
+                    case "--debug":
+                        Dbg = (splitStrings[1] == "1");
                         break;
                 }
             }
         }
 
-        Actions acts = new Actions();
+        Actions acts = new Actions(Dbg);
         switch (args[0])
         {
             case "run":
