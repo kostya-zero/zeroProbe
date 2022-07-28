@@ -41,6 +41,9 @@ internal class Program
                     case "--ignore-exec-errors":
                         acts.IgnoreExecErrors = (splitStrings[1] == "1");
                         break;
+                    case "--ignore-setup-errors":
+                        acts.IgnoreSetupErrors = (splitStrings[1] == "1");
+                        break;
                     default:
                         Messages.Fatal($"Unknown argument give -> {splitStrings[0]}");
                         App.End();

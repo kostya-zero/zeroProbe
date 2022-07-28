@@ -9,6 +9,7 @@ public class Actions
     public bool IgnoreSetup { get; set; }
     public bool IgnoreShellCommands { get; set; }
     public bool IgnoreExecErrors { get; set; }
+    public bool IgnoreSetupErrors { get; set; }
 
     public Actions()
     {
@@ -16,6 +17,7 @@ public class Actions
         IgnoreSetup = false;
         IgnoreShellCommands = false;
         IgnoreExecErrors = false;
+        IgnoreSetupErrors = false;
     }
     
     public void RunStages(string filePath)
@@ -53,7 +55,11 @@ public class Actions
             {
                 Messages.Fatal("Error occured while setting up environment. Error:");
                 Console.WriteLine(setupResult.Error);
-                App.End();
+                if (!IgnoreSetupErrors)
+                {
+                    App.End();
+                }
+                Messages.Warning("Continue test after error.");
             }
             setupScript.Remove();
             Messages.Good("Setup complete.");
