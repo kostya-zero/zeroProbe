@@ -28,5 +28,53 @@ We choose .NET for speed and ability to make zeroProbe cross-platform in the fut
 ## Bridge for zeroProbe (soon)
 Bridge is internal program to interact with zeroProbe fast and easier with less typing.
 How it works?
-- zeroProbe will has `--bridge` argument. To enable Bridge mode, type `--bridge=1`.
-- 
+- zeroProbe will has `--bridge` argument. To enable Bridge mode, use `--bridge=1`. 
+- Run commands like in terminal, but without zeroProbe at start.
+- You can interact with your project in real-time.
+
+## Build from source
+### Install build dependencies
+zeroProbe use .NET 6 framework to run. To build you must have `dotnet-runtime` and `dotnet-sdk` installed.
+- Ubuntu, Debian, Debian-based and Ubuntu-based:
+```shell
+sudo apt-get update && apt-get upgrade     # Update repositories and packages
+sudo apt-get install -y dotnet-runtime-6.0 # Install runtime
+sudo apt-get install -y dotnet-sdk-6.0     # Install SDK
+```
+- Fedora:
+```shell
+sudo dnf install dotnet-runtime-6.0 # Install runtime
+sudo dnf install dotnet-sdk-6.0     # Install SDK
+```
+- ArchLinux, Manjaro and ArchLinux-based:
+```shell
+sudo pacman -Syu dotnet-runtime dotnet-sdk # Install runtime and SDK
+```
+- openSUSE:
+```shell
+sudo zypper install dotnet-sdk-6.0     # Install SDK
+sudo zypper install dotnet-runtime-6.0 # Install runtime
+```
+
+### Prepare workspace 
+Firstly, clone official repository from [GitLab](https://gitlab.com/kostya-zero/zeroprobe).
+```shell
+git clone https://gitlab.com/kostya-zero/zeroprobe # Cloning GitLab repo
+cd zeroprobe                                       # Moving to cloned repo directory
+```
+
+### Run build 
+Now, the final moment, running build of zeroProbe.
+```shell
+dotnet restore            # Restore dependencies
+dotnet build --no-restore # Building
+```
+
+## Credits
+Developers:
+- Konstantin ".ZERO" Zhigaylo - main developer
+
+Tools and websites used in development:
+- Codacy
+- JetBrains Rider 2022.1.3
+- GitHub Workflows
