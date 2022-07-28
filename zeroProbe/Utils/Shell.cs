@@ -20,6 +20,7 @@ public class Shell
         proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
         proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
         proc.StartInfo = procInfo;
+        
         proc.Start();
         proc.BeginOutputReadLine();
         string errs = proc.StandardError.ReadToEnd();

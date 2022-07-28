@@ -8,12 +8,14 @@ public class Actions
     public bool Debug { get; set; }
     public bool IgnoreSetup { get; set; }
     public bool IgnoreShellCommands { get; set; }
+    public bool IgnoreExecErrors { get; set; }
 
     public Actions()
     {
         Debug = false;
         IgnoreSetup = false;
         IgnoreShellCommands = false;
+        IgnoreExecErrors = false;
     }
     
     public void RunStages(string filePath)
@@ -47,9 +49,9 @@ public class Actions
             setupScript.GenScript();
             Shell sh = new Shell();
             var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
-            if (setupResult.GotErrors)
+            if (setupResult.GotErrors && !IgnoreExecErrors)
             {
-                Messages.Fatal("Error occured while setting up environment. Test will be finished. Error:");
+                Messages.Fatal("Error occured while setting up environment. Error:");
                 Console.WriteLine(setupResult.Error);
                 App.End();
             }
@@ -65,12 +67,12 @@ public class Actions
                 ScriptHandler shellScript = new ScriptHandler
                 {
                     ScriptPath = "tmp_shell_command.sh",
-                    ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
+                    ScriptContent = $"#!/bin/sh\n{command}"
                 };
                 shellScript.GenScript();
                 Shell sh = new Shell();
-                var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
-                if (setupResult.GotErrors)
+                var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
+                if (setupResult.GotErrors && !IgnoreExecErrors)
                 {
                     Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
                     Console.WriteLine(setupResult.Error);
@@ -95,7 +97,7 @@ public class Actions
                 Shell sh = new Shell();
                 var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
                 
-                if (!res.GotErrors)
+                if (!res.GotErrors || IgnoreExecErrors)
                 {
                     Messages.Good("No errors provided. Stage passed.");
                     File.Delete($"tmp_stage_{stage}.sh");
@@ -269,7 +271,7 @@ stages: restore, build
             Shell sh = new Shell();
             var res = sh.Execute("/bin/sh", $"tmp_stage_{name}.sh");
                 
-            if (res.GotErrors == false)
+            if (!res.GotErrors || IgnoreExecErrors)
             {
                 Messages.Good("No errors provided. Stage passed.");
                 File.Delete($"tmp_stage_{name}.sh");

@@ -38,6 +38,9 @@ internal class Program
                     case "--skip-shell-commands":
                         acts.IgnoreShellCommands = (splitStrings[1] == "1");
                         break;
+                    case "--ignore-exec-errors":
+                        acts.IgnoreExecErrors = (splitStrings[1] == "1");
+                        break;
                     default:
                         Messages.Fatal($"Unknown argument give -> {splitStrings[0]}");
                         App.End();
@@ -46,7 +49,6 @@ internal class Program
             }
         }
 
-        
         switch (args[0])
         {
             case "run":
