@@ -30,7 +30,7 @@ public class Parser
         switch (obj.FunctionType)
         {
             case "0x11f":
-                if (Debug) DebugInstruction("0x11f");
+                if (Debug) { DebugInstruction("0x11f"); }
                 if (!Comments)
                 {
                     FuncV.ThrowWarning("Use comments less. It slows zeroProbe.");
@@ -38,7 +38,7 @@ public class Parser
                 }
                 break;
             case "0xc88":
-                if (Debug) DebugInstruction("0xc88");
+                if (Debug) { DebugInstruction("0xc88"); }
                 string layout = obj.Arguments.Trim();
                 switch (layout)
                 {
@@ -51,7 +51,7 @@ public class Parser
                 }
                 break;
             case "0x054":
-                if (Debug) DebugInstruction("0x054");
+                if (Debug) { DebugInstruction("0x054"); }
                 string stages = obj.Arguments.Trim();
                 var split = stages.Split(",");
                 if (!stages.Contains(','))
@@ -67,7 +67,7 @@ public class Parser
                 }
                 break;
             case "0x700":
-                if (Debug) DebugInstruction("0x700");
+                if (Debug) { DebugInstruction("0x700"); }
                 string stg = obj.FunctionName;
                 stg = stg.TrimStart('!');
                 if (Stages.Contains(stg))
@@ -80,7 +80,7 @@ public class Parser
                 }
                 break;
             case "0xa33":
-                if (Debug) DebugInstruction("0xa33");
+                if (Debug) { DebugInstruction("0xa33"); }
                 string cmd = obj.Arguments;
                 cmd = cmd.Trim();
                 ScriptHandler script = new ScriptHandler
@@ -102,7 +102,7 @@ public class Parser
                 Messages.Good("Setup complete.");
                 break;
             case "0x805":
-                if (Debug) DebugInstruction("0x805");
+                if (Debug) { DebugInstruction("0x805"); }
                 string shell = obj.Arguments;
                 shell = shell.Trim();
                 ScriptHandler shellScript = new ScriptHandler
@@ -120,7 +120,7 @@ public class Parser
                 }
                 break;
             case "0xccf":
-                if (Debug) DebugInstruction("0xccf");
+                if (Debug) { DebugInstruction("0xccf"); }
                 ProjectName = obj.Arguments;
                 break;
             default:
