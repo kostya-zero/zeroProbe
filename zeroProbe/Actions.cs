@@ -29,8 +29,52 @@ public class Actions
         {
             pr.ParseLine(line);
         }
-
         Messages.Info($"Running project: {pr.ProjectName}");
+
+        if (pr.SetupCommand != "")
+        {
+            Messages.Work("Running setup command...");
+            ScriptHandler setupScript = new ScriptHandler
+            {
+                ScriptPath = "tmp_setup.sh",
+                ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
+            };
+            setupScript.GenScript();
+            Shell sh = new Shell();
+            var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
+            if (setupResult.GotErrors)
+            {
+                Messages.Fatal("Error occured while setting up environment. Test will be finished. Error:");
+                Console.WriteLine(setupResult.Error);
+                App.End();
+            }
+            setupScript.Remove();
+            Messages.Good("Setup complete.");
+        }
+
+        if (pr.ShellCommands.Count != 0)
+        {
+            Messages.Work("Running shell commands...");
+            foreach (var command in pr.ShellCommands)
+            {
+                ScriptHandler shellScript = new ScriptHandler
+                {
+                    ScriptPath = "tmp_shell_command.sh",
+                    ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
+                };
+                shellScript.GenScript();
+                Shell sh = new Shell();
+                var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
+                if (setupResult.GotErrors)
+                {
+                    Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
+                    Console.WriteLine(setupResult.Error);
+                    App.End();
+                }
+                shellScript.Remove();
+            }
+        }
+        
         foreach (var stage in pr.Stages)
         {
             if (pr.StagesDict.ContainsKey(stage))
@@ -46,7 +90,7 @@ public class Actions
                 Shell sh = new Shell();
                 var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
                 
-                if (res.GotErrors == false)
+                if (!res.GotErrors)
                 {
                     Messages.Good("No errors provided. Stage passed.");
                     File.Delete($"tmp_stage_{stage}.sh");
@@ -159,6 +203,51 @@ stages: restore, build
         foreach (var line in allLines)
         {
             pr.ParseLine(line);
+        }
+        Messages.Info($"Running stage of project: {pr.ProjectName}");
+        
+        if (pr.SetupCommand != "")
+        {
+            Messages.Work("Running setup command...");
+            ScriptHandler setupScript = new ScriptHandler
+            {
+                ScriptPath = "tmp_setup.sh",
+                ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
+            };
+            setupScript.GenScript();
+            Shell sh = new Shell();
+            var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
+            if (setupResult.GotErrors)
+            {
+                Messages.Fatal("Error occured while setting up environment. Test will be finished. Error:");
+                Console.WriteLine(setupResult.Error);
+                App.End();
+            }
+            setupScript.Remove();
+            Messages.Good("Setup complete.");
+        }
+
+        if (pr.ShellCommands.Count != 0)
+        {
+            Messages.Work("Running shell commands...");
+            foreach (var command in pr.ShellCommands)
+            {
+                ScriptHandler shellScript = new ScriptHandler
+                {
+                    ScriptPath = "tmp_shell_command.sh",
+                    ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
+                };
+                shellScript.GenScript();
+                Shell sh = new Shell();
+                var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
+                if (setupResult.GotErrors)
+                {
+                    Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
+                    Console.WriteLine(setupResult.Error);
+                    App.End();
+                }
+                shellScript.Remove();
+            }
         }
         
         Messages.Info($"Running stage of project: {pr.ProjectName}");

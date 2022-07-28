@@ -10,6 +10,9 @@ public class Parser
     private bool Comments { get; set; }
     public string ProjectName { get; set;  }
     public bool Debug { get; set; }
+    public string SetupCommand { get; set; }
+    public List<string> ShellCommands { get; set; }
+    
 
     public Parser()
     {
@@ -17,6 +20,8 @@ public class Parser
         Stages = new List<string>();
         ProjectName = "unnamed";
         Debug = false;
+        ShellCommands = new List<string>();
+        SetupCommand = "";
     }
 
     public void DebugInstruction(string instruction)
@@ -81,47 +86,17 @@ public class Parser
                 break;
             case "0xa33":
                 if (Debug) { DebugInstruction("0xa33"); }
-                string cmd = obj.Arguments;
-                cmd = cmd.Trim();
-                ScriptHandler script = new ScriptHandler
-                {
-                    ScriptPath = "tmp_setup_script.sh",
-                    ScriptContent = $"#!/bin/sh\n{cmd}"
-                };
-                script.GenScript();
-                Messages.Work("Setting up...");
-                Shell sh = new Shell();
-                var res = sh.Execute("/bin/sh", "tmp_setup_script.sh");
-                if (res.GotErrors)
-                {
-                    Messages.Fatal("Setup failed. Error:");
-                    Console.WriteLine(res.Error);
-                    Environment.Exit(0);
-                }
-
-                Messages.Good("Setup complete.");
+                SetupCommand = obj.Arguments;
                 break;
             case "0x805":
                 if (Debug) { DebugInstruction("0x805"); }
-                string shell = obj.Arguments;
-                shell = shell.Trim();
-                ScriptHandler shellScript = new ScriptHandler
-                {
-                    ScriptPath = "tmp_shell_script.sh",
-                    ScriptContent = $"#!/bin/sh\n{shell}"
-                };
-                shellScript.GenScript();
-                Shell sh1 = new Shell();
-                var res1 = sh1.Execute("/bin/sh", "tmp_shell_script.sh");
-                if (res1.GotErrors)
-                {
-                    Messages.Fatal("Failed to call shell command. Error:");
-                    Console.WriteLine(res1.Error);
-                }
+                ShellCommands.Add(obj.Arguments);
                 break;
             case "0xccf":
                 if (Debug) { DebugInstruction("0xccf"); }
-                ProjectName = obj.Arguments;
+                ProjectName = obj.Arguments.Trim();
+                break;
+            case "0x00f":
                 break;
             default:
                 FuncV.ThrowError($"Illegal instruction called -> {obj.FunctionType}");

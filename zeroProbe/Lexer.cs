@@ -15,10 +15,17 @@ public class Lexer {
          * 0xa33 - Setup
          * 0x805 - Shell command
          * 0xccf - Project name
+         * 0x00f - Empty line
          */
         
         LexerObject lexerObject = new LexerObject();
-        if ((line.StartsWith("/*") && line.EndsWith("*/")) || line == "")
+        if (line == "")
+        {
+            lexerObject.FunctionType = "0x00f";
+            return lexerObject;
+        }
+        
+        if ((line.StartsWith("/*") && line.EndsWith("*/")))
         {
             lexerObject.FunctionType = "0x11f";
             return lexerObject;
