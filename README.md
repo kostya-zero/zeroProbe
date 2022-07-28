@@ -9,6 +9,7 @@ To run zeroProbe `dotnet-runtime` are required.
 It functionality will increase with every update.
 
 ![img.png](img.png)
+> Not final version. Look may change with release.
 
 ## Features
 ### Test local
