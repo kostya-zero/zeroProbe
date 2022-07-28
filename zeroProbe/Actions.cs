@@ -6,10 +6,14 @@ namespace zeroProbe;
 public class Actions
 {
     public bool Debug { get; set; }
+    public bool IgnoreSetup { get; set; }
+    public bool IgnoreShellCommands { get; set; }
 
-    public Actions(bool dbg)
+    public Actions()
     {
-        Debug = dbg;
+        Debug = false;
+        IgnoreSetup = false;
+        IgnoreShellCommands = false;
     }
     
     public void RunStages(string filePath)
@@ -31,7 +35,7 @@ public class Actions
         }
         Messages.Info($"Running project: {pr.ProjectName}");
 
-        if (pr.SetupCommand != "")
+        if (pr.SetupCommand != "" && !IgnoreSetup)
         {
             Messages.Work("Running setup command...");
             ScriptHandler setupScript = new ScriptHandler
@@ -52,7 +56,7 @@ public class Actions
             Messages.Good("Setup complete.");
         }
 
-        if (pr.ShellCommands.Count != 0)
+        if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
         {
             Messages.Work("Running shell commands...");
             foreach (var command in pr.ShellCommands)

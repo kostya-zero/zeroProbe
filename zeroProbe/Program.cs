@@ -7,14 +7,13 @@ internal class Program
     public static void Main(string[] args)
     {
         string ConfigFileName = "stages.conf";
-        bool Dbg = false;
 
         if (args.Length == 0)
         {
-            Console.WriteLine("zeroProbe: no argument provided.");
+            Console.WriteLine("No arguments provided. Use 'help' argument to see what zeroProbe can do.");
             App.End();
         }
-
+        Actions acts = new Actions();
         foreach (var arg in args)
         {
             string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
@@ -31,13 +30,23 @@ internal class Program
                         ConfigFileName = splitStrings[1];
                         break;
                     case "--debug":
-                        Dbg = (splitStrings[1] == "1");
+                        acts.Debug = (splitStrings[1] == "1");
+                        break;
+                    case "--skip-setup":
+                        acts.IgnoreSetup = (splitStrings[1] == "1");
+                        break;
+                    case "--skip-shell-commands":
+                        acts.IgnoreShellCommands = (splitStrings[1] == "1");
+                        break;
+                    default:
+                        Messages.Fatal($"Unknown argument give -> {splitStrings[0]}");
+                        App.End();
                         break;
                 }
             }
         }
 
-        Actions acts = new Actions(Dbg);
+        
         switch (args[0])
         {
             case "run":
@@ -68,7 +77,7 @@ internal class Program
                 HelpMessages.Info();
                 break;
             default:
-                Console.WriteLine($"zeroProbe: unknown argument -> {args[0]}");
+                Messages.Fatal($"Unknown argument -> {args[0]}");
                 App.End();
                 break;
         }

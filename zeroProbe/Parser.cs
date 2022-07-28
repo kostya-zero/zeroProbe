@@ -38,7 +38,7 @@ public class Parser
                 if (Debug) { DebugInstruction("0x11f"); }
                 if (!Comments)
                 {
-                    FuncV.ThrowWarning("Use comments less. It slows zeroProbe.");
+                    Messages.Warning("Use comments less. It slows zeroProbe.");
                     Comments = true;
                 }
                 break;
