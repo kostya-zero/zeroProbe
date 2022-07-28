@@ -51,7 +51,8 @@ public class Parser
                         LayoutType = "std";
                         break;
                     default:
-                        FuncV.ThrowError($"unknown layout -> {layout}");
+                        Messages.Fatal($"Unknown layout -> {layout}");
+                        App.End();
                         break;
                 }
                 break;
@@ -81,7 +82,8 @@ public class Parser
                 }
                 else
                 {
-                    FuncV.ThrowError($"stage '{stg}' not defined.");
+                    Messages.Fatal($"Stage '{stg}' not defined.");
+                    App.End();
                 }
                 break;
             case "0xa33":
@@ -99,7 +101,8 @@ public class Parser
             case "0x00f":
                 break;
             default:
-                FuncV.ThrowError($"Illegal instruction called -> {obj.FunctionType}");
+                Messages.Fatal($"Illegal instruction called -> {obj.FunctionType}");
+                App.End();
                 break;
         }
     }

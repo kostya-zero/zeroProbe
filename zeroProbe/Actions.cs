@@ -20,7 +20,8 @@ public class Actions
     {
         if (!File.Exists(filePath))
         {
-            FuncV.ThrowError($"no {filePath} file found.");
+            Messages.Fatal($"No {filePath} file found.");
+            App.End();
         }
 
         string[] lines = File.ReadAllLines(filePath);

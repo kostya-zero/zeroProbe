@@ -33,7 +33,8 @@ public class Lexer {
 
         if (!line.Contains(':'))
         {
-            FuncV.ThrowError($"bad expression -> {line}");
+            Messages.Fatal($"Bad expression -> {line}");
+            App.End();
         }
         
         string[] split = line.Split(":", 2);
@@ -74,7 +75,8 @@ public class Lexer {
                     lexerObject.Arguments = split[1];
                     break;
                 default:
-                    FuncV.ThrowError($"Unknown expression called -> {split[0]}");
+                    Messages.Fatal($"Unknown expression called -> {split[0]}");
+                    App.End();
                     break;
             }
         }    
