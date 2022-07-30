@@ -28,7 +28,8 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("1.0");
+        Console.WriteLine("Version:  1.0");
+        Console.WriteLine("Codename: Anxious");
         App.End();
     }
 }
