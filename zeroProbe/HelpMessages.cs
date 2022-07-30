@@ -19,9 +19,7 @@ public class HelpMessages
         Console.WriteLine(":: Options");
         Console.WriteLine("--debug=[0,1]               - Enables debug mode.");
         Console.WriteLine("--file=[path]               - Use file by given location.");
-        Console.WriteLine("--skip-setup=[0,1]          - Skip setup scripts.");
         Console.WriteLine("--skip-shell-scripts=[0,1]  - Skip shells scripts execution.");
-        Console.WriteLine("--ignore-setup-errors=[0,1] - Ignores setup errors.");
         Console.WriteLine("--ignore-exec-errors=[0,1]  - Ignores execution errors.\n");
         App.End();
     }

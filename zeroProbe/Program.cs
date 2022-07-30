@@ -32,17 +32,11 @@ internal class Program
                     case "--debug":
                         acts.Debug = (splitStrings[1] == "1");
                         break;
-                    case "--skip-setup":
-                        acts.IgnoreSetup = (splitStrings[1] == "1");
-                        break;
                     case "--skip-shell-commands":
                         acts.IgnoreShellCommands = (splitStrings[1] == "1");
                         break;
                     case "--ignore-exec-errors":
                         acts.IgnoreExecErrors = (splitStrings[1] == "1");
-                        break;
-                    case "--ignore-setup-errors":
-                        acts.IgnoreSetupErrors = (splitStrings[1] == "1");
                         break;
                     default:
                         Messages.Fatal($"Unknown argument give -> {splitStrings[0]}");

@@ -6,18 +6,14 @@ namespace zeroProbe;
 public class Actions
 {
     public bool Debug { get; set; }
-    public bool IgnoreSetup { get; set; }
     public bool IgnoreShellCommands { get; set; }
     public bool IgnoreExecErrors { get; set; }
-    public bool IgnoreSetupErrors { get; set; }
 
     public Actions()
     {
         Debug = false;
-        IgnoreSetup = false;
         IgnoreShellCommands = false;
         IgnoreExecErrors = false;
-        IgnoreSetupErrors = false;
     }
     
     public void RunStages(string filePath)
@@ -40,30 +36,6 @@ public class Actions
         }
         Messages.Info($"Running project: {pr.ProjectName}");
 
-        if (pr.SetupCommand != "" && !IgnoreSetup)
-        {
-            Messages.Work("Running setup command...");
-            ScriptHandler setupScript = new ScriptHandler
-            {
-                ScriptPath = "tmp_setup.sh",
-                ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
-            };
-            setupScript.GenScript();
-            Shell sh = new Shell();
-            var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
-            if (setupResult.GotErrors && !IgnoreExecErrors)
-            {
-                Messages.Fatal("Error occured while setting up environment. Error:");
-                Console.WriteLine(setupResult.Error);
-                if (!IgnoreSetupErrors)
-                {
-                    App.End();
-                }
-                Messages.Warning("Continue test after error.");
-            }
-            setupScript.Remove();
-            Messages.Good("Setup complete.");
-        }
 
         if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
         {
@@ -215,27 +187,6 @@ stages: restore, build
             pr.ParseLine(line);
         }
         Messages.Info($"Running stage of project: {pr.ProjectName}");
-        
-        if (pr.SetupCommand != "")
-        {
-            Messages.Work("Running setup command...");
-            ScriptHandler setupScript = new ScriptHandler
-            {
-                ScriptPath = "tmp_setup.sh",
-                ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
-            };
-            setupScript.GenScript();
-            Shell sh = new Shell();
-            var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
-            if (setupResult.GotErrors)
-            {
-                Messages.Fatal("Error occured while setting up environment. Test will be finished. Error:");
-                Console.WriteLine(setupResult.Error);
-                App.End();
-            }
-            setupScript.Remove();
-            Messages.Good("Setup complete.");
-        }
 
         if (pr.ShellCommands.Count != 0)
         {
