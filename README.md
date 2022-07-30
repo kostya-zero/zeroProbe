@@ -1,6 +1,28 @@
 # zeroProbe
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ee24203115c542b08553b7e071a14b88)](https://www.codacy.com/gl/kostya-zero/zeroprobe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/zeroprobe&amp;utm_campaign=Badge_Grade)
-[![.github/workflows/dotnet.yml](https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml)
+
+<div id="badges" >
+    <a href="https://www.codacy.com/gl/kostya-zero/zeroprobe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/zeroprobe&amp;utm_campaign=Badge_Grade">
+        <img src="https://app.codacy.com/project/badge/Grade/ee24203115c542b08553b7e071a14b88"/>
+    </a>
+    <a href="https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml">
+        <img src="https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml/badge.svg?branch=main"/>
+    </a>
+    <a href="https://img.shields.io/github/commit-activity/w/kostya-zero/zeroProbe">
+        <img src="https://img.shields.io/github/commit-activity/w/kostya-zero/zeroProbe"/>
+    </a>
+    <a href="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe">
+        <img src="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe"/>
+    </a>
+    <a href="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe">
+        <img src="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe"/>
+    </a>
+    <a href="https://gitlab.com/kostya-zero/zeroprobe">
+        <img src="https://img.shields.io/badge/GitLab-repository-orange?logo=gitlab&"/>
+    </a>
+    <a href="https://github.com/kostya-zero/zeroProbe">
+        <img src="https://img.shields.io/badge/GitHub-repository-232323?logo=github&"/>
+    </a>
+ </div>
 
 Advanced utility to create, run and manage tests. 
 This tool allows you to create your own pipelines and run it.
@@ -58,10 +80,11 @@ sudo zypper install dotnet-runtime-6.0 # Install runtime
 ```
 
 ### Prepare workspace 
-Firstly, clone official repository from [GitLab](https://gitlab.com/kostya-zero/zeroprobe).
+Firstly, clone official repository from [GitLab](https://gitlab.com/kostya-zero/zeroprobe). 
+We recommend you to clone sources from GitLab, because it updates frequently than GitHub.
 ```shell
-git clone https://gitlab.com/kostya-zero/zeroprobe # Cloning GitLab repo
-cd zeroprobe                                       # Moving to cloned repo directory
+git clone https://gitlab.com/kostya-zero/zeroprobe.git # Cloning GitLab repo
+cd zeroprobe                                           # Moving to cloned repo directory
 ```
 
 ### Run build 
