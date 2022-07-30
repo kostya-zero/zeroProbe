@@ -6,7 +6,6 @@ public class Parser
 {
     public Dictionary<string, string> StagesDict { get; }
     public List<string> Stages  { get; }
-    public string LayoutType  { get; private set; }
     private bool Comments { get; set; }
     public string ProjectName { get; set;  }
     public bool Debug { get; set; }
@@ -44,17 +43,7 @@ public class Parser
                 break;
             case "0xc88":
                 if (Debug) { DebugInstruction("0xc88"); }
-                string layout = obj.Arguments.Trim();
-                switch (layout)
-                {
-                    case "std":
-                        LayoutType = "std";
-                        break;
-                    default:
-                        Messages.Fatal($"Unknown layout -> {layout}");
-                        App.End();
-                        break;
-                }
+                Messages.Info(obj.Arguments.Trim());
                 break;
             case "0x054":
                 if (Debug) { DebugInstruction("0x054"); }

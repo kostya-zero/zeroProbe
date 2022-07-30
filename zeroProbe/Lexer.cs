@@ -49,7 +49,7 @@ public class Lexer {
         {
             switch (split[0])
             {
-                case "&layout":
+                case "&msg":
                     lexerObject.FunctionType = "0xc88";
                     lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];

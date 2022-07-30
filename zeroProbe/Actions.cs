@@ -116,7 +116,7 @@ public class Actions
                 }
             }
         }
-        Messages.Good("Test passed.");
+        Messages.Good("All good!");
     }
 
     public void WriteConfig(string filePath)
@@ -158,11 +158,10 @@ stages: restore, build
             pr.ParseLine(line);
         }
         
-        string inspectLayout = pr.LayoutType;
         List<string> inspectStages = pr.Stages;
         string inspectStagesCount = inspectStages.Count.ToString();
         bool inspectNoStages = false;
-        string strStages = "";
+        string strStages;
         
         if (inspectStages.Count == 0)
         {
@@ -171,8 +170,6 @@ stages: restore, build
         
         
         Console.WriteLine(":::: Inspection results");
-        Console.WriteLine(":: Basic");
-        Console.WriteLine($"Layout: {inspectLayout}\n");
         if (inspectNoStages)
         {
             Console.WriteLine(":: Stages");
@@ -248,7 +245,7 @@ stages: restore, build
                 ScriptHandler shellScript = new ScriptHandler
                 {
                     ScriptPath = "tmp_shell_command.sh",
-                    ScriptContent = $"#!/bin/sh\n{pr.SetupCommand}"
+                    ScriptContent = $"#!/bin/sh\n{command}"
                 };
                 shellScript.GenScript();
                 Shell sh = new Shell();
