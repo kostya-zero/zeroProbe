@@ -75,10 +75,6 @@ public class Parser
                     App.End();
                 }
                 break;
-            case "0xa33":
-                if (Debug) { DebugInstruction("0xa33"); }
-                SetupCommand = obj.Arguments;
-                break;
             case "0x805":
                 if (Debug) { DebugInstruction("0x805"); }
                 ShellCommands.Add(obj.Arguments);
