@@ -78,9 +78,6 @@ internal class Program
             case "version":
                 HelpMessages.Version();
                 break;
-            case "info":
-                HelpMessages.Info();
-                break;
             default:
                 Messages.Fatal($"Unknown argument -> {args[0]}");
                 App.End();
