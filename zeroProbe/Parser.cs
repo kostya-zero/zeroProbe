@@ -108,6 +108,10 @@ public class Parser
                 break;
             case "0xccf":
                 if (Debug) { DebugInstruction("0xccf"); }
+                if (ProjectName != "")
+                {
+                    Messages.Warning("Project name already assigned.");
+                }
                 ProjectName = obj.Arguments.Trim();
                 break;
             case "0x00f":
