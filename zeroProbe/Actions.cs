@@ -144,7 +144,6 @@ public class Actions
         File.WriteAllText("stages.conf", @"/* Small example of configuration file */
 /* Test of building zeroProbe */
 &project: test
-&checkfor: gcc
 &shell: echo 'This is a small template for screenshot!'
 &stages: restore, build, finish
 
