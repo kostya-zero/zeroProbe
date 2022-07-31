@@ -8,6 +8,7 @@ public class Parser
     public List<string> Stages  { get; }
     private bool Comments { get; set; }
     public string ProjectName { get; set;  }
+    public string ScriptIfError { get; set; }
     public bool Debug { get; set; }
     public List<string> ShellCommands { get; set; }
     public List<string> ComponentsToCheck { get; set; }
@@ -21,6 +22,7 @@ public class Parser
         Debug = false;
         ShellCommands = new List<string>();
         ComponentsToCheck = new List<string>();
+        ScriptIfError = "";
     }
 
     public void DebugInstruction(string instruction)
@@ -40,6 +42,10 @@ public class Parser
                     Messages.Warning("Use comments less. It slows zeroProbe.");
                     Comments = true;
                 }
+                break;
+            case "0xa33":
+                if (Debug) { DebugInstruction("0xa33"); }
+                ScriptIfError = obj.Arguments.Trim();
                 break;
             case "0xc88":
                 if (Debug) { DebugInstruction("0xc88"); }

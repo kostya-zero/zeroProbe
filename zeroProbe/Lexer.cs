@@ -54,6 +54,11 @@ public class Lexer {
                     lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
+                case "&iferror":
+                    lexerObject.FunctionType = "0xa33";
+                    lexerObject.FunctionName = split[0];
+                    lexerObject.Arguments = split[1];
+                    break;
                 case "&stages":
                     lexerObject.FunctionType = "0x054";
                     lexerObject.FunctionName = split[0];

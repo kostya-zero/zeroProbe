@@ -124,6 +124,19 @@ public class Actions
                 {
                     Messages.Fatal("Stage not passed due an error:");
                     Console.WriteLine(res.Error);
+                    if (pr.ScriptIfError != "")
+                    {
+                        Messages.Work("Running undo script...");
+                        ScriptHandler undoScript = new ScriptHandler
+                        {
+                            ScriptPath = "tmp_undo_script.sh",
+                            ScriptContent = $"#!/bin/sh\n{pr.ScriptIfError}"
+                        };
+                        undoScript.GenScript();
+                        Shell undoSh = new Shell();
+                        var res1 = undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
+                        Messages.Good("Undo complete.");
+                    }
                     App.End();
                 }
             }
@@ -279,6 +292,19 @@ public class Actions
             {
                 Messages.Fatal("Stage not passed due an error:");
                 Console.WriteLine(res.Error);
+                if (pr.ScriptIfError != "")
+                {
+                    Messages.Work("Running undo script...");
+                    ScriptHandler undoScript = new ScriptHandler
+                    {
+                        ScriptPath = "tmp_undo_script.sh",
+                        ScriptContent = $"#!/bin/sh\n{pr.ScriptIfError}"
+                    };
+                    undoScript.GenScript();
+                    Shell undoSh = new Shell();
+                    var res1 = undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
+                    Messages.Good("Undo complete.");
+                }
                 App.End();
             }
         }
