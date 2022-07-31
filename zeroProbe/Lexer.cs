@@ -12,7 +12,7 @@ public class Lexer {
          * 0xc88 - Check for components
          * 0x054 - Stages
          * 0x700 - Set command to stage
-         * 0xa33 - Reserved
+         * 0xa33 - Undo script
          * 0x805 - Shell command
          * 0xccf - Project name
          * 0x00f - Empty line

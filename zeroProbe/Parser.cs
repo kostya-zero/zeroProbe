@@ -63,12 +63,22 @@ public class Parser
                 var split = stages.Split(",");
                 if (!stages.Contains(','))
                 {
+                    if (Stages.Contains(stages.Trim()))
+                    {
+                        Messages.Fatal($"Stage already defined -> {stages.Trim()}");
+                        App.End();
+                    }
                     Stages.Add(stages.Trim());
                 }
                 else
                 {
                     foreach (var stage in split)
                     {
+                        if (Stages.Contains(stage.Trim()))
+                        {
+                            Messages.Fatal($"Stage already defined -> {stage.Trim()}");
+                            App.End();
+                        }
                         Stages.Add(stage.Trim());
                     } 
                 }
@@ -79,6 +89,11 @@ public class Parser
                 stg = stg.TrimStart('!');
                 if (Stages.Contains(stg))
                 {
+                    if (StagesDict.ContainsKey(stg))
+                    {
+                        Messages.Fatal($"Stage already assigned -> {stg}");
+                        App.End();
+                    }
                     StagesDict.Add(stg, obj.Arguments.Trim());
                 }
                 else
