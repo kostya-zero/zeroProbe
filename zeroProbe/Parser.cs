@@ -9,8 +9,8 @@ public class Parser
     private bool Comments { get; set; }
     public string ProjectName { get; set;  }
     public bool Debug { get; set; }
-    public string SetupCommand { get; set; }
     public List<string> ShellCommands { get; set; }
+    public List<string> ComponentsToCheck { get; set; }
     
 
     public Parser()
@@ -20,7 +20,7 @@ public class Parser
         ProjectName = "unnamed";
         Debug = false;
         ShellCommands = new List<string>();
-        SetupCommand = "";
+        ComponentsToCheck = new List<string>();
     }
 
     public void DebugInstruction(string instruction)
@@ -43,7 +43,19 @@ public class Parser
                 break;
             case "0xc88":
                 if (Debug) { DebugInstruction("0xc88"); }
-                Messages.Info(obj.Arguments.Trim());
+                string components = obj.Arguments.Trim();
+                if (components.Contains(','))
+                {
+                    string[] splitComponents = components.Split();
+                    foreach (string component in splitComponents)
+                    {
+                        ComponentsToCheck.Add(component.Trim());
+                    }
+                }
+                else
+                {
+                    ComponentsToCheck.Add(components);
+                }
                 break;
             case "0x054":
                 if (Debug) { DebugInstruction("0x054"); }

@@ -9,10 +9,10 @@ public class Lexer {
         /*
          * Functions type:
          * 0x11f - Comment
-         * 0xc88 - Layout
+         * 0xc88 - Check for components
          * 0x054 - Stages
          * 0x700 - Set command to stage
-         * 0xa33 - Setup
+         * 0xa33 - Reserved
          * 0x805 - Shell command
          * 0xccf - Project name
          * 0x00f - Empty line
@@ -49,7 +49,7 @@ public class Lexer {
         {
             switch (split[0])
             {
-                case "&msg":
+                case "&checkfor":
                     lexerObject.FunctionType = "0xc88";
                     lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];

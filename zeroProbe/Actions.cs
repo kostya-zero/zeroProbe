@@ -36,6 +36,46 @@ public class Actions
         }
         Messages.Info($"Running project: {pr.ProjectName}");
 
+        if (pr.ComponentsToCheck.Count != 0)
+        {
+            Messages.Work("Checking for required components...");
+            string[] pathVar = Env.GetPath();
+            int missingComponentsCount = 0;
+            List<string> foundComponents = new List<string>();
+            foreach (var component in pr.ComponentsToCheck)
+            {
+                foreach (var path in pathVar)
+                {
+                    if (!foundComponents.Contains(component))
+                    {
+                        bool found = FSHelper.IsExists($"{path}/{component}");
+                        if (found)
+                        {
+                            foundComponents.Add(component);
+                            Messages.Good($"Found {component}.");
+                        }
+                    }
+                }
+            }
+
+            foreach (var component in pr.ComponentsToCheck)
+            {
+                if (!foundComponents.Contains(component))
+                {
+                    missingComponentsCount++;
+                }
+            }
+            
+            if (missingComponentsCount > 0)
+            {
+                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Components:");
+                App.End();
+            }
+            else
+            {
+                Messages.Good("All components installed!");
+            }
+        }
 
         if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
         {
@@ -140,12 +180,14 @@ stages: restore, build
             inspectNoStages = true;
         }
         
-        
         Console.WriteLine(":::: Inspection results");
+        Console.WriteLine(":: Project info");
+        Console.WriteLine($"Project name: {pr.ProjectName}");
+        Console.WriteLine("Shell commands: " + (pr.ShellCommands.Count == 0 ? "None" : pr.ShellCommands.Count.ToString()));
         if (inspectNoStages)
         {
             Console.WriteLine(":: Stages");
-            Console.WriteLine($"No stages in this configuration!");
+            Console.WriteLine("No stages in this configuration!");
             App.End();
         }
         if (inspectStages.Count == 1)
@@ -159,9 +201,7 @@ stages: restore, build
             {
                 stringBuilder.Append($"{stage}, ");
             }
-            strStages = stringBuilder.ToString();
-            strStages = strStages.TrimEnd();
-            strStages = strStages.TrimEnd(',');
+            strStages = stringBuilder.ToString().TrimEnd(',');
         }
         Console.WriteLine(":: Stages");
         Console.WriteLine($"Stages: {strStages}");
