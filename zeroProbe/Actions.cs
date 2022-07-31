@@ -141,18 +141,16 @@ public class Actions
         
         Console.WriteLine("Writing new config file...");
         File.Create("stages.conf").Close();
-        File.WriteAllText("stages.conf", @"/* Layouts: */
-/* std - Standard for most projects */
-layout: std
+        File.WriteAllText("stages.conf", @"/* Small example of configuration file */
+/* Test of building zeroProbe */
+&project: test
+&checkfor: gcc
+&shell: echo 'This is a small template for screenshot!'
+&stages: restore, build, finish
 
-/* Stages */
-/* Warning: stage will be executed in queue that you typed after 'stages' */
-stages: restore, build
-
-/* Setting commands for stages */
-/* To setup command to execute for stage you must start line with '!' operator. */
-!restore: echo 'Restore'
-!build: echo 'Build'");
+!restore: echo 'Doing some restore staff...'
+!build: echo 'Doing some build staff...'
+!finish: echo 'Finishing this deal...'");
         Console.WriteLine("Template config ready!");
     }
 
