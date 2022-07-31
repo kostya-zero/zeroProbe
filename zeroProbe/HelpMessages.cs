@@ -11,7 +11,6 @@ public class HelpMessages
         Console.WriteLine(":: Actions");
         Console.WriteLine("help             - shows this message.");
         Console.WriteLine("version          - return version of zeroProbe.");
-        Console.WriteLine("info             - information about environment.");
         Console.WriteLine("writeconfig      - writes template config.");
         Console.WriteLine("run              - runs all stages in stages.conf.");
         Console.WriteLine("inspect          - inspect configuration file.");

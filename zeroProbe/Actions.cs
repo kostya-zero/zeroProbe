@@ -181,23 +181,31 @@ public class Actions
         Console.WriteLine(":: Project info");
         Console.WriteLine($"Project name: {pr.ProjectName}");
         Console.WriteLine("Shell commands: " + (pr.ShellCommands.Count == 0 ? "None" : pr.ShellCommands.Count.ToString()));
+        StringBuilder reqBuilder = new StringBuilder();
+        foreach (string component in pr.ComponentsToCheck)
+        {
+            reqBuilder.Append($"{component} ");
+        }
+        Console.WriteLine("Required components: " + reqBuilder.ToString().Trim() == "" ? "None" : reqBuilder.ToString().Trim() );
         if (inspectNoStages)
         {
             Console.WriteLine(":: Stages");
             Console.WriteLine("No stages in this configuration!");
             App.End();
         }
+        
+        StringBuilder stringBuilder = new StringBuilder();
         if (inspectStages.Count == 1)
         {
             strStages = inspectStages[0];
         }
         else
         {
-            StringBuilder stringBuilder = new StringBuilder();
             foreach (var stage in inspectStages)
             {
                 stringBuilder.Append($"{stage}, ");
             }
+
             strStages = stringBuilder.ToString().TrimEnd(',');
         }
         Console.WriteLine(":: Stages");
