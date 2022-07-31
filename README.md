@@ -24,29 +24,51 @@
     </a>
  </div>
 
-Advanced utility to create, run and manage tests. 
-This tool allows you to create your own pipelines and run it.
-Tool written on C# with .NET 6.
-To run zeroProbe `dotnet-runtime` are required.
-It functionality will increase with every update.
+Want to automate your test's? 
+Find where errors can occur? 
+Make build script? 
+**zeroProbe can do that!** 
+It's an unique and advanced utility made to help you with test management and other staff like build, deploying and more.
+Everything writes in one single configuration file.
+zeroProbe are powerful tool in right hand! 
+This tool made for every you need.
+Developers of zeroProbe also use this for test's on zeroProbe (what).
+In future updates we will bring to zeroProbe more new features to make your work more cool and flexible.
+
 
 ![img.png](img.png)
 > Not final version. Look may change with release.
 
 ## Features
-### Test local
-zeroProbe tell you where error occurs. 
-It runs very fast an easy to build your own configuration file.
+### Your powerful tool
+zeroProbe made not only for test's.
+Also, you can build scripts for your C++/C or another projects.
+Or, make a script to fast commiting and pushing to your repository.
+You can do anything what on your mind.
+Just try it!
 
-### Easy to use
-First task in development of zeroProbe was to make easy to use tool for test. 
-Well, we did it!
-You don't need any other skills. 
-Nothing hard to build your own tests.
+### Easy-to-use
+The first task in development of zeroProbe was to create easy-to-use tool with simple configuration.
+So, we did our task.
+You don't need any skill's to write configuration for zeroProbe. 
+We name this type of configuration files - ProbeConfig.
+Syntax of ProbeConfig are similar to other configurations like INI.
+Take a look:
+```
+&project: Build File Lister
+&checkfor: g++ gcc
+&stages: build, test
 
-### .NET 6
-.NET 6 provides the best run speed in C# applications. 
-We choose .NET for speed and ability to make zeroProbe cross-platform in the future.
+!build: g++ main.cpp src/io.cpp src/io.h src/fs.cpp src/fs.h -o file_lister
+!test: ./file_lister
+```
+
+### Speed, I'm speed...
+zeroProbe was too fast than we expect.
+Really, we made an easy and fast utility for test and not only for testing.
+That's a great achievement for us.
+Also, project written in C# with .NET 6 framework.
+And, if you was in searching of fast utility for test or building other configurations - that's your station.
 
 ## Bridge for zeroProbe (soon)
 Bridge is internal program to interact with zeroProbe fast and easier with less typing.
