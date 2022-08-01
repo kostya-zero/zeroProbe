@@ -42,7 +42,6 @@ public class Lexer {
         if (split[0].StartsWith('!'))
         {
             lexerObject.FunctionType = "0x700";
-            lexerObject.FunctionName = split[0];
             lexerObject.Arguments = split[1];
         }
         else if (split[0].StartsWith("&"))
@@ -51,27 +50,22 @@ public class Lexer {
             {
                 case "&checkfor":
                     lexerObject.FunctionType = "0xc88";
-                    lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
                 case "&iferror":
                     lexerObject.FunctionType = "0xa33";
-                    lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
                 case "&stages":
                     lexerObject.FunctionType = "0x054";
-                    lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
                 case "&shell":
                     lexerObject.FunctionType = "0x805";
-                    lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
                 case "&project":
                     lexerObject.FunctionType = "0xccf";
-                    lexerObject.FunctionName = split[0];
                     lexerObject.Arguments = split[1];
                     break;
                 default:
