@@ -33,6 +33,11 @@ public class Parser
     public void ParseLine(string line)
     {
         var obj = Lexer.Lex(line);
+        if (obj == null)
+        {
+            Messages.Fatal("Got null lexer object while parsing. Aborting...");
+            App.End();
+        }
         switch (obj.FunctionType)
         {
             case "0x11f":

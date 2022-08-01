@@ -4,7 +4,7 @@ using zeroProbe.Utils;
 namespace zeroProbe;
 
 public class Lexer {
-    public static LexerObject Lex(string line)
+    public static LexerObject? Lex(string line)
     {
         /*
          * Functions type:
@@ -21,13 +21,19 @@ public class Lexer {
         LexerObject lexerObject = new LexerObject();
         if (line == "")
         {
-            lexerObject.FunctionType = "0x00f";
+            lexerObject = new LexerObject
+            {
+                FunctionType = "0x00f"
+            };
             return lexerObject;
         }
         
         if ((line.StartsWith("/*") && line.EndsWith("*/")))
         {
-            lexerObject.FunctionType = "0x11f";
+            lexerObject = new LexerObject
+            {
+                FunctionType = "0x11f"
+            };
             return lexerObject;
         }
 
@@ -41,32 +47,51 @@ public class Lexer {
 
         if (split[0].StartsWith('!'))
         {
-            lexerObject.FunctionType = "0x700";
-            lexerObject.Arguments = split[1];
+            lexerObject = new LexerObject
+            {
+                FunctionType = "0x700",
+                Arguments = split[1],
+                FunctionName = split[0]
+            };
         }
         else if (split[0].StartsWith("&"))
         {
             switch (split[0])
             {
                 case "&checkfor":
-                    lexerObject.FunctionType = "0xc88";
-                    lexerObject.Arguments = split[1];
+                    lexerObject = new LexerObject
+                    {
+                        FunctionType = "0xc88",
+                        Arguments = split[1]
+                    };
                     break;
                 case "&iferror":
-                    lexerObject.FunctionType = "0xa33";
-                    lexerObject.Arguments = split[1];
+                    lexerObject = new LexerObject
+                    {
+                        FunctionType = "0xa33",
+                        Arguments = split[1]
+                    };
                     break;
                 case "&stages":
-                    lexerObject.FunctionType = "0x054";
-                    lexerObject.Arguments = split[1];
+                    lexerObject = new LexerObject
+                    {
+                        FunctionType = "0x054",
+                        Arguments = split[1]
+                    };
                     break;
                 case "&shell":
-                    lexerObject.FunctionType = "0x805";
-                    lexerObject.Arguments = split[1];
+                    lexerObject = new LexerObject
+                    {
+                        FunctionType = "0x805",
+                        Arguments = split[1]
+                    };
                     break;
                 case "&project":
-                    lexerObject.FunctionType = "0xccf";
-                    lexerObject.Arguments = split[1];
+                    lexerObject = new LexerObject
+                    {
+                        FunctionType = "0xccf",
+                        Arguments = split[1]
+                    };
                     break;
                 default:
                     Messages.Fatal($"Unknown expression called -> {split[0]}");
@@ -76,9 +101,12 @@ public class Lexer {
         }    
         else if (split[0].StartsWith("@"))
         {
-            lexerObject.FunctionType = "0x805";
-            lexerObject.FunctionName = split[0];
-            lexerObject.Arguments = split[1];
+            lexerObject = new LexerObject
+            {
+                FunctionType = "0x805",
+                Arguments = split[1], 
+                FunctionName = split[0]
+            };
             return lexerObject;
         }
         
