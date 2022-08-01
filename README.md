@@ -13,9 +13,6 @@
     <a href="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe">
         <img src="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe"/>
     </a>
-    <a href="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe">
-        <img src="https://img.shields.io/github/last-commit/kostya-zero/zeroProbe"/>
-    </a>
     <a href="https://gitlab.com/kostya-zero/zeroprobe">
         <img src="https://img.shields.io/badge/GitLab-repository-orange?logo=gitlab&"/>
     </a>
@@ -74,7 +71,6 @@ And, if you was in searching of fast utility for test or building other configur
 zeroProbe have guides on [GitHub](https://github.com/kostya-zero/zeroProbe/wiki) and [GitLab](https://gitlab.com/kostya-zero/zeroprobe/-/wikis/home) wiki.
 If you want to know more about it, you can check it. 
 Wiki updates with every new features in zeroProbe or if developers want to tell more about.
-
 
 ## Bridge for zeroProbe (soon)
 Bridge is internal program to interact with zeroProbe fast and easier with less typing.
