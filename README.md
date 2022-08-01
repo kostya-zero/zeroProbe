@@ -70,6 +70,12 @@ That's a great achievement for us.
 Also, project written in C# with .NET 6 framework.
 And, if you was in searching of fast utility for test or building other configurations - that's your station.
 
+### Helpful guides
+zeroProbe have guides on [GitHub](https://github.com/kostya-zero/zeroProbe/wiki) and [GitLab](https://gitlab.com/kostya-zero/zeroprobe/-/wikis/home) wiki.
+If you want to know more about it, you can check it. 
+Wiki updates with every new features in zeroProbe or if developers want to tell more about.
+
+
 ## Bridge for zeroProbe (soon)
 Bridge is internal program to interact with zeroProbe fast and easier with less typing.
 How it works?
