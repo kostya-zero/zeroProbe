@@ -11,12 +11,6 @@ public class ScriptHandler
         ScriptPath = "";
     }
 
-    public void NewScript(string path, string content)
-    {
-        ScriptPath = path;
-        ScriptContent = content;
-    }
-
     public void GenScript()
     {
         if (File.Exists(ScriptPath))
