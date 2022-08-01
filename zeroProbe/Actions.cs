@@ -39,7 +39,7 @@ public class Actions
         if (pr.ComponentsToCheck.Count != 0)
         {
             Messages.Work("Checking for required components...");
-            string[] pathVar = Env.GetPath();
+            List<string> pathVar = Env.GetPath();
             int missingComponentsCount = 0;
             List<string> foundComponents = new List<string>();
             foreach (var component in pr.ComponentsToCheck)
@@ -134,7 +134,7 @@ public class Actions
                         };
                         undoScript.GenScript();
                         Shell undoSh = new Shell();
-                        var res1 = undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
+                        undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
                         Messages.Good("Undo complete.");
                     }
                     App.End();
@@ -302,7 +302,7 @@ public class Actions
                     };
                     undoScript.GenScript();
                     Shell undoSh = new Shell();
-                    var res1 = undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
+                    undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
                     Messages.Good("Undo complete.");
                 }
                 App.End();
