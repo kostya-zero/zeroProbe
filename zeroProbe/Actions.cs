@@ -153,17 +153,39 @@ public class Actions
         }
         
         Console.WriteLine("Writing new config file...");
-        File.Create("stages.conf").Close();
-        File.WriteAllText("stages.conf", @"/* Small example of configuration file */
-/* Test of building zeroProbe */
+        File.Create("stages.pbc").Close();
+        File.WriteAllText("stages.pbc", @"/* This file was generated with zeroProbe. */
+
+/* Its a preview of how ProbeConfig file can be. */
+/* Everything about syntax and parameters you can learn on zeroProbe wiki. */
+/* GitLab wiki: https://gitlab.com/kostya-zero/zeroprobe/-/wikis/home */
+/* GitHub wiki: https://github.com/kostya-zero/zeroProbe/wiki */
+
+/* Project name are not necessary. */
+/* zeroProbe automatically set your project name to 'unnamed'. */
 &project: test
+
+/* You can add shell commands to execute. */
+/* &shell command can be used multiple times. */
+/* All commands will be executed how you add it. */
 &shell: echo 'This is a small template for screenshot!'
+
+/* Stages are main feature of your config. */
+/* To tell zeroProbe what to do you need to create stages. */
+/* Stages include command that's must be executed. */
+/* Every stage will be executed in order how you wrote him. */
 &stages: restore, build, finish
 
+/* Now you need to assign command to stage. */
+/* Use '!' operator for it. */
+/* After '!' enter stage name. */
+/* Next, after double dots write command to run. */
+/* Learn more you can on official wiki on GitLab and GitHub. */
 !restore: echo 'Doing some restore staff...'
 !build: echo 'Doing some build staff...'
 !finish: echo 'Finishing this deal...'");
-        Console.WriteLine("Template config ready!");
+        Console.WriteLine("Template config ready! It's called 'stages.pbc'.");
+        Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
 
     public void InspectStages(string filePath)
