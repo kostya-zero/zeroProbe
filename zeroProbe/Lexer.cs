@@ -4,7 +4,7 @@ using zeroProbe.Utils;
 namespace zeroProbe;
 
 public class Lexer {
-    public static LexerObject? Lex(string line)
+    public static LexerObject Lex(string line)
     {
         /*
          * Functions type:
