@@ -69,7 +69,7 @@ public class Actions
             if (missingComponentsCount > 0)
             {
                 Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Components:");
-                App.End();
+                App.End(-1);
             }
             else
             {
@@ -94,7 +94,7 @@ public class Actions
                 {
                     Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
                     Console.WriteLine(setupResult.Error);
-                    App.End();
+                    App.End(-1);
                 }
                 shellScript.Remove();
             }
@@ -137,7 +137,7 @@ public class Actions
                         undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
                         Messages.Good("Undo complete.");
                     }
-                    App.End();
+                    App.End(-1);
                 }
             }
         }
@@ -236,7 +236,7 @@ public class Actions
         if (!File.Exists(filePath))
         {
             Console.WriteLine($"Cannot find {filePath} file for inspect.");
-            App.End();
+            App.End(-1);
         }
         Parser pr = new Parser();
         string[] allLines = File.ReadAllLines(filePath);
@@ -263,7 +263,7 @@ public class Actions
                 {
                     Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
                     Console.WriteLine(setupResult.Error);
-                    App.End();
+                    App.End(-1);
                 }
                 shellScript.Remove();
             }
@@ -305,7 +305,7 @@ public class Actions
                     undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
                     Messages.Good("Undo complete.");
                 }
-                App.End();
+                App.End(-1);
             }
         }
         else

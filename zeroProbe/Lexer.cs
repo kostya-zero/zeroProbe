@@ -40,7 +40,7 @@ public class Lexer {
         if (!line.Contains(':'))
         {
             Messages.Fatal($"Bad expression -> {line}");
-            App.End();
+            App.End(-1);
         }
         
         string[] split = line.Split(":", 2);
@@ -95,7 +95,7 @@ public class Lexer {
                     break;
                 default:
                     Messages.Fatal($"Unknown expression called -> {split[0]}");
-                    App.End();
+                    App.End(-1);
                     break;
             }
         }    

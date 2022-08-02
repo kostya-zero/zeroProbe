@@ -72,7 +72,7 @@ public class Parser
                     if (Stages.Contains(stages.Trim()))
                     {
                         Messages.Fatal($"Stage already defined -> {stages.Trim()}");
-                        App.End();
+                        App.End(-1);
                     }
                     Stages.Add(stages.Trim());
                 }
@@ -83,7 +83,7 @@ public class Parser
                         if (Stages.Contains(stage.Trim()))
                         {
                             Messages.Fatal($"Stage already defined -> {stage.Trim()}");
-                            App.End();
+                            App.End(-1);
                         }
                         Stages.Add(stage.Trim());
                     } 
@@ -98,14 +98,14 @@ public class Parser
                     if (StagesDict.ContainsKey(stg))
                     {
                         Messages.Fatal($"Stage already assigned -> {stg}");
-                        App.End();
+                        App.End(-1);
                     }
                     StagesDict.Add(stg, obj.Arguments.Trim());
                 }
                 else
                 {
                     Messages.Fatal($"Stage '{stg}' not defined.");
-                    App.End();
+                    App.End(-1);
                 }
                 break;
             case "0x805":
@@ -124,7 +124,7 @@ public class Parser
                 break;
             default:
                 Messages.Fatal($"Illegal instruction called -> {obj.FunctionType}");
-                App.End();
+                App.End(-1);
                 break;
         }
     }

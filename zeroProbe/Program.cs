@@ -6,7 +6,7 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        string ConfigFileName = "stages.conf";
+        string configFileName = "stages.pbc";
 
         if (args.Length == 0)
         {
@@ -16,31 +16,43 @@ internal class Program
         Actions acts = new Actions();
         foreach (var arg in args)
         {
-            string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
-            if (splitStrings[0].StartsWith("--"))
+            if (arg.StartsWith("--"))
             {
+                if (!arg.Contains('='))
+                {
+                    Messages.Fatal($"Argument syntax error -> {arg}.");
+                    App.End(-1);
+                }
+                string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
                 switch (splitStrings[0])
                 {
                     case "--file":
                         if (!File.Exists(splitStrings[1]))
                         {
                             Messages.Fatal($"Cannot find file by given path: {splitStrings[1]}");
-                            Environment.Exit(0);
+                            App.End(-1);
                         }
-                        ConfigFileName = splitStrings[1];
+
+                        Console.WriteLine(Path.GetExtension(splitStrings[1]));
+                        if (Path.GetExtension(splitStrings[1]) != "pbc")
+                        {
+                            Messages.Fatal("File not associate with ProbeConfig. Set file extension to '.pbc'.");
+                            App.End(-1);
+                        }
+                        configFileName = splitStrings[1];
                         break;
                     case "--debug":
-                        acts.Debug = (splitStrings[1] == "1");
+                        acts.Debug = splitStrings[1] == "1";
                         break;
                     case "--skip-shell-commands":
-                        acts.IgnoreShellCommands = (splitStrings[1] == "1");
+                        acts.IgnoreShellCommands = splitStrings[1] == "1";
                         break;
                     case "--ignore-exec-errors":
-                        acts.IgnoreExecErrors = (splitStrings[1] == "1");
+                        acts.IgnoreExecErrors = splitStrings[1] == "1";
                         break;
                     default:
                         Messages.Fatal($"Unknown argument give -> {splitStrings[0]}");
-                        App.End();
+                        App.End(-1);
                         break;
                 }
             }
@@ -49,13 +61,13 @@ internal class Program
         switch (args[0])
         {
             case "run":
-                acts.RunStages(ConfigFileName);
+                acts.RunStages(configFileName);
                 break;
             case "writeconfig":
-                acts.WriteConfig(ConfigFileName);
+                acts.WriteConfig(configFileName);
                 break;
             case "inspect":
-                acts.InspectStages(ConfigFileName);
+                acts.InspectStages(configFileName);
                 break;
             case "runstage":
                 if (args.Length != 2)
@@ -64,7 +76,7 @@ internal class Program
                     Console.WriteLine("Example: zeroProbe runstage build (where 'build' - name of stage).");
                     App.End();
                 }
-                acts.RunStage(args[1], ConfigFileName);
+                acts.RunStage(args[1], configFileName);
                 break;
             case "help":
                 HelpMessages.Help();
@@ -74,7 +86,7 @@ internal class Program
                 break;
             default:
                 Messages.Fatal($"Unknown argument -> {args[0]}");
-                App.End();
+                App.End(-1);
                 break;
         }
     }
