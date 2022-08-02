@@ -28,7 +28,7 @@ public class Lexer {
             return lexerObject;
         }
         
-        if ((line.StartsWith("/*") && line.EndsWith("*/")))
+        if (line.StartsWith("/*") && line.EndsWith("*/"))
         {
             lexerObject = new LexerObject
             {
@@ -58,14 +58,14 @@ public class Lexer {
         {
             switch (split[0])
             {
-                case "&checkfor":
+                case "&check_for":
                     lexerObject = new LexerObject
                     {
                         FunctionType = "0xc88",
                         Arguments = split[1]
                     };
                     break;
-                case "&iferror":
+                case "&if_error":
                     lexerObject = new LexerObject
                     {
                         FunctionType = "0xa33",
