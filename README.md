@@ -72,6 +72,10 @@ zeroProbe have guides on [GitHub](https://github.com/kostya-zero/zeroProbe/wiki)
 If you want to know more about it, you can check it. 
 Wiki updates with every new features in zeroProbe or if developers want to tell more about.
 
+### Stay up-to-date
+Check our [Trello board](https://trello.com/b/jLdiw40c/zeroprobe) to see what we are planing and what we are doing now.
+It help you to know what we are gonna add or fix in zeroProbe.
+
 ## Bridge for zeroProbe (soon)
 Bridge is internal program to interact with zeroProbe fast and easier with less typing.
 How it works?
