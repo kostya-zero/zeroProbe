@@ -4,28 +4,16 @@ namespace zeroProbe;
 
 public class Parser
 {
-    public Dictionary<string, string> StagesDict { get; }
-    public List<string> Stages  { get; }
+    public Dictionary<string, string> StagesDict { get; }  = new();
     private bool Comments { get; set; }
-    public string ProjectName { get; set;  }
-    public string ScriptIfError { get; set; }
-    public bool Debug { get; set; }
-    public List<string> ShellCommands { get; set; }
-    public List<string> ComponentsToCheck { get; set; }
-    public bool SetProjectFirstTime { get; set; }
-    
-
-    public Parser()
-    {
-        StagesDict = new Dictionary<string, string>();
-        Stages = new List<string>();
-        ProjectName = "unnamed";
-        Debug = false;
-        ShellCommands = new List<string>();
-        ComponentsToCheck = new List<string>();
-        ScriptIfError = "";
-        SetProjectFirstTime = true;
-    }
+    public bool Debug { get; init; }
+    public bool SetProjectFirstTime { get; private set; } = true;
+    public bool HasShellCommands { get; set; } = false;
+    public string ProjectName { get; private set; }  = "unnamed";
+    public string ScriptIfError { get; private set; } = "";
+    public List<string> Stages  { get; }  = new();
+    public List<string> ShellCommands { get; set; }  = new();
+    public List<string> ComponentsToCheck { get; set; } = new();
 
     public void DebugInstruction(string instruction)
     {
