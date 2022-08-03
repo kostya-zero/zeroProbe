@@ -9,7 +9,6 @@ public class LexerObject
 
     public LexerObject()
     {
-        FunctionName = "";
         FunctionType = "";
         Arguments = "";
     }
