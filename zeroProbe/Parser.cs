@@ -12,6 +12,7 @@ public class Parser
     public bool Debug { get; set; }
     public List<string> ShellCommands { get; set; }
     public List<string> ComponentsToCheck { get; set; }
+    public bool SetProjectFirstTime { get; set; }
     
 
     public Parser()
@@ -23,6 +24,7 @@ public class Parser
         ShellCommands = new List<string>();
         ComponentsToCheck = new List<string>();
         ScriptIfError = "";
+        SetProjectFirstTime = true;
     }
 
     public void DebugInstruction(string instruction)
@@ -114,10 +116,11 @@ public class Parser
                 break;
             case "0xccf":
                 if (Debug) { DebugInstruction("0xccf"); }
-                if (ProjectName != "")
+                if (!SetProjectFirstTime)
                 {
                     Messages.Warning("Project name already assigned.");
                 }
+                SetProjectFirstTime = false;
                 ProjectName = obj.Arguments.Trim();
                 break;
             case "0x00f":
