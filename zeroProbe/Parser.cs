@@ -93,22 +93,19 @@ public class Parser
                 break;
             case "0x700":
                 if (Debug) { DebugInstruction("0x700"); }
-                string stg = obj.FunctionName;
-                stg = stg.TrimStart('!');
-                if (Stages.Contains(stg))
-                {
-                    if (StagesDict.ContainsKey(stg))
-                    {
-                        Messages.Fatal($"Stage already assigned -> {stg}");
-                        App.End(-1);
-                    }
-                    StagesDict.Add(stg, obj.Arguments.Trim());
-                }
-                else
+                string stg = obj.StageObject.StageName;
+                if (!Stages.Contains(stg))
                 {
                     Messages.Fatal($"Stage '{stg}' not defined.");
                     App.End(-1);
                 }
+                
+                if (StagesDict.ContainsKey(stg))
+                {
+                    Messages.Fatal($"Stage already assigned -> {stg}");
+                    App.End(-1);
+                }
+                StagesDict.Add(stg, obj.StageObject.StageCommand);
                 break;
             case "0x805":
                 if (Debug) { DebugInstruction("0x805"); }

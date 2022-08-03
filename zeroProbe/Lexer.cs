@@ -50,8 +50,11 @@ public class Lexer {
             lexerObject = new LexerObject
             {
                 FunctionType = "0x700",
-                Arguments = split[1],
-                FunctionName = split[0]
+                StageObject = new StageObject
+                {
+                    StageName = split[0].TrimStart('!'),
+                    StageCommand = split[1].Trim()
+                }
             };
         }
         else if (split[0].StartsWith("&"))
