@@ -24,6 +24,11 @@ internal class Program
                     App.End(-1);
                 }
                 string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
+                if (splitStrings[1] == "")
+                {
+                    Messages.Fatal($"Nothing provided after equals character -> {arg}");
+                    App.End(-1);
+                }
                 switch (splitStrings[0])
                 {
                     case "--file":
