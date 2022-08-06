@@ -7,13 +7,12 @@ public class Parser
     public Dictionary<string, string> StagesDict { get; }  = new();
     private bool Comments { get; set; }
     public bool Debug { get; init; }
-    public bool SetProjectFirstTime { get; private set; } = true;
-    public bool HasShellCommands { get; set; } = false;
+    private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
     public string ScriptIfError { get; private set; } = "";
-    public List<string> Stages  { get; }  = new();
-    public List<string> ShellCommands { get; set; }  = new();
-    public List<string> ComponentsToCheck { get; set; } = new();
+    public List<string> Stages  { get; } = new();
+    public List<string> ShellCommands { get; } = new();
+    public List<string> ComponentsToCheck { get; } = new();
 
     public void DebugInstruction(string instruction)
     {

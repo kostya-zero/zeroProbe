@@ -107,12 +107,10 @@ public class Lexer {
             lexerObject = new LexerObject
             {
                 FunctionType = "0x805",
-                Arguments = split[1], 
-                FunctionName = split[0]
+                Arguments = split[1]
             };
             return lexerObject;
         }
-        
         return lexerObject;
     }
 }
