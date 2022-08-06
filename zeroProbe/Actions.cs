@@ -73,7 +73,7 @@ public class Actions
             Messages.Work("Running shell commands...");
             foreach (var command in pr.ShellCommands)
             {
-                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"#!/bin/sh\n{command}");
+                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"{command}");
                 Shell sh = new Shell();
                 var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
                 if (setupResult.GotErrors && !IgnoreExecErrors)
@@ -91,7 +91,7 @@ public class Actions
             if (pr.StagesDict.ContainsKey(stage))
             {
                 var cmd = pr.StagesDict[stage];
-                ScriptHandler script = new ScriptHandler($"tmp_stage_{stage}.sh", $"#!/bin/sh\n{cmd}");
+                ScriptHandler script = new ScriptHandler($"tmp_stage_{stage}.sh", $"{cmd}");
                 Messages.Work($"Running stage: {stage}");
                 Shell sh = new Shell();
                 var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
@@ -109,7 +109,7 @@ public class Actions
                     if (pr.ScriptIfError != "")
                     {
                         Messages.Work("Running undo script...");
-                        ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"#!/bin/sh\n{pr.ScriptIfError}");
+                        ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"{pr.ScriptIfError}");
                         Shell undoSh = new Shell();
                         undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
                         undoScript.Remove();
@@ -244,7 +244,7 @@ public class Actions
             Messages.Work("Running shell commands...");
             foreach (var command in pr.ShellCommands)
             {
-                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"#!/bin/sh\n{command}");
+                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"{command}");
                 Shell sh = new Shell();
                 var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
                 if (setupResult.GotErrors && !IgnoreExecErrors)
@@ -261,7 +261,7 @@ public class Actions
         if (pr.StagesDict.ContainsKey(name))
         {
             var cmd = pr.StagesDict[name];
-            ScriptHandler script = new ScriptHandler($"tmp_stage_{name}.sh", $"#!/bin/sh\n{cmd}");
+            ScriptHandler script = new ScriptHandler($"tmp_stage_{name}.sh", $"{cmd}");
             Messages.Work($"Running stage: {name}");
             Shell sh = new Shell();
             var res = sh.Execute("/bin/sh", $"tmp_stage_{name}.sh");
@@ -279,7 +279,7 @@ public class Actions
                 if (pr.ScriptIfError != "")
                 {
                     Messages.Work("Running undo script...");
-                    ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"#!/bin/sh\n{pr.ScriptIfError}");
+                    ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"{pr.ScriptIfError}");
                     Shell undoSh = new Shell();
                     undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
                     undoScript.Remove();
