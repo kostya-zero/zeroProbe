@@ -19,6 +19,14 @@ public class Parser
         Messages.Debug($"Calling instruction {instruction}.");
     }
 
+    public void ParseLines(string[] lines)
+    {
+        foreach (string line in lines)
+        {
+            ParseLine(line);
+        }
+    }
+
     public void ParseLine(string line)
     {
         var obj = Lexer.Lex(line);

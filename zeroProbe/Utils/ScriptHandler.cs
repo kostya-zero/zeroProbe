@@ -5,8 +5,10 @@ public class ScriptHandler
     public string ScriptPath { get; init; } = "";
     public string ScriptContent { get; init; } = "";
 
-    public void GenScript()
+    public ScriptHandler(string scriptPath, string scriptContent)
     {
+        ScriptPath = scriptPath;
+        ScriptContent = scriptContent;
         if (File.Exists(ScriptPath))
         {
             File.Delete(ScriptPath);

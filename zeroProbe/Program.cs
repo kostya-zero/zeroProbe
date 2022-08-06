@@ -66,6 +66,11 @@ internal class Program
         switch (args[0])
         {
             case "run":
+                if (!File.Exists(configFileName))
+                {
+                    Console.WriteLine($"Cannot find {configFileName} file for inspect.");
+                    App.End();
+                }
                 acts.RunStages(configFileName);
                 break;
             case "writeconfig":
@@ -75,6 +80,11 @@ internal class Program
                 acts.InspectStages(configFileName);
                 break;
             case "runstage":
+                if (!File.Exists(configFileName))
+                {
+                    Console.WriteLine($"Cannot find {configFileName} file for inspect.");
+                    App.End();
+                }
                 if (args.Length != 2)
                 {
                     Console.WriteLine("To run stage you need to enter name of stage you want to run.");

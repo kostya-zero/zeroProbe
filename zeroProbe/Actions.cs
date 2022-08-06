@@ -18,22 +18,13 @@ public class Actions
     
     public void RunStages(string filePath)
     {
-        if (!File.Exists(filePath))
-        {
-            Messages.Fatal($"No {filePath} file found.");
-            App.End();
-        }
-
-        string[] lines = File.ReadAllLines(filePath);
+        
         Parser pr = new Parser
         {
             Debug = Debug
         };
-        
-        foreach (var line in lines)
-        {
-            pr.ParseLine(line);
-        }
+        string[] lines = File.ReadAllLines(filePath);
+        pr.ParseLines(lines);
         Messages.Info($"Running project: {pr.ProjectName}");
 
         if (pr.ComponentsToCheck.Count != 0)
@@ -68,7 +59,7 @@ public class Actions
             
             if (missingComponentsCount > 0)
             {
-                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Components:");
+                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to check which components missing.");
                 App.End(-1);
             }
             else
@@ -82,12 +73,7 @@ public class Actions
             Messages.Work("Running shell commands...");
             foreach (var command in pr.ShellCommands)
             {
-                ScriptHandler shellScript = new ScriptHandler
-                {
-                    ScriptPath = "tmp_shell_command.sh",
-                    ScriptContent = $"#!/bin/sh\n{command}"
-                };
-                shellScript.GenScript();
+                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"#!/bin/sh\n{command}");
                 Shell sh = new Shell();
                 var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
                 if (setupResult.GotErrors && !IgnoreExecErrors)
@@ -105,15 +91,11 @@ public class Actions
             if (pr.StagesDict.ContainsKey(stage))
             {
                 var cmd = pr.StagesDict[stage];
-                ScriptHandler script = new ScriptHandler
-                {
-                    ScriptPath = $"tmp_stage_{stage}.sh",
-                    ScriptContent = $"#!/bin/sh\n{cmd}"
-                };
-                script.GenScript();
+                ScriptHandler script = new ScriptHandler($"tmp_stage_{stage}.sh", $"#!/bin/sh\n{cmd}");
                 Messages.Work($"Running stage: {stage}");
                 Shell sh = new Shell();
                 var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
+                script.Remove();
                 
                 if (!res.GotErrors || IgnoreExecErrors)
                 {
@@ -127,14 +109,10 @@ public class Actions
                     if (pr.ScriptIfError != "")
                     {
                         Messages.Work("Running undo script...");
-                        ScriptHandler undoScript = new ScriptHandler
-                        {
-                            ScriptPath = "tmp_undo_script.sh",
-                            ScriptContent = $"#!/bin/sh\n{pr.ScriptIfError}"
-                        };
-                        undoScript.GenScript();
+                        ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"#!/bin/sh\n{pr.ScriptIfError}");
                         Shell undoSh = new Shell();
                         undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
+                        undoScript.Remove();
                         Messages.Good("Undo complete.");
                     }
                     App.End(-1);
@@ -190,17 +168,10 @@ public class Actions
 
     public void InspectStages(string filePath)
     {
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine($"Cannot find {filePath} file for inspect.");
-            App.End();
-        }
+        
         Parser pr = new Parser();
         string[] allLines = File.ReadAllLines(filePath);
-        foreach (var line in allLines)
-        {
-            pr.ParseLine(line);
-        }
+        pr.ParseLines(allLines);
         
         List<string> inspectStages = pr.Stages;
         string inspectStagesCount = inspectStages.Count.ToString();
@@ -273,15 +244,10 @@ public class Actions
             Messages.Work("Running shell commands...");
             foreach (var command in pr.ShellCommands)
             {
-                ScriptHandler shellScript = new ScriptHandler
-                {
-                    ScriptPath = "tmp_shell_command.sh",
-                    ScriptContent = $"#!/bin/sh\n{command}"
-                };
-                shellScript.GenScript();
+                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"#!/bin/sh\n{command}");
                 Shell sh = new Shell();
-                var setupResult = sh.Execute("/bin/sh", "tmp_setup.sh");
-                if (setupResult.GotErrors)
+                var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
+                if (setupResult.GotErrors && !IgnoreExecErrors)
                 {
                     Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
                     Console.WriteLine(setupResult.Error);
@@ -295,16 +261,12 @@ public class Actions
         if (pr.StagesDict.ContainsKey(name))
         {
             var cmd = pr.StagesDict[name];
-            ScriptHandler script = new ScriptHandler
-            {
-                ScriptPath = $"tmp_stage_{name}.sh",
-                ScriptContent = $"#!/bin/sh\n{cmd}"
-            };
-            script.GenScript();
+            ScriptHandler script = new ScriptHandler($"tmp_stage_{name}.sh", $"#!/bin/sh\n{cmd}");
             Messages.Work($"Running stage: {name}");
             Shell sh = new Shell();
             var res = sh.Execute("/bin/sh", $"tmp_stage_{name}.sh");
-                
+            script.Remove();
+            
             if (!res.GotErrors || IgnoreExecErrors)
             {
                 Messages.Good("No errors provided. Stage passed.");
@@ -317,14 +279,10 @@ public class Actions
                 if (pr.ScriptIfError != "")
                 {
                     Messages.Work("Running undo script...");
-                    ScriptHandler undoScript = new ScriptHandler
-                    {
-                        ScriptPath = "tmp_undo_script.sh",
-                        ScriptContent = $"#!/bin/sh\n{pr.ScriptIfError}"
-                    };
-                    undoScript.GenScript();
+                    ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"#!/bin/sh\n{pr.ScriptIfError}");
                     Shell undoSh = new Shell();
                     undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
+                    undoScript.Remove();
                     Messages.Good("Undo complete.");
                 }
                 App.End(-1);
