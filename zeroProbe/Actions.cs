@@ -86,11 +86,11 @@ public class Actions
             }
         }
         
-        foreach (var stage in pr.Stages)
+        foreach (var stage in pr.StagesList)
         {
             if (pr.StagesDict.ContainsKey(stage))
             {
-                var cmd = pr.StagesDict[stage];
+                var cmd = pr.StagesDict[stage].Command;
                 ScriptHandler script = new ScriptHandler($"tmp_stage_{stage}.sh", $"{cmd}");
                 Messages.Work($"Running stage: {stage}");
                 Shell sh = new Shell();
@@ -173,7 +173,7 @@ public class Actions
         string[] allLines = File.ReadAllLines(filePath);
         pr.ParseLines(allLines);
         
-        List<string> inspectStages = pr.Stages;
+        List<string> inspectStages = pr.StagesList;
         string inspectStagesCount = inspectStages.Count.ToString();
         bool inspectNoStages = false;
         string strStages;
@@ -228,7 +228,7 @@ public class Actions
     {
         if (!File.Exists(filePath))
         {
-            Console.WriteLine($"Cannot find {filePath} file for inspect.");
+            Console.WriteLine($"Cannot find file '{filePath}'.");
             App.End(-1);
         }
         Parser pr = new Parser();
@@ -260,7 +260,7 @@ public class Actions
         Messages.Info($"Running stage of project: {pr.ProjectName}");
         if (pr.StagesDict.ContainsKey(name))
         {
-            var cmd = pr.StagesDict[name];
+            var cmd = pr.StagesDict[name].Command;
             ScriptHandler script = new ScriptHandler($"tmp_stage_{name}.sh", $"{cmd}");
             Messages.Work($"Running stage: {name}");
             Shell sh = new Shell();
@@ -290,7 +290,7 @@ public class Actions
         }
         else
         {
-            Messages.Fatal($"No stage found with name '{name}'.");
+            Messages.Fatal($"No stage found with name '{name}'. Maybe you forget to define it?");
         }
     }
 }

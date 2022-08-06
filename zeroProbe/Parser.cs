@@ -1,16 +1,17 @@
+using zeroProbe.Models;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
 
 public class Parser
 {
-    public Dictionary<string, string> StagesDict { get; }  = new();
+    public Dictionary<string, StageModel> StagesDict { get; }  = new();
     private bool Comments { get; set; }
     public bool Debug { get; init; }
     private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
     public string ScriptIfError { get; private set; } = "";
-    public List<string> Stages  { get; } = new();
+    public List<string> StagesList  { get; } = new();
     public List<string> ShellCommands { get; } = new();
     public List<string> ComponentsToCheck { get; } = new();
 
@@ -66,30 +67,32 @@ public class Parser
                 var split = stages.Split(",");
                 if (!stages.Contains(','))
                 {
-                    if (Stages.Contains(stages.Trim()))
+                    if (StagesList.Contains(stages.Trim()))
                     {
                         Messages.Fatal($"Stage already defined -> {stages.Trim()}");
                         App.End(-1);
                     }
-                    Stages.Add(stages.Trim());
+                    StagesList.Add(stages.Trim());
+                    StagesDict.Add(stages.Trim(), new StageModel());
                 }
                 else
                 {
                     foreach (var stage in split)
                     {
-                        if (Stages.Contains(stage.Trim()))
+                        if (StagesList.Contains(stage.Trim()))
                         {
                             Messages.Fatal($"Stage already defined -> {stage.Trim()}");
                             App.End(-1);
                         }
-                        Stages.Add(stage.Trim());
+                        StagesList.Add(stage.Trim());
+                        StagesDict.Add(stage.Trim(), new StageModel());
                     } 
                 }
                 break;
             case "0x700":
                 if (Debug) { DebugInstruction("0x700"); }
                 string stg = obj.StageObject.StageName;
-                if (!Stages.Contains(stg))
+                if (!StagesList.Contains(stg))
                 {
                     Messages.Fatal($"Stage '{stg}' not defined.");
                     App.End(-1);
@@ -100,7 +103,40 @@ public class Parser
                     Messages.Fatal($"Stage already assigned -> {stg}");
                     App.End(-1);
                 }
-                StagesDict.Add(stg, obj.StageObject.StageCommand);
+                StagesDict[stg].Command = obj.StageObject.StageCommand;
+                break;
+            case "0x5fc":
+                if (Debug) { DebugInstruction("0x5fc"); }
+                string stageName = obj.StageObject.StageName;
+                if (!StagesList.Contains(stageName))
+                {
+                    Messages.Fatal($"Stage '{stageName}' not defined.");
+                    App.End(-1);
+                }
+                StagesDict[stageName].OnError = obj.StageObject.StageCommand;
+                break;
+            case "0x883":
+                if (Debug) { DebugInstruction("0x5fc"); }
+                string anotherStageName = obj.StageObject.StageName;
+                if (!StagesList.Contains(anotherStageName))
+                {
+                    Messages.Fatal($"Stage '{anotherStageName}' not defined.");
+                    App.End(-1);
+                }
+
+                switch (obj.StageObject.StageCommand.Trim())
+                {
+                    case "1":
+                        StagesDict[anotherStageName].IgnoreErrors = true;
+                        break;
+                    case "0":
+                        StagesDict[anotherStageName].IgnoreErrors = false;
+                        break;
+                    default:
+                        Messages.Fatal("Bad syntax. You can set only 1 or 0.");
+                        App.End(-1);
+                        break;
+                }
                 break;
             case "0x805":
                 if (Debug) { DebugInstruction("0x805"); }
