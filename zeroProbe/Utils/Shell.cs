@@ -27,9 +27,8 @@ public class Shell
         ExecuteResult execRes = new ExecuteResult
         {
             Executed = true,
-            GotErrors = (errs != ""),
-            Error = errs,
-            ExitCode = proc.ExitCode
+            GotErrors = errs != "",
+            Error = errs
         };
         return execRes;
     }

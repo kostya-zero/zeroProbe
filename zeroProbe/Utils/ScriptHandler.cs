@@ -2,14 +2,8 @@ namespace zeroProbe.Utils;
 
 public class ScriptHandler
 {
-    public string ScriptPath { get; set; }
-    public string ScriptContent { get; set; }
-
-    public ScriptHandler()
-    {
-        ScriptContent = "";
-        ScriptPath = "";
-    }
+    public string ScriptPath { get; init; } = "";
+    public string ScriptContent { get; init; } = "";
 
     public void GenScript()
     {

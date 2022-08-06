@@ -2,16 +2,8 @@ namespace zeroProbe.Models;
 
 public class ExecuteResult
 {
-    public bool Executed { get; set; }
-    public string Error { get; set; }
-    public bool GotErrors { get; set; }
-    public int ExitCode { get; set; }
+    public bool Executed { get; init; }
+    public string Error { get; init; } = "";
+    public bool GotErrors { get; init; }
 
-    public ExecuteResult()
-    {
-        Executed = false;
-        Error = "";
-        GotErrors = false;
-        ExitCode = 0;
-    }
 }

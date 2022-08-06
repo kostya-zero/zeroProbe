@@ -48,7 +48,7 @@ public class Actions
                 {
                     if (!foundComponents.Contains(component))
                     {
-                        bool found = FSHelper.IsExists($"{path}/{component}");
+                        bool found = File.Exists($"{path}/{component}");
                         if (found)
                         {
                             foundComponents.Add(component);
