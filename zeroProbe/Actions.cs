@@ -18,7 +18,7 @@ public class Actions
     
     public void RunStages(string filePath)
     {
-        
+        HostHelper helper = new HostHelper();
         Parser pr = new Parser
         {
             Debug = Debug
@@ -70,20 +70,7 @@ public class Actions
 
         if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
         {
-            Messages.Work("Running shell commands...");
-            foreach (var command in pr.ShellCommands)
-            {
-                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"{command}");
-                Shell sh = new Shell();
-                var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
-                if (setupResult.GotErrors && !IgnoreExecErrors)
-                {
-                    Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
-                    Console.WriteLine(setupResult.Error);
-                    App.End(-1);
-                }
-                shellScript.Remove();
-            }
+            helper.ExecuteShellCommands(pr.ShellCommands, IgnoreExecErrors);
         }
         
         foreach (var stage in pr.StagesList)
@@ -231,6 +218,8 @@ public class Actions
             Console.WriteLine($"Cannot find file '{filePath}'.");
             App.End(-1);
         }
+
+        HostHelper helper = new HostHelper();
         Parser pr = new Parser();
         string[] allLines = File.ReadAllLines(filePath);
         foreach (var line in allLines)
@@ -239,22 +228,9 @@ public class Actions
         }
         Messages.Info($"Running stage of project: {pr.ProjectName}");
 
-        if (pr.ShellCommands.Count != 0)
+        if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
         {
-            Messages.Work("Running shell commands...");
-            foreach (var command in pr.ShellCommands)
-            {
-                ScriptHandler shellScript = new ScriptHandler("tmp_shell_command.sh", $"{command}");
-                Shell sh = new Shell();
-                var setupResult = sh.Execute("/bin/sh", "tmp_shell_command.sh");
-                if (setupResult.GotErrors && !IgnoreExecErrors)
-                {
-                    Messages.Fatal("Error occured while shell command. Test will be finished. Error:");
-                    Console.WriteLine(setupResult.Error);
-                    App.End(-1);
-                }
-                shellScript.Remove();
-            }
+            helper.ExecuteShellCommands(pr.ShellCommands, IgnoreExecErrors);
         }
         
         Messages.Info($"Running stage of project: {pr.ProjectName}");
