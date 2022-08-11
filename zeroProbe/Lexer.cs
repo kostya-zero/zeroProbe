@@ -52,7 +52,8 @@ public class Lexer {
         {
             if (!split[0].Contains('.'))
             {
-                Messages.Fatal($"(NEW) Bad stage assign syntax. To assign command use: !{split[0]}.command: echo 'Your command'");
+                Messages.Fatal($"(NEW) Bad stage assign syntax. " +
+                               $"To assign command use: !{split[0].TrimStart('!')}.command: echo 'Your command'");
                 App.End(-1);
             }
             string[] splitCommands = split[0].Trim('!').Split('.');

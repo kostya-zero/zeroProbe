@@ -47,10 +47,9 @@ public class Parser
                 break;
             case "0xc88":
                 if (Debug) { DebugInstruction("0xc88"); }
-                string components = obj.Arguments.Trim();
-                if (components.Contains(','))
+                if (obj.Arguments.Trim().Contains(','))
                 {
-                    string[] splitComponents = components.Split();
+                    string[] splitComponents = obj.Arguments.Trim().Split();
                     foreach (string component in splitComponents)
                     {
                         ComponentsToCheck.Add(component.Trim());
@@ -58,22 +57,21 @@ public class Parser
                 }
                 else
                 {
-                    ComponentsToCheck.Add(components);
+                    ComponentsToCheck.Add(obj.Arguments.Trim());
                 }
                 break;
             case "0x054":
                 if (Debug) { DebugInstruction("0x054"); }
-                string stages = obj.Arguments.Trim();
-                var split = stages.Split(",");
-                if (!stages.Contains(','))
+                var split = obj.Arguments.Trim().Split(",");
+                if (!obj.Arguments.Trim().Contains(','))
                 {
-                    if (StagesList.Contains(stages.Trim()))
+                    if (StagesList.Contains(obj.Arguments.Trim().Trim()))
                     {
-                        Messages.Fatal($"Stage already defined -> {stages.Trim()}");
+                        Messages.Fatal($"Stage already defined -> {obj.Arguments.Trim().Trim()}");
                         App.End(-1);
                     }
-                    StagesList.Add(stages.Trim());
-                    StagesDict.Add(stages.Trim(), new StageModel());
+                    StagesList.Add(obj.Arguments.Trim().Trim());
+                    StagesDict.Add(obj.Arguments.Trim().Trim(), new StageModel());
                 }
                 else
                 {
@@ -91,19 +89,18 @@ public class Parser
                 break;
             case "0x700":
                 if (Debug) { DebugInstruction("0x700"); }
-                string stg = obj.StageObject.StageName;
-                if (!StagesList.Contains(stg))
+                if (!StagesList.Contains(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage '{stg}' not defined.");
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
                     App.End(-1);
                 }
                 
-                if (StagesDict.ContainsKey(stg))
+                if (StagesDict.ContainsKey(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage already assigned -> {stg}");
+                    Messages.Fatal($"Stage already assigned -> {obj.StageObject.StageName}");
                     App.End(-1);
                 }
-                StagesDict[stg].Command = obj.StageObject.StageCommand;
+                StagesDict[obj.StageObject.StageName].Command = obj.StageObject.StageCommand;
                 break;
             case "0x5fc":
                 if (Debug) { DebugInstruction("0x5fc"); }
@@ -117,20 +114,29 @@ public class Parser
                 break;
             case "0x883":
                 if (Debug) { DebugInstruction("0x5fc"); }
-                string anotherStageName = obj.StageObject.StageName;
-                if (!StagesList.Contains(anotherStageName))
+                if (!StagesList.Contains(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage '{anotherStageName}' not defined.");
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
                     App.End(-1);
                 }
 
                 switch (obj.StageObject.StageCommand.Trim())
                 {
                     case "1":
-                        StagesDict[anotherStageName].IgnoreErrors = true;
+                        if (StagesDict[obj.StageObject.StageName].OnError != "")
+                        {
+                            Messages.Fatal("You can't set ignore errors if you set on error command.");
+                            App.End(-1);
+                        }
+                        StagesDict[obj.StageObject.StageName].IgnoreErrors = true;
                         break;
                     case "0":
-                        StagesDict[anotherStageName].IgnoreErrors = false;
+                        if (StagesDict[obj.StageObject.StageName].OnError != "")
+                        {
+                            Messages.Fatal("You can't set ignore errors if you set on error command.");
+                            App.End(-1);
+                        }
+                        StagesDict[obj.StageObject.StageName].IgnoreErrors = false;
                         break;
                     default:
                         Messages.Fatal("Bad syntax. You can set only 1 or 0.");

@@ -59,7 +59,8 @@ public class Actions
             
             if (missingComponentsCount > 0)
             {
-                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to check which components missing.");
+                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to" +
+                               $" check which components missing.");
                 App.End(-1);
             }
             else
@@ -77,16 +78,11 @@ public class Actions
         {
             if (pr.StagesDict.ContainsKey(stage))
             {
-                var cmd = pr.StagesDict[stage].Command;
-                ScriptHandler script = new ScriptHandler($"tmp_stage_{stage}.sh", $"{cmd}");
-                Messages.Work($"Running stage: {stage}");
-                Shell sh = new Shell();
-                var res = sh.Execute("/bin/sh", $"tmp_stage_{stage}.sh");
-                script.Remove();
+                var res = helper.ExecuteStage(stage, pr.StagesDict[stage].Command);
                 
-                if (!res.GotErrors || IgnoreExecErrors)
+                if (pr.StagesDict[stage].IgnoreErrors || IgnoreExecErrors)
                 {
-                    Messages.Good("No errors provided. Stage passed.");
+                    Messages.Info("Error occur but zeroProbe will ignore it.");
                     File.Delete($"tmp_stage_{stage}.sh");
                 }
                 else
@@ -96,10 +92,7 @@ public class Actions
                     if (pr.ScriptIfError != "")
                     {
                         Messages.Work("Running undo script...");
-                        ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"{pr.ScriptIfError}");
-                        Shell undoSh = new Shell();
-                        undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
-                        undoScript.Remove();
+                        helper.RunUndoScript(pr.ScriptIfError);
                         Messages.Good("Undo complete.");
                     }
                     App.End(-1);
@@ -173,13 +166,15 @@ public class Actions
         Console.WriteLine(":::: Inspection results");
         Console.WriteLine(":: Project info");
         Console.WriteLine($"Project name: {pr.ProjectName}");
-        Console.WriteLine("Shell commands: " + (pr.ShellCommands.Count == 0 ? "None" : pr.ShellCommands.Count.ToString()));
+        Console.WriteLine("Shell commands: " 
+                          + (pr.ShellCommands.Count == 0 ? "None" : pr.ShellCommands.Count.ToString()));
         StringBuilder reqBuilder = new StringBuilder();
         foreach (string component in pr.ComponentsToCheck)
         {
             reqBuilder.Append($"{component} ");
         }
-        Console.WriteLine("Required components: " + reqBuilder.ToString().Trim() == "" ? "None" : reqBuilder.ToString().Trim() );
+        Console.WriteLine("Required components: " +
+            reqBuilder.ToString().Trim() == "" ? "None" : reqBuilder.ToString().Trim());
         if (inspectNoStages)
         {
             Console.WriteLine(":: Stages");
@@ -236,32 +231,32 @@ public class Actions
         Messages.Info($"Running stage of project: {pr.ProjectName}");
         if (pr.StagesDict.ContainsKey(name))
         {
-            var cmd = pr.StagesDict[name].Command;
-            ScriptHandler script = new ScriptHandler($"tmp_stage_{name}.sh", $"{cmd}");
-            Messages.Work($"Running stage: {name}");
-            Shell sh = new Shell();
-            var res = sh.Execute("/bin/sh", $"tmp_stage_{name}.sh");
-            script.Remove();
+            var res = helper.ExecuteStage(name, pr.StagesDict[name].Command);
             
-            if (!res.GotErrors || IgnoreExecErrors)
+            if (!res.GotErrors)
             {
                 Messages.Good("No errors provided. Stage passed.");
                 File.Delete($"tmp_stage_{name}.sh");
             }
             else
             {
-                Messages.Fatal("Stage not passed due an error:");
-                Console.WriteLine(res.Error);
-                if (pr.ScriptIfError != "")
+                if (pr.StagesDict[name].IgnoreErrors || IgnoreExecErrors)
                 {
-                    Messages.Work("Running undo script...");
-                    ScriptHandler undoScript = new ScriptHandler("tmp_undo_script.sh", $"{pr.ScriptIfError}");
-                    Shell undoSh = new Shell();
-                    undoSh.Execute("/bin/sh", "tmp_undo_script.sh");
-                    undoScript.Remove();
-                    Messages.Good("Undo complete.");
+                    Messages.Info("Error occur but zeroProbe will ignore it.");
+                    File.Delete($"tmp_stage_{name}.sh");
                 }
-                App.End(-1);
+                else
+                {
+                    Messages.Fatal("Stage not passed due an error:");
+                    Console.WriteLine(res.Error);
+                    if (pr.ScriptIfError != "")
+                    {
+                        Messages.Work("Running undo script...");
+                        helper.RunUndoScript(pr.ScriptIfError);
+                        Messages.Good("Undo complete.");
+                    }
+                    App.End(-1);
+                }
             }
         }
         else

@@ -68,7 +68,7 @@ internal class Program
             case "run":
                 if (!File.Exists(configFileName))
                 {
-                    Console.WriteLine($"Cannot find {configFileName} file for inspect.");
+                    Console.WriteLine($"Cannot find {configFileName}.");
                     App.End();
                 }
                 acts.RunStages(configFileName);
@@ -82,7 +82,7 @@ internal class Program
             case "runstage":
                 if (!File.Exists(configFileName))
                 {
-                    Console.WriteLine($"Cannot find {configFileName} file for inspect.");
+                    Console.WriteLine($"Cannot find {configFileName}.");
                     App.End();
                 }
                 if (args.Length != 2)
