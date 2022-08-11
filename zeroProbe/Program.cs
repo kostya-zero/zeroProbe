@@ -56,7 +56,7 @@ internal class Program
                         acts.IgnoreExecErrors = splitStrings[1] == "1";
                         break;
                     default:
-                        Messages.Fatal($"Unknown argument give -> {splitStrings[0]}");
+                        Messages.Fatal($"Unknown argument given -> {splitStrings[0]}");
                         App.End(-1);
                         break;
                 }
@@ -68,7 +68,8 @@ internal class Program
             case "run":
                 if (!File.Exists(configFileName))
                 {
-                    Console.WriteLine($"Cannot find {configFileName}.");
+                    Console.WriteLine($"Looks like '{configFileName}' not exists. Try to write template " +
+                                      "configuration with 'writeconfig'");
                     App.End();
                 }
                 acts.RunStages(configFileName);
@@ -82,7 +83,8 @@ internal class Program
             case "runstage":
                 if (!File.Exists(configFileName))
                 {
-                    Console.WriteLine($"Cannot find {configFileName}.");
+                    Console.WriteLine($"Looks like '{configFileName}' not exists. Try to write template " +
+                                       "configuration with 'writeconfig'");
                     App.End();
                 }
                 if (args.Length != 2)

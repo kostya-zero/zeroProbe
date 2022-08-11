@@ -5,7 +5,7 @@ public class HelpMessages
 {
     public static void Help()
     {
-        Console.WriteLine("zeroProbe 1.0 // Advanced utility to create, run and manage tests. Powered by .NET 6.");
+        Console.WriteLine("zeroProbe 2.0 // Advanced utility to create, run and manage tests. Powered by .NET 6.");
         Console.WriteLine("This is a help message. ");
         Console.WriteLine("usage: zeroProbe [action] [option,...]\n");
         
@@ -27,8 +27,8 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:  1.1");
-        Console.WriteLine("Codename: Anxious");
+        Console.WriteLine("Version:  2.0");
+        Console.WriteLine("Codename: Emerging");
         App.End();
     }
 }
