@@ -6,16 +6,21 @@ namespace zeroProbe;
 
 public class Actions
 {
-    public bool Debug { get; set; }
-    public bool IgnoreShellCommands { get; set; }
-    public bool IgnoreExecErrors { get; set; }
-    public List<ParserOptions> Options { get; set; }
+    private List<ParserOptions> Options { get; }
 
     public Actions()
     {
-        Debug = false;
-        IgnoreShellCommands = false;
-        IgnoreExecErrors = false;
+        Options = new List<ParserOptions>();
+    }
+
+    public void AddOption(ParserOptions option, string optionName)
+    {
+        if (Options.Contains(option))
+        {
+            Messages.Fatal($"Option '{optionName}' already added.");
+            App.End();
+        }
+        Options.Add(option);
     }
     
     public void RunStages(string filePath)
@@ -23,7 +28,7 @@ public class Actions
         HostHelper helper = new HostHelper();
         Parser pr = new Parser
         {
-            Debug = Debug
+            Debug = Options.Contains(ParserOptions.Debug)
         };
         string[] lines = File.ReadAllLines(filePath);
         pr.ParseLines(lines);
@@ -61,8 +66,8 @@ public class Actions
             
             if (missingComponentsCount > 0)
             {
-                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to" +
-                               $" check which components missing.");
+                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to " +
+                               "check which components missing.");
                 App.End(-1);
             }
             else
@@ -71,9 +76,9 @@ public class Actions
             }
         }
 
-        if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
+        if (pr.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(pr.ShellCommands, IgnoreExecErrors);
+            helper.ExecuteShellCommands(pr.ShellCommands, Options.Contains(ParserOptions.SkipExecutionErrors));
         }
         
         foreach (var stage in pr.StagesList)
@@ -82,10 +87,9 @@ public class Actions
             {
                 var res = helper.ExecuteStage(stage, pr.StagesDict[stage].Command);
                 
-                if (pr.StagesDict[stage].IgnoreErrors || IgnoreExecErrors)
+                if (pr.StagesDict[stage].IgnoreErrors || Options.Contains(ParserOptions.SkipExecutionErrors))
                 {
                     Messages.Info("Error occur but zeroProbe will ignore it.");
-                    File.Delete($"tmp_stage_{stage}.sh");
                 }
                 else
                 {
@@ -217,7 +221,10 @@ public class Actions
         }
 
         HostHelper helper = new HostHelper();
-        Parser pr = new Parser();
+        Parser pr = new Parser
+        {
+            Debug = Options.Contains(ParserOptions.Debug)
+        };
         string[] allLines = File.ReadAllLines(filePath);
         foreach (var line in allLines)
         {
@@ -225,9 +232,9 @@ public class Actions
         }
         Messages.Info($"Running stage of project: {pr.ProjectName}");
 
-        if (pr.ShellCommands.Count != 0 && !IgnoreShellCommands)
+        if (pr.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(pr.ShellCommands, IgnoreExecErrors);
+            helper.ExecuteShellCommands(pr.ShellCommands, Options.Contains(ParserOptions.SkipExecutionErrors));
         }
         
         Messages.Info($"Running stage of project: {pr.ProjectName}");
@@ -238,14 +245,12 @@ public class Actions
             if (!res.GotErrors)
             {
                 Messages.Good("No errors provided. Stage passed.");
-                File.Delete($"tmp_stage_{name}.sh");
             }
             else
             {
-                if (pr.StagesDict[name].IgnoreErrors || IgnoreExecErrors)
+                if (pr.StagesDict[name].IgnoreErrors || Options.Contains(ParserOptions.SkipExecutionErrors))
                 {
                     Messages.Info("Error occur but zeroProbe will ignore it.");
-                    File.Delete($"tmp_stage_{name}.sh");
                 }
                 else
                 {

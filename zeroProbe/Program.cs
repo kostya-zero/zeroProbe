@@ -1,4 +1,5 @@
-﻿using zeroProbe.Utils;
+﻿using zeroProbe.Enums;
+using zeroProbe.Utils;
 
 namespace zeroProbe;
 
@@ -47,13 +48,13 @@ internal class Program
                         configFileName = splitStrings[1];
                         break;
                     case "--debug":
-                        acts.Debug = splitStrings[1] == "1";
+                        acts.AddOption(ParserOptions.Debug, "--debug");
                         break;
                     case "--skip-shell-commands":
-                        acts.IgnoreShellCommands = splitStrings[1] == "1";
+                        acts.AddOption(ParserOptions.Debug, "--skip-shell-commands");
                         break;
                     case "--ignore-exec-errors":
-                        acts.IgnoreExecErrors = splitStrings[1] == "1";
+                        acts.AddOption(ParserOptions.Debug, "--ignore-exec-errors");
                         break;
                     default:
                         Messages.Fatal($"Unknown argument given -> {splitStrings[0]}");
