@@ -216,7 +216,7 @@ public class Actions
         Console.WriteLine(":: Stages commands");
         foreach (var stage in inspectStages)
         {
-            Console.WriteLine($"{stage}: {pr.StagesDict[stage]}");
+            Console.WriteLine($"{stage}: {pr.StagesDict[stage].Command}");
         }        
     }
 

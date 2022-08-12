@@ -4,10 +4,6 @@ namespace zeroProbe.Utils;
 
 public class HostHelper
 {
-    /*
-     * > NOTICE
-     * ignoreExecErrors will be deprecated and removed with "--ignore-exec-errors" argument.
-     */
     public void ExecuteShellCommands(List<string> commands, bool ignoreExecErrors)
     {
         Messages.Work("Running shell commands...");
