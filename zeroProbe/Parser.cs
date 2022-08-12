@@ -62,7 +62,7 @@ public class Parser
                 {
                     if (StagesList.Contains(obj.Arguments.Trim().Trim()))
                     {
-                        Messages.Fatal($"Stage already defined -> {obj.Arguments.Trim().Trim()}");
+                        Messages.Fatal($"Stage '{obj.Arguments.Trim().Trim()}' already defined.");
                         App.End(-1);
                     }
                     StagesList.Add(obj.Arguments.Trim().Trim());
@@ -74,7 +74,7 @@ public class Parser
                     {
                         if (StagesList.Contains(stage.Trim()))
                         {
-                            Messages.Fatal($"Stage already defined -> {stage.Trim()}");
+                            Messages.Fatal($"Stage '{stage.Trim()}' already defined");
                             App.End(-1);
                         }
                         StagesList.Add(stage.Trim());
@@ -86,7 +86,8 @@ public class Parser
                 if (Debug) { DebugInstruction("0x700"); }
                 if (!StagesList.Contains(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. " +
+                                   "Or, you entered wrong name.");
                     App.End(-1);
                 }
                 StagesDict[obj.StageObject.StageName].Command = obj.StageObject.StageCommand;
@@ -96,7 +97,7 @@ public class Parser
                 string stageName = obj.StageObject.StageName;
                 if (!StagesList.Contains(stageName))
                 {
-                    Messages.Fatal($"Stage '{stageName}' not defined.");
+                    Messages.Fatal($"Stage '{stageName}' not defined. Or, you entered wrong name.");
                     App.End(-1);
                 }
                 StagesDict[stageName].OnError = obj.StageObject.StageCommand;
@@ -105,7 +106,7 @@ public class Parser
                 if (Debug) { DebugInstruction("0x5fc"); }
                 if (!StagesList.Contains(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. Or, you entered wrong name.");
                     App.End(-1);
                 }
                 switch (obj.StageObject.StageCommand.Trim())
@@ -127,7 +128,7 @@ public class Parser
                         StagesDict[obj.StageObject.StageName].IgnoreErrors = false;
                         break;
                     default:
-                        Messages.Fatal("Bad syntax. You can set only 1 or 0.");
+                        Messages.Fatal("Bad syntax. You can set only 1 or 0 for 'ignore_errors'.");
                         App.End(-1);
                         break;
                 }
