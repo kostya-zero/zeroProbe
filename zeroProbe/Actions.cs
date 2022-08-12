@@ -1,4 +1,5 @@
 using System.Text;
+using zeroProbe.Enums;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
@@ -8,6 +9,7 @@ public class Actions
     public bool Debug { get; set; }
     public bool IgnoreShellCommands { get; set; }
     public bool IgnoreExecErrors { get; set; }
+    public List<ParserOptions> Options { get; set; }
 
     public Actions()
     {
