@@ -70,10 +70,10 @@ public class Lexer {
                         }
                     };
                     break;
-                case "on_error":
+                case "ignore_errors":
                     lexerObject = new LexerObject
                     {
-                        FunctionType = "0x5fc",
+                        FunctionType = "0x883",
                         StageObject = new StageObject
                         {
                             StageName = splitCommands[0],
@@ -81,10 +81,10 @@ public class Lexer {
                         }
                     };
                     break;
-                case "ignore_errors":
+                case "on_error":
                     lexerObject = new LexerObject
                     {
-                        FunctionType = "0x883",
+                        FunctionType = "0x5fc",
                         StageObject = new StageObject
                         {
                             StageName = splitCommands[0],

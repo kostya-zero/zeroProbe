@@ -78,34 +78,39 @@ public class Actions
 
         if (pr.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(pr.ShellCommands, Options.Contains(ParserOptions.SkipExecutionErrors));
+            helper.ExecuteShellCommands(pr.ShellCommands, Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
         foreach (var stage in pr.StagesList)
         {
             if (pr.StagesDict.ContainsKey(stage))
             {
+                Messages.Info($"Running stage '{stage}'...");
                 var res = helper.ExecuteStage(stage, pr.StagesDict[stage].Command);
-                
-                if (pr.StagesDict[stage].IgnoreErrors || Options.Contains(ParserOptions.SkipExecutionErrors))
+
+                if (res.Error != "")
                 {
-                    Messages.Info("Error occur but zeroProbe will ignore it.");
-                }
-                else
-                {
-                    Messages.Fatal("Stage not passed due an error:");
-                    Console.WriteLine(res.Error);
-                    if (pr.ScriptIfError != "")
+                    if (pr.StagesDict[stage].IgnoreErrors)
                     {
-                        Messages.Work("Running undo script...");
-                        helper.RunUndoScript(pr.ScriptIfError);
-                        Messages.Good("Undo complete.");
+                        Messages.Info("Error occur but zeroProbe will ignore it.");
                     }
-                    App.End(-1);
+                    else
+                    {
+                        Messages.Fatal("Stage not passed due an error:");
+                        Console.WriteLine(res.Error);
+                        if (pr.StagesDict[stage].OnError != "")
+                        {
+                            Messages.Work("Running stage undo command...");
+                            helper.RunUndoScript(pr.StagesDict[stage].OnError);
+                            Messages.Good("Undo complete.");
+                        }
+                        App.End(-1);
+                    }
                 }
+                Messages.Good("Stage passed without errors!");
             }
         }
-        Messages.Good("All good!");
+        Messages.Good("All good! Great job!");
     }
 
     public void WriteConfig(string filePath)
@@ -118,7 +123,7 @@ public class Actions
         
         Console.WriteLine("Writing new config file...");
         File.Create("stages.pbc").Close();
-        File.WriteAllText("stages.pbc", @"/* This file was generated with zeroProbe. */
+        File.WriteAllText("stages.pbc", @"/* This file was generated with zeroProbe 2.0 Emerging. */
 
 /* Its a preview of how ProbeConfig file can be. */
 /* Everything about syntax and parameters you can learn on zeroProbe wiki. */
@@ -140,14 +145,17 @@ public class Actions
 /* Every stage will be executed in order how you wrote him. */
 &stages: restore, build, finish
 
+/* !!! Updated in version 2.0 Emerging, read more on wiki. !!! */
 /* Now you need to assign command to stage. */
 /* Use '!' operator for it. */
 /* After '!' enter stage name. */
-/* Next, after double dots write command to run. */
+/* Next, write '.command' and after double dots enter command to run. */
+/* To make stage ignore errors write '.ignore_errors' and after double dots 1 or 0. */
+/* To set command on error use '.on_error'. */
 /* Learn more you can on official wiki on GitLab and GitHub. */
-!restore: echo 'Doing some restore staff...'
-!build: echo 'Doing some build staff...'
-!finish: echo 'Finishing this deal...'");
+!restore.command: echo 'Doing some restore staff...'
+!build.command: echo 'Doing some build staff...'
+!finish.command: echo 'Finishing this deal...'");
         Console.WriteLine("Template config ready! It's called 'stages.pbc'.");
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
@@ -234,21 +242,18 @@ public class Actions
 
         if (pr.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(pr.ShellCommands, Options.Contains(ParserOptions.SkipExecutionErrors));
+            helper.ExecuteShellCommands(pr.ShellCommands, Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
         Messages.Info($"Running stage of project: {pr.ProjectName}");
         if (pr.StagesDict.ContainsKey(name))
         {
+            Messages.Info($"Running stage '{name}'...");
             var res = helper.ExecuteStage(name, pr.StagesDict[name].Command);
-            
-            if (!res.GotErrors)
+
+            if (res.Error != "")
             {
-                Messages.Good("No errors provided. Stage passed.");
-            }
-            else
-            {
-                if (pr.StagesDict[name].IgnoreErrors || Options.Contains(ParserOptions.SkipExecutionErrors))
+                if (pr.StagesDict[name].IgnoreErrors)
                 {
                     Messages.Info("Error occur but zeroProbe will ignore it.");
                 }
@@ -256,15 +261,16 @@ public class Actions
                 {
                     Messages.Fatal("Stage not passed due an error:");
                     Console.WriteLine(res.Error);
-                    if (pr.ScriptIfError != "")
+                    if (pr.StagesDict[name].OnError != "")
                     {
-                        Messages.Work("Running undo script...");
-                        helper.RunUndoScript(pr.ScriptIfError);
+                        Messages.Work("Running stage undo command...");
+                        helper.RunUndoScript(pr.StagesDict[name].OnError);
                         Messages.Good("Undo complete.");
                     }
                     App.End(-1);
                 }
             }
+            Messages.Good("Stage passed without errors!");
         }
         else
         {

@@ -18,10 +18,10 @@ public class HelpMessages
         Console.WriteLine("runstage [stage] - runs stage standalone.\n");
         
         Console.WriteLine(":: Options");
-        Console.WriteLine("--debug=[0,1]               - Enables debug mode.");
-        Console.WriteLine("--file=[path]               - Use file by given location.");
-        Console.WriteLine("--skip-shell-scripts=[0,1]  - Skip shells scripts execution.");
-        Console.WriteLine("--ignore-exec-errors=[0,1]  - Ignores execution errors.\n");
+        Console.WriteLine("--debug=[0,1]                      - Enables debug mode.");
+        Console.WriteLine("--file=[path]                      - Use file by given location.");
+        Console.WriteLine("--skip-shell-commands=[0,1]         - Skip shells scripts execution.");
+        Console.WriteLine("--skip-shell-commands-errors=[0,1] - Ignores execution errors.\n");
         App.End();
     }
 
@@ -29,6 +29,13 @@ public class HelpMessages
     {
         Console.WriteLine("Version:  2.0");
         Console.WriteLine("Codename: Emerging");
+        App.End();
+    }
+
+    public static void IgnoreExecErrors()
+    {
+        Console.WriteLine("--ignore-exec-errors was deprecated in version 2.0.");
+        Console.WriteLine(" Use 'ignore_errors' for each stage.");
         App.End();
     }
 }

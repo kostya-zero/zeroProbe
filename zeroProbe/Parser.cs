@@ -10,7 +10,6 @@ public class Parser
     public bool Debug { get; init; }
     private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
-    public string ScriptIfError { get; private set; } = "";
     public List<string> StagesList  { get; } = new();
     public List<string> ShellCommands { get; } = new();
     public List<string> ComponentsToCheck { get; } = new();
@@ -40,10 +39,6 @@ public class Parser
                     Messages.Warning("Use comments less. It slows zeroProbe.");
                     Comments = true;
                 }
-                break;
-            case "0xa33":
-                if (Debug) { DebugInstruction("0xa33"); }
-                ScriptIfError = obj.Arguments.Trim();
                 break;
             case "0xc88":
                 if (Debug) { DebugInstruction("0xc88"); }
@@ -94,12 +89,6 @@ public class Parser
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
                     App.End(-1);
                 }
-                
-                if (StagesDict.ContainsKey(obj.StageObject.StageName))
-                {
-                    Messages.Fatal($"Stage already assigned -> {obj.StageObject.StageName}");
-                    App.End(-1);
-                }
                 StagesDict[obj.StageObject.StageName].Command = obj.StageObject.StageCommand;
                 break;
             case "0x5fc":
@@ -119,13 +108,12 @@ public class Parser
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
                     App.End(-1);
                 }
-
                 switch (obj.StageObject.StageCommand.Trim())
                 {
                     case "1":
                         if (StagesDict[obj.StageObject.StageName].OnError != "")
                         {
-                            Messages.Fatal("You can't set ignore errors if you set on error command.");
+                            Messages.Fatal("You can't set ignore errors if you set an error command.");
                             App.End(-1);
                         }
                         StagesDict[obj.StageObject.StageName].IgnoreErrors = true;
@@ -133,7 +121,7 @@ public class Parser
                     case "0":
                         if (StagesDict[obj.StageObject.StageName].OnError != "")
                         {
-                            Messages.Fatal("You can't set ignore errors if you set on error command.");
+                            Messages.Fatal("You can't set ignore errors if you set an error command.");
                             App.End(-1);
                         }
                         StagesDict[obj.StageObject.StageName].IgnoreErrors = false;

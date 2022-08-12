@@ -53,8 +53,12 @@ internal class Program
                     case "--skip-shell-commands":
                         acts.AddOption(ParserOptions.Debug, "--skip-shell-commands");
                         break;
+                    case "--skip-shell-commands-errors":
+                        acts.AddOption(ParserOptions.SkipShellCommandsErrors,
+                            "--skip-shell-commands-errors");
+                        break;
                     case "--ignore-exec-errors":
-                        acts.AddOption(ParserOptions.Debug, "--ignore-exec-errors");
+                        HelpMessages.IgnoreExecErrors();
                         break;
                     default:
                         Messages.Fatal($"Unknown argument given -> {splitStrings[0]}");

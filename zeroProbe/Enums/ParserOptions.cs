@@ -7,6 +7,6 @@ namespace zeroProbe.Enums;
 public enum ParserOptions
 {
     SkipShellCommands,
-    SkipExecutionErrors,
+    SkipShellCommandsErrors,
     Debug
 }

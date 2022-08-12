@@ -42,7 +42,6 @@ public class HostHelper
 
     public void RunUndoScript(string commandToExecute)
     {
-        Messages.Work("Running undo script...");
         ExecuteCommand(commandToExecute, "tmp_undo_script.sh");
     }
 
