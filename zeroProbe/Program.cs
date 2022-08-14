@@ -90,6 +90,9 @@ internal class Program
             case "inspect":
                 acts.InspectStages(configFileName);
                 break;
+            case "asciiart":
+                HelpMessages.AsciiArt();
+                break;
             case "runstage":
                 if (!File.Exists(configFileName))
                 {
@@ -107,6 +110,9 @@ internal class Program
                 break;
             case "help":
                 HelpMessages.Help();
+                break;
+            case "wiki":
+                HelpMessages.Wiki();
                 break;
             case "version":
                 HelpMessages.Version();
