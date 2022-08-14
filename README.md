@@ -56,8 +56,8 @@ Take a look:
 &checkfor: g++ gcc
 &stages: build, test
 
-!build: g++ main.cpp src/io.cpp src/io.h src/fs.cpp src/fs.h -o file_lister
-!test: ./file_lister
+!build.command: g++ main.cpp src/io.cpp src/io.h src/fs.cpp src/fs.h -o file_lister
+!test.command: ./file_lister
 ```
 
 ### Speed, I'm speed...
