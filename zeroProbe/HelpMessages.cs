@@ -12,12 +12,14 @@ public class HelpMessages
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
 /___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.1
 ");
-        Console.WriteLine("\x1B[4mAdvanced\x1B[24m utility to create, run and manage tests. Powered by .NET 6.");
+        Console.WriteLine("\x1B[4mAdvanced\x1B[24m and \x1B[4measy-to-use\x1B[24m utility to create, run and manage tests.");
         Console.WriteLine("This is a help message. ");
         Console.WriteLine("usage: zeroProbe [action] [option,...]\n");
         
-        Console.
-        Console.WriteLine(":: Actions");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write(":: ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("Actions");
         Console.WriteLine("help             - shows this message.");
         Console.WriteLine("version          - return version of zeroProbe.");
         Console.WriteLine("writeconfig      - writes template config.");
@@ -27,7 +29,10 @@ public class HelpMessages
         Console.WriteLine("wiki             - opens zeroProbe wiki page in browser.");
         Console.WriteLine("runstage [stage] - runs stage standalone.\n");
         
-        Console.WriteLine(":: Options");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write(":: ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("Options");
         Console.WriteLine("--debug=[0,1]                      - Enables debug mode.");
         Console.WriteLine("--file=[path]                      - Use file by given location.");
         Console.WriteLine("--skip-shell-commands=[0,1]        - Skip shells scripts execution.");

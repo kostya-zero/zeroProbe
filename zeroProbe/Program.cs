@@ -7,6 +7,7 @@ internal class Program
 {
     public static void Main(string[] args)
     {
+        Console.ForegroundColor = ConsoleColor.White;
         string configFileName = "stages.pbc";
 
         if (args.Length == 0)
