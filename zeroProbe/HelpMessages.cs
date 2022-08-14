@@ -50,12 +50,13 @@ public class HelpMessages
 
     public static void AsciiArt()
     {
-        Console.WriteLine(@"                        ____             __       
+        Console.WriteLine(@"                        ____             __
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
 /___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.0
-"); App.End();
+"); 
+        App.End();
     }
 
     public static void Wiki()
