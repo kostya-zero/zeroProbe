@@ -10,12 +10,13 @@ public class HelpMessages
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.0
+/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.1
 ");
-        Console.WriteLine("Advanced utility to create, run and manage tests. Powered by .NET 6.");
+        Console.WriteLine("\x1B[4mAdvanced\x1B[24m utility to create, run and manage tests. Powered by .NET 6.");
         Console.WriteLine("This is a help message. ");
         Console.WriteLine("usage: zeroProbe [action] [option,...]\n");
         
+        Console.
         Console.WriteLine(":: Actions");
         Console.WriteLine("help             - shows this message.");
         Console.WriteLine("version          - return version of zeroProbe.");
@@ -36,15 +37,19 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:  2.0");
-        Console.WriteLine("Codename: Emerging");
+        Console.WriteLine("Version:      2.1");
+        Console.WriteLine("Codename:     Emerging");
+        Console.WriteLine(".NET version: 6.0.8");
+        Console.WriteLine("Build date:   14.08.2022");
+        Console.WriteLine("Build Number: 53");
+        Console.WriteLine("Build Engine: 17.0.0");
         App.End();
     }
 
     public static void IgnoreExecErrors()
     {
         Console.WriteLine("--ignore-exec-errors was deprecated in version 2.0.");
-        Console.WriteLine(" Use 'ignore_errors' for each stage.");
+        Console.WriteLine("Use 'ignore_errors' for each stage.");
         App.End();
     }
 
@@ -54,7 +59,7 @@ public class HelpMessages
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.0
+/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.1
 "); 
         App.End();
     }

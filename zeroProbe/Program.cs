@@ -88,6 +88,7 @@ internal class Program
                 acts.WriteConfig(configFileName);
                 break;
             case "inspect":
+                Messages.Warning("Inspection will be deprecated in next updates.");
                 acts.InspectStages(configFileName);
                 break;
             case "asciiart":

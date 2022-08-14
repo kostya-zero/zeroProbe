@@ -12,7 +12,7 @@ public class Lexer {
          * 0xc88 - Check for components
          * 0xa33 - Undo script
          * 0x805 - Shell command
-         * 0xccf - Project name
+         * 0x6b8 - Project name
          * 0x00f - Empty line
          *
          * 0x054 - Stages
@@ -42,7 +42,8 @@ public class Lexer {
 
         if (!line.Contains(':'))
         {
-            Messages.Fatal($"Bad expression -> {line}");
+            Messages.Fatal($"Bad expression: {line}.");
+            Messages.Info("Every line must have command and argument divided by double dots (:).");
             App.End(-1);
         }
         
@@ -93,7 +94,8 @@ public class Lexer {
                     };
                     break;
                 default:
-                    Messages.Fatal("Bad stage assign expression.");
+                    Messages.Fatal("Unknown stage property.");
+                    Messages.Info("Learn more about stages property at zeroProbe wiki.");
                     App.End(-1);
                     break;
             }
@@ -106,13 +108,6 @@ public class Lexer {
                     lexerObject = new LexerObject
                     {
                         FunctionType = "0xc88",
-                        Arguments = split[1]
-                    };
-                    break;
-                case "&if_error":
-                    lexerObject = new LexerObject
-                    {
-                        FunctionType = "0xa33",
                         Arguments = split[1]
                     };
                     break;
@@ -133,12 +128,13 @@ public class Lexer {
                 case "&project":
                     lexerObject = new LexerObject
                     {
-                        FunctionType = "0xccf",
+                        FunctionType = "0x6b8",
                         Arguments = split[1]
                     };
                     break;
                 default:
-                    Messages.Fatal($"Unknown expression called -> {split[0]}");
+                    Messages.Fatal("Unknown command called.");
+                    Messages.Info("Learn about available commands at zeroProbe wiki.");
                     App.End(-1);
                     break;
             }

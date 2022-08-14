@@ -7,7 +7,7 @@ public class Parser
 {
     public Dictionary<string, StageModel> StagesDict { get; }  = new();
     private bool Comments { get; set; }
-    public bool Debug { get; init; }
+    public bool Debug { get; set; }
     private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
     public List<string> StagesList  { get; } = new();
@@ -137,8 +137,8 @@ public class Parser
                 if (Debug) { DebugInstruction("0x805"); }
                 ShellCommands.Add(obj.Arguments);
                 break;
-            case "0xccf":
-                if (Debug) { DebugInstruction("0xccf"); }
+            case "0x6b8":
+                if (Debug) { DebugInstruction("0x6b8"); }
                 if (!SetProjectFirstTime)
                 {
                     Messages.Warning("Project name already assigned.");
