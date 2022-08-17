@@ -19,6 +19,9 @@
     <a href="https://github.com/kostya-zero/zeroProbe">
         <img src="https://img.shields.io/badge/GitHub-repository-232323?logo=github&"/>
     </a>
+    <a>
+        <img src="https://img.shields.io/github/downloads/kostya-zero/zeroprobe/total?color=grey">
+    </a>
  </div>
 
 Want to automate your test's?
@@ -56,8 +59,8 @@ Take a look:
 &checkfor: g++ gcc
 &stages: build, test
 
-!build: g++ main.cpp src/io.cpp src/io.h src/fs.cpp src/fs.h -o file_lister
-!test: ./file_lister
+!build.command: g++ main.cpp src/io.cpp src/io.h src/fs.cpp src/fs.h -o file_lister
+!test.command: ./file_lister
 ```
 
 ### Speed, I'm speed...
