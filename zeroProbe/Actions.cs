@@ -81,7 +81,8 @@ public class Actions
 
         if (parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(parser.ShellCommands, Options.Contains(ParserOptions.SkipShellCommandsErrors));
+            helper.ExecuteShellCommands(parser.ShellCommands, 
+                Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
         foreach (var stage in parser.StagesList)
@@ -243,7 +244,8 @@ public class Actions
 
         if (parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(parser.ShellCommands, Options.Contains(ParserOptions.SkipShellCommandsErrors));
+            helper.ExecuteShellCommands(parser.ShellCommands, 
+                Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
         Messages.Info($"Running stage of project: {parser.ProjectName}");
