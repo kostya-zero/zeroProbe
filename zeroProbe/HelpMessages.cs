@@ -25,7 +25,6 @@ public class HelpMessages
         Console.WriteLine("version          - return version of zeroProbe.");
         Console.WriteLine("writeconfig      - writes template config.");
         Console.WriteLine("run              - runs all stages in stages.conf.");
-        Console.WriteLine("inspect          - inspect configuration file.");
         Console.WriteLine("asciiart         - shows zeroProbe ASCII art.");
         Console.WriteLine("wiki             - opens zeroProbe wiki page in browser.");
         Console.WriteLine("runstage [stage] - runs stage standalone.\n");
@@ -49,13 +48,6 @@ public class HelpMessages
         Console.WriteLine("Build Date:   17.08.2022");
         Console.WriteLine("Build Number: 55");
         Console.WriteLine("Build Engine: 17.0.0");
-        App.End();
-    }
-
-    public static void IgnoreExecErrors()
-    {
-        Console.WriteLine("--ignore-exec-errors was deprecated in version 2.0.");
-        Console.WriteLine("Use 'ignore_errors' for each stage.");
         App.End();
     }
 

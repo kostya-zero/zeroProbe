@@ -62,9 +62,6 @@ internal class Program
                         acts.AddOption(ParserOptions.SkipShellCommandsErrors,
                             "--skip-shell-commands-errors");
                         break;
-                    case "--ignore-exec-errors":
-                        HelpMessages.IgnoreExecErrors();
-                        break;
                     default:
                         Messages.Fatal($"Unknown argument: {splitStrings[0]}.");
                         Messages.Hint("Run zeroProbe with command 'help' to get list of arguments.");
@@ -87,10 +84,6 @@ internal class Program
                 break;
             case "writeconfig":
                 acts.WriteConfig(configFileName);
-                break;
-            case "inspect":
-                Messages.Warning("Inspection will be deprecated in next updates.");
-                acts.InspectStages(configFileName);
                 break;
             case "asciiart":
                 HelpMessages.AsciiArt();

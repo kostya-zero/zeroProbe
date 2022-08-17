@@ -159,64 +159,6 @@ public class Actions
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
 
-    public void InspectStages(string filePath)
-    {
-        string[] allLines = File.ReadAllLines(filePath);
-        Parser.ParseLines(allLines);
-        
-        List<string> inspectStages = Parser.StagesList;
-        string inspectStagesCount = inspectStages.Count.ToString();
-        bool inspectNoStages = false;
-        string strStages;
-        
-        if (inspectStages.Count == 0)
-        {
-            inspectNoStages = true;
-        }
-        
-        Console.WriteLine(":::: Inspection results");
-        Console.WriteLine(":: Project info");
-        Console.WriteLine($"Project name: {Parser.ProjectName}");
-        Console.WriteLine("Shell commands: " 
-                          + (Parser.ShellCommands.Count == 0 ? "None" : Parser.ShellCommands.Count.ToString()));
-        StringBuilder reqBuilder = new StringBuilder();
-        foreach (string component in Parser.ComponentsToCheck)
-        {
-            reqBuilder.Append($"{component} ");
-        }
-        Console.WriteLine("Required components: " +
-            reqBuilder.ToString().Trim() == "" ? "None" : reqBuilder.ToString().Trim());
-        if (inspectNoStages)
-        {
-            Console.WriteLine(":: Stages");
-            Console.WriteLine("No stages in this configuration!");
-            App.End();
-        }
-        
-        StringBuilder stringBuilder = new StringBuilder();
-        if (inspectStages.Count == 1)
-        {
-            strStages = inspectStages[0];
-        }
-        else
-        {
-            foreach (var stage in inspectStages)
-            {
-                stringBuilder.Append($"{stage}, ");
-            }
-
-            strStages = stringBuilder.ToString().TrimEnd(',');
-        }
-        Console.WriteLine(":: Stages");
-        Console.WriteLine($"Stages: {strStages}");
-        Console.WriteLine($"Count:  {inspectStagesCount}\n");
-        Console.WriteLine(":: Stages commands");
-        foreach (var stage in inspectStages)
-        {
-            Console.WriteLine($"{stage}: {Parser.StagesDict[stage].Command}");
-        }        
-    }
-
     public void RunStage(string name, string filePath)
     {
         if (!File.Exists(filePath))
