@@ -43,7 +43,7 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:      2.2");
+        Console.WriteLine("Version:      2.2-unstable");
         Console.WriteLine("Codename:     Emerging");
         Console.WriteLine(".NET Version: 6.0.8");
         Console.WriteLine("Build Date:   17.08.2022");
