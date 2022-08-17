@@ -12,7 +12,8 @@ public class HelpMessages
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
 /___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.2
 ");
-        Console.WriteLine("\x1B[4mAdvanced\x1B[24m and \x1B[4measy-to-use\x1B[24m utility to create, run and manage tests.");
+        Console.WriteLine("\x1B[4mAdvanced\x1B[24m and \x1B[4measy-to-use\x1B[24m utility" +
+                          " to create, run and manage tests.");
         Console.WriteLine("This is a help message. ");
         Console.WriteLine("usage: zeroProbe [action] [option,...]\n");
         
