@@ -10,7 +10,7 @@ public class HelpMessages
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.2
+/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 3.0
 ");
         Console.WriteLine("\x1B[4mAdvanced\x1B[24m and \x1B[4measy-to-use\x1B[24m utility" +
                           " to create, run and manage tests.");
@@ -43,7 +43,7 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:      2.2-unstable");
+        Console.WriteLine("Version:      3.0-unstable");
         Console.WriteLine("Codename:     Emerging");
         Console.WriteLine(".NET Version: 6.0.8");
         Console.WriteLine("Build Date:   17.08.2022");
@@ -65,7 +65,7 @@ public class HelpMessages
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.2
+/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 3.0
 "); 
         App.End();
     }
