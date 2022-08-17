@@ -10,7 +10,7 @@ public class HelpMessages
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.1
+/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.2
 ");
         Console.WriteLine("\x1B[4mAdvanced\x1B[24m and \x1B[4measy-to-use\x1B[24m utility to create, run and manage tests.");
         Console.WriteLine("This is a help message. ");
@@ -42,11 +42,11 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:      2.1");
+        Console.WriteLine("Version:      2.2");
         Console.WriteLine("Codename:     Emerging");
-        Console.WriteLine(".NET version: 6.0.8");
-        Console.WriteLine("Build date:   14.08.2022");
-        Console.WriteLine("Build Number: 53");
+        Console.WriteLine(".NET Version: 6.0.8");
+        Console.WriteLine("Build Date:   17.08.2022");
+        Console.WriteLine("Build Number: 55");
         Console.WriteLine("Build Engine: 17.0.0");
         App.End();
     }
@@ -64,7 +64,7 @@ public class HelpMessages
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.1
+/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 2.2
 "); 
         App.End();
     }

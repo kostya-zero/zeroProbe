@@ -43,7 +43,7 @@ public class Lexer {
         if (!line.Contains(':'))
         {
             Messages.Fatal($"Bad expression: {line}.");
-            Messages.Info("Every line must have command and argument divided by double dots (:).");
+            Messages.Hint("Every line must have command and argument divided by double dots (:).");
             App.End(-1);
         }
         
@@ -95,7 +95,7 @@ public class Lexer {
                     break;
                 default:
                     Messages.Fatal("Unknown stage property.");
-                    Messages.Info("Learn more about stages property at zeroProbe wiki.");
+                    Messages.Hint("Learn more about stages property at zeroProbe wiki.");
                     App.End(-1);
                     break;
             }
@@ -134,19 +134,10 @@ public class Lexer {
                     break;
                 default:
                     Messages.Fatal("Unknown command called.");
-                    Messages.Info("Learn about available commands at zeroProbe wiki.");
+                    Messages.Hint("Learn about available commands at zeroProbe wiki.");
                     App.End(-1);
                     break;
             }
-        }    
-        else if (split[0].StartsWith("@"))
-        {
-            lexerObject = new LexerObject
-            {
-                FunctionType = "0x805",
-                Arguments = split[1]
-            };
-            return lexerObject;
         }
         return lexerObject;
     }

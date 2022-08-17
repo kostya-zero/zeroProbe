@@ -49,4 +49,12 @@ public class Messages
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine($"DEBUG: {text}");
     }
+
+    public static void Hint(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("** ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"HINT: {text}");
+    }
 }

@@ -23,14 +23,14 @@ internal class Program
                 if (!arg.Contains('='))
                 {
                     Messages.Fatal($"Argument syntax error: {arg}.");
-                    Messages.Info("Arguments must looks like this: argument=value");
+                    Messages.Hint("Arguments must looks like this: argument=value");
                     App.End(-1);
                 }
                 string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
                 if (splitStrings.Length == 1)
                 {
                     Messages.Fatal($"Nothing provided after equals character: {arg}.");
-                    Messages.Info("Arguments value mustn't be empty!");
+                    Messages.Hint("Arguments value mustn't be empty!");
                     App.End(-1);
                 }
                 switch (splitStrings[0])
@@ -39,7 +39,7 @@ internal class Program
                         if (!File.Exists(splitStrings[1]))
                         {
                             Messages.Fatal($"Looks like '{splitStrings[1]}' not exists.");
-                            Messages.Info("Try to write template configuration with 'writeconfig' action.");
+                            Messages.Hint("Try to write template configuration with 'writeconfig' action.");
                             App.End(-1);
                         }
 
@@ -47,7 +47,7 @@ internal class Program
                         if (Path.GetExtension(splitStrings[1]) != "pbc")
                         {
                             Messages.Fatal("File not associate with ProbeConfig.");
-                            Messages.Info("Set file extension to '.pbc'.");
+                            Messages.Hint("Set file extension to '.pbc'.");
                             App.End(-1);
                         }
                         configFileName = splitStrings[1];
@@ -67,7 +67,7 @@ internal class Program
                         break;
                     default:
                         Messages.Fatal($"Unknown argument: {splitStrings[0]}.");
-                        Messages.Info("Run zeroProbe with command 'help' to get list of arguments.");
+                        Messages.Hint("Run zeroProbe with command 'help' to get list of arguments.");
                         App.End(-1);
                         break;
                 }
@@ -80,7 +80,7 @@ internal class Program
                 if (!File.Exists(configFileName))
                 {
                     Messages.Fatal($"Looks like '{configFileName}' not exists.");
-                    Messages.Info("Try to write template configuration with 'writeconfig'.");
+                    Messages.Hint("Try to write template configuration with 'writeconfig'.");
                     App.End();
                 }
                 acts.RunStages(configFileName);
@@ -99,7 +99,7 @@ internal class Program
                 if (!File.Exists(configFileName))
                 {
                     Messages.Fatal($"Looks like '{configFileName}' not exists.");
-                    Messages.Info("Try to write template configuration with 'writeconfig'.");
+                    Messages.Hint("Try to write template configuration with 'writeconfig'.");
                     App.End();
                 }
                 if (args.Length != 2)
@@ -121,7 +121,7 @@ internal class Program
                 break;
             default:
                 Messages.Fatal($"Unknown argument '{args[0]}'.");
-                Messages.Info("Run zeroProbe with command 'help' to get list of arguments and actions.");
+                Messages.Hint("Run zeroProbe with command 'help' to get list of arguments and actions.");
                 App.End(-1);
                 break;
         }

@@ -6,7 +6,6 @@ namespace zeroProbe;
 public class Parser
 {
     public Dictionary<string, StageModel> StagesDict { get; }  = new();
-    private bool Comments { get; set; }
     public bool Debug { get; set; }
     private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
@@ -30,18 +29,12 @@ public class Parser
     public void ParseLine(string line)
     {
         var obj = Lexer.Lex(line);
+        if (Debug) { DebugInstruction(obj.FunctionType); }
         switch (obj.FunctionType)
         {
             case "0x11f":
-                if (Debug) { DebugInstruction("0x11f"); }
-                if (!Comments)
-                {
-                    Messages.Warning("Use comments less. It slows zeroProbe.");
-                    Comments = true;
-                }
                 break;
             case "0xc88":
-                if (Debug) { DebugInstruction("0xc88"); }
                 if (obj.Arguments.Trim().Contains(','))
                 {
                     string[] splitComponents = obj.Arguments.Trim().Split();
@@ -56,7 +49,6 @@ public class Parser
                 }
                 break;
             case "0x054":
-                if (Debug) { DebugInstruction("0x054"); }
                 var split = obj.Arguments.Trim().Split(",");
                 if (!obj.Arguments.Trim().Contains(','))
                 {
@@ -83,7 +75,6 @@ public class Parser
                 }
                 break;
             case "0x700":
-                if (Debug) { DebugInstruction("0x700"); }
                 if (!StagesList.Contains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. " +
@@ -93,7 +84,6 @@ public class Parser
                 StagesDict[obj.StageObject.StageName].Command = obj.StageObject.StageCommand;
                 break;
             case "0x5fc":
-                if (Debug) { DebugInstruction("0x5fc"); }
                 string stageName = obj.StageObject.StageName;
                 if (!StagesList.Contains(stageName))
                 {
@@ -103,7 +93,6 @@ public class Parser
                 StagesDict[stageName].OnError = obj.StageObject.StageCommand;
                 break;
             case "0x883":
-                if (Debug) { DebugInstruction("0x5fc"); }
                 if (!StagesList.Contains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. Or, you entered wrong name.");
@@ -134,11 +123,9 @@ public class Parser
                 }
                 break;
             case "0x805":
-                if (Debug) { DebugInstruction("0x805"); }
                 ShellCommands.Add(obj.Arguments);
                 break;
             case "0x6b8":
-                if (Debug) { DebugInstruction("0x6b8"); }
                 if (!SetProjectFirstTime)
                 {
                     Messages.Warning("Project name already assigned.");
