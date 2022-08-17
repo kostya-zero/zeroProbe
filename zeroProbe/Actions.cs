@@ -7,17 +7,12 @@ namespace zeroProbe;
 public class Actions
 {
     private List<ParserOptions> Options { get; }
-    private Parser parser { get; }
+    private Parser Parser { get; }
 
     public Actions()
     {
         Options = new List<ParserOptions>();
-        parser = new Parser();
-    }
-
-    public void ChangeDebugMode(bool state)
-    {
-        parser.Debug = state;
+        Parser = new Parser();
     }
 
     public void AddOption(ParserOptions option, string optionName)
@@ -34,16 +29,16 @@ public class Actions
     {
         HostHelper helper = new HostHelper();
         string[] lines = File.ReadAllLines(filePath);
-        parser.ParseLines(lines);
-        Messages.Info($"Running project: {parser.ProjectName}");
+        Parser.ParseLines(lines);
+        Messages.Info($"Running project: {Parser.ProjectName}");
 
-        if (parser.ComponentsToCheck.Count != 0)
+        if (Parser.ComponentsToCheck.Count != 0)
         {
             Messages.Work("Checking for required components...");
             List<string> pathVar = Env.GetPath();
             int missingComponentsCount = 0;
             List<string> foundComponents = new List<string>();
-            foreach (var component in parser.ComponentsToCheck)
+            foreach (var component in Parser.ComponentsToCheck)
             {
                 foreach (var path in pathVar)
                 {
@@ -59,7 +54,7 @@ public class Actions
                 }
             }
 
-            foreach (var component in parser.ComponentsToCheck)
+            foreach (var component in Parser.ComponentsToCheck)
             {
                 if (!foundComponents.Contains(component))
                 {
@@ -79,22 +74,22 @@ public class Actions
             }
         }
 
-        if (parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
+        if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(parser.ShellCommands, 
+            helper.ExecuteShellCommands(Parser.ShellCommands, 
                 Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
-        foreach (var stage in parser.StagesList)
+        foreach (var stage in Parser.StagesList)
         {
-            if (parser.StagesDict.ContainsKey(stage))
+            if (Parser.StagesDict.ContainsKey(stage))
             {
                 Messages.Info($"Running stage '{stage}'...");
-                var res = helper.ExecuteStage(stage, parser.StagesDict[stage].Command);
+                var res = helper.ExecuteStage(stage, Parser.StagesDict[stage].Command);
 
                 if (res.Error != "")
                 {
-                    if (parser.StagesDict[stage].IgnoreErrors)
+                    if (Parser.StagesDict[stage].IgnoreErrors)
                     {
                         Messages.Info("Error occur but zeroProbe will ignore it.");
                     }
@@ -102,10 +97,10 @@ public class Actions
                     {
                         Messages.Fatal("Stage not passed due an error:");
                         Console.WriteLine(res.Error);
-                        if (parser.StagesDict[stage].OnError != "")
+                        if (Parser.StagesDict[stage].OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            helper.RunUndoScript(parser.StagesDict[stage].OnError);
+                            helper.RunUndoScript(Parser.StagesDict[stage].OnError);
                             Messages.Good("Undo complete.");
                         }
                         App.End(-1);
@@ -166,14 +161,10 @@ public class Actions
 
     public void InspectStages(string filePath)
     {
-        
-        Parser pr = new Parser{
-            Debug = Options.Contains(ParserOptions.Debug)
-        };
         string[] allLines = File.ReadAllLines(filePath);
-        parser.ParseLines(allLines);
+        Parser.ParseLines(allLines);
         
-        List<string> inspectStages = parser.StagesList;
+        List<string> inspectStages = Parser.StagesList;
         string inspectStagesCount = inspectStages.Count.ToString();
         bool inspectNoStages = false;
         string strStages;
@@ -185,11 +176,11 @@ public class Actions
         
         Console.WriteLine(":::: Inspection results");
         Console.WriteLine(":: Project info");
-        Console.WriteLine($"Project name: {parser.ProjectName}");
+        Console.WriteLine($"Project name: {Parser.ProjectName}");
         Console.WriteLine("Shell commands: " 
-                          + (parser.ShellCommands.Count == 0 ? "None" : parser.ShellCommands.Count.ToString()));
+                          + (Parser.ShellCommands.Count == 0 ? "None" : Parser.ShellCommands.Count.ToString()));
         StringBuilder reqBuilder = new StringBuilder();
-        foreach (string component in parser.ComponentsToCheck)
+        foreach (string component in Parser.ComponentsToCheck)
         {
             reqBuilder.Append($"{component} ");
         }
@@ -222,7 +213,7 @@ public class Actions
         Console.WriteLine(":: Stages commands");
         foreach (var stage in inspectStages)
         {
-            Console.WriteLine($"{stage}: {parser.StagesDict[stage].Command}");
+            Console.WriteLine($"{stage}: {Parser.StagesDict[stage].Command}");
         }        
     }
 
@@ -238,25 +229,25 @@ public class Actions
         string[] allLines = File.ReadAllLines(filePath);
         foreach (var line in allLines)
         {
-            parser.ParseLine(line);
+            Parser.ParseLine(line);
         }
-        Messages.Info($"Running stage of project: {parser.ProjectName}");
+        Messages.Info($"Running stage of project: {Parser.ProjectName}");
 
-        if (parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
+        if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
-            helper.ExecuteShellCommands(parser.ShellCommands, 
+            helper.ExecuteShellCommands(Parser.ShellCommands, 
                 Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
-        Messages.Info($"Running stage of project: {parser.ProjectName}");
-        if (parser.StagesDict.ContainsKey(name))
+        Messages.Info($"Running stage of project: {Parser.ProjectName}");
+        if (Parser.StagesDict.ContainsKey(name))
         {
             Messages.Info($"Running stage '{name}'...");
-            var res = helper.ExecuteStage(name, parser.StagesDict[name].Command);
+            var res = helper.ExecuteStage(name, Parser.StagesDict[name].Command);
 
             if (res.Error != "")
             {
-                if (parser.StagesDict[name].IgnoreErrors)
+                if (Parser.StagesDict[name].IgnoreErrors)
                 {
                     Messages.Info("Error occur but zeroProbe will ignore it.");
                 }
@@ -264,10 +255,10 @@ public class Actions
                 {
                     Messages.Fatal("Stage not passed due an error:");
                     Console.WriteLine(res.Error);
-                    if (parser.StagesDict[name].OnError != "")
+                    if (Parser.StagesDict[name].OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        helper.RunUndoScript(parser.StagesDict[name].OnError);
+                        helper.RunUndoScript(Parser.StagesDict[name].OnError);
                         Messages.Good("Undo complete.");
                     }
                     App.End(-1);
