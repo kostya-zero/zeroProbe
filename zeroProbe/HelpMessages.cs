@@ -44,7 +44,7 @@ public class HelpMessages
     public static void Version()
     {
         Console.WriteLine("Version:      3.0-unstable");
-        Console.WriteLine("Codename:     Emerging");
+        Console.WriteLine("Codename:     Rebirth");
         Console.WriteLine(".NET Version: 6.0.8");
         Console.WriteLine("Build Date:   17.08.2022");
         Console.WriteLine("Build Number: 55");
