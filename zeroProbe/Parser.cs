@@ -1,3 +1,4 @@
+using zeroProbe.Enums;
 using zeroProbe.Models;
 using zeroProbe.Utils;
 
@@ -6,12 +7,12 @@ namespace zeroProbe;
 public class Parser
 {
     public Dictionary<string, StageModel> StagesDict { get; }  = new();
-    public bool Debug { get; set; }
     private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
     public List<string> StagesList  { get; } = new();
     public List<string> ShellCommands { get; } = new();
     public List<string> ComponentsToCheck { get; } = new();
+    public List<ParserOptions> ParsingOptions { private get; set; } 
 
     public void DebugInstruction(string instruction)
     {
@@ -31,7 +32,7 @@ public class Parser
     public void ParseLine(string line, int lineNumber)
     {
         var obj = Lexer.Lex(line, lineNumber);
-        if (Debug) { DebugInstruction(obj.FunctionType); }
+        if (ParsingOptions.Contains(ParserOptions.Debug)) { DebugInstruction(obj.FunctionType); }
         switch (obj.FunctionType)
         {
             case "0x11f":

@@ -27,6 +27,7 @@ public class Actions
     
     public void RunStages(string filePath)
     {
+        Parser.ParsingOptions = Options;
         HostHelper helper = new HostHelper();
         string[] lines = File.ReadAllLines(filePath);
         Parser.ParseLines(lines);
