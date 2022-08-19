@@ -6,13 +6,31 @@ public class HelpMessages
 {
     public static void Help()
     {
+        
+        List<string> firstWords = new List<string>
+        {
+           "Powerful",
+           "Advanced",
+           "Automate"
+        };
+        List<string> secondWords = new List<string>
+        {
+            "easy-to-use",
+            "free",
+            "open-source"
+        };
+
+        Random rand = new Random();
+        string firstWord = firstWords[rand.Next(0, 3)];
+        string secondWord = secondWords[rand.Next(0, 3)];
+        
         Console.WriteLine(@"                        ____             __       
  ____  ___  _________  / __ \_________  / /_  ___ 
 /_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
  / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
 /___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 3.0
 ");
-        Console.WriteLine("\x1B[4mAdvanced\x1B[24m and \x1B[4measy-to-use\x1B[24m utility" +
+        Console.WriteLine($"\x1B[4m{firstWord}\x1B[24m and \x1B[4m{secondWord}\x1B[24m utility" +
                           " to create, run and manage tests.");
         Console.WriteLine("This is a help message. ");
         Console.WriteLine("usage: zeroProbe [action] [option,...]\n");
