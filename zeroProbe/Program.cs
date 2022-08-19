@@ -12,7 +12,8 @@ internal class Program
 
         if (args.Length == 0)
         {
-            Console.WriteLine("No arguments provided. Use 'help' argument to see what zeroProbe can do.");
+            Messages.Info("No arguments provided."); 
+            Messages.Hint("Use 'help' argument to see what zeroProbe can do.");
             App.End();
         }
         Actions acts = new Actions();

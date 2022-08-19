@@ -20,15 +20,17 @@ public class Parser
 
     public void ParseLines(string[] lines)
     {
+        int lineNumber = 0;
         foreach (string line in lines)
         {
-            ParseLine(line);
+            lineNumber++;
+            ParseLine(line, lineNumber);
         }
     }
 
-    public void ParseLine(string line)
+    public void ParseLine(string line, int lineNumber)
     {
-        var obj = Lexer.Lex(line);
+        var obj = Lexer.Lex(line, lineNumber);
         if (Debug) { DebugInstruction(obj.FunctionType); }
         switch (obj.FunctionType)
         {

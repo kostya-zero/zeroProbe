@@ -35,43 +35,7 @@ public class Actions
         if (Parser.ComponentsToCheck.Count != 0)
         {
             Messages.Work("Checking for required components...");
-            List<string> pathVar = Env.GetPath();
-            int missingComponentsCount = 0;
-            List<string> foundComponents = new List<string>();
-            foreach (var component in Parser.ComponentsToCheck)
-            {
-                foreach (var path in pathVar)
-                {
-                    if (!foundComponents.Contains(component))
-                    {
-                        bool found = File.Exists($"{path}/{component}");
-                        if (found)
-                        {
-                            foundComponents.Add(component);
-                            Messages.Good($"Found {component}.");
-                        }
-                    }
-                }
-            }
-
-            foreach (var component in Parser.ComponentsToCheck)
-            {
-                if (!foundComponents.Contains(component))
-                {
-                    missingComponentsCount++;
-                }
-            }
-            
-            if (missingComponentsCount > 0)
-            {
-                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to " +
-                               "check which components missing.");
-                App.End(-1);
-            }
-            else
-            {
-                Messages.Good("All components installed!");
-            }
+            helper.CheckComponents(Parser.ComponentsToCheck);
         }
 
         if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
@@ -100,7 +64,7 @@ public class Actions
                         if (Parser.StagesDict[stage].OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            helper.RunUndoScript(Parser.StagesDict[stage].OnError);
+                            helper.ExecuteCommand(Parser.StagesDict[stage].OnError, "tmp_undo_script.sh");
                             Messages.Good("Undo complete.");
                         }
                         App.End(-1);
@@ -116,13 +80,13 @@ public class Actions
     {
         if (File.Exists(filePath))
         {
-            Console.WriteLine("You already have configuration file.");
+            Messages.Info("You already have configuration file.");
             App.End();
         }
         
         Console.WriteLine("Writing new config file...");
-        File.Create("stages.pbc").Close();
-        File.WriteAllText("stages.pbc", @"/* This file was generated with zeroProbe 2.1 Emerging. */
+        File.Create(filePath).Close();
+        File.WriteAllText(filePath, @"/* This file was generated with zeroProbe 2.1 Emerging. */
 
 /* Its a preview of how ProbeConfig file can be. */
 /* Everything about syntax and parameters you can learn on zeroProbe wiki. */
@@ -155,7 +119,7 @@ public class Actions
 !restore.command: echo 'Doing some restore staff...'
 !build.command: echo 'Doing some build staff...'
 !finish.command: echo 'Finishing this deal...'");
-        Console.WriteLine("Template config ready! It's called 'stages.pbc'.");
+        Console.WriteLine($"Template config ready! It's called '{filePath}'.");
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
 
@@ -169,12 +133,16 @@ public class Actions
 
         HostHelper helper = new HostHelper();
         string[] allLines = File.ReadAllLines(filePath);
-        foreach (var line in allLines)
-        {
-            Parser.ParseLine(line);
-        }
+        Parser.ParseLines(allLines);
+
         Messages.Info($"Running stage of project: {Parser.ProjectName}");
 
+        if (Parser.ComponentsToCheck.Count != 0)
+        {
+            Messages.Work("Checking for required components...");
+            helper.CheckComponents(Parser.ComponentsToCheck);
+        }
+        
         if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
             helper.ExecuteShellCommands(Parser.ShellCommands, 
@@ -200,7 +168,7 @@ public class Actions
                     if (Parser.StagesDict[name].OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        helper.RunUndoScript(Parser.StagesDict[name].OnError);
+                        helper.ExecuteCommand(Parser.StagesDict[name].OnError, "tmp_undo_script.sh");
                         Messages.Good("Undo complete.");
                     }
                     App.End(-1);

@@ -57,4 +57,20 @@ public class Messages
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine($"HINT: {text}");
     }
+    
+    public static void TraceBack(string line, int lineNumber)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("** ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("Traceback");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("* ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"Line: {line}");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("* ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"Line Number: {lineNumber.ToString()}");
+    }
 }
