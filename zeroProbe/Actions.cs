@@ -50,8 +50,13 @@ public class Actions
             if (Parser.StagesDict.ContainsKey(stage))
             {
                 Messages.Info($"Running stage '{stage}'...");
-                var res = helper.ExecuteStage(stage, Parser.StagesDict[stage].Command);
-
+                StringBuilder shellCommand = new StringBuilder();
+                foreach (var command in Parser.StagesDict[stage].Commands)
+                {
+                    shellCommand.Append($"{command}\n");
+                }
+                string commandToExecute = shellCommand.ToString();
+                var res = helper.ExecuteStage(stage, commandToExecute);
                 if (res.Error != "")
                 {
                     if (Parser.StagesDict[stage].IgnoreErrors)
@@ -68,6 +73,7 @@ public class Actions
                             helper.ExecuteCommand(Parser.StagesDict[stage].OnError, "tmp_undo_script.sh");
                             Messages.Good("Undo complete.");
                         }
+
                         App.End(-1);
                     }
                 }
@@ -154,8 +160,13 @@ public class Actions
         if (Parser.StagesDict.ContainsKey(name))
         {
             Messages.Info($"Running stage '{name}'...");
-            var res = helper.ExecuteStage(name, Parser.StagesDict[name].Command);
-
+            StringBuilder shellCommand = new StringBuilder();
+            foreach (var command in Parser.StagesDict[name].Commands)
+            {
+                shellCommand.Append($"{command}\n");
+            }
+            string commandToExecute = shellCommand.ToString();
+            var res = helper.ExecuteStage(name, commandToExecute);
             if (res.Error != "")
             {
                 if (Parser.StagesDict[name].IgnoreErrors)
@@ -172,6 +183,7 @@ public class Actions
                         helper.ExecuteCommand(Parser.StagesDict[name].OnError, "tmp_undo_script.sh");
                         Messages.Good("Undo complete.");
                     }
+
                     App.End(-1);
                 }
             }

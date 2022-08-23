@@ -16,7 +16,7 @@ public class Lexer {
          * 0x00f - Empty line.
          *
          * 0x054 - Stages.
-         * 0x700 - Set command to stage.
+         * 0x700 - Add command to stage.
          * 0x5fc - Set command if error occur.
          * 0x883 - Can ignore errors or not.
          */
@@ -62,7 +62,7 @@ public class Lexer {
             string[] splitCommands = split[0].Trim('!').Split('.');
             switch (splitCommands[1])
             {
-                case "command":
+                case "add_command":
                     lexerObject = new LexerObject
                     {
                         FunctionType = "0x700",

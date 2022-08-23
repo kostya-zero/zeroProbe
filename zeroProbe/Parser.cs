@@ -29,7 +29,7 @@ public class Parser
         }
     }
 
-    public void ParseLine(string line, int lineNumber)
+    private void ParseLine(string line, int lineNumber)
     {
         var obj = Lexer.Lex(line, lineNumber);
         if (ParsingOptions.Contains(ParserOptions.Debug)) { DebugInstruction(obj.FunctionType); }
@@ -52,29 +52,12 @@ public class Parser
                 }
                 break;
             case "0x054":
-                var split = obj.Arguments.Trim().Split(",");
-                if (!obj.Arguments.Trim().Contains(','))
+                var split = obj.Arguments.Trim().Split();
+                foreach (string stage in split)
                 {
-                    if (StagesList.Contains(obj.Arguments.Trim().Trim()))
-                    {
-                        Messages.Fatal($"Stage '{obj.Arguments.Trim().Trim()}' already defined.");
-                        App.End(-1);
-                    }
-                    StagesList.Add(obj.Arguments.Trim().Trim());
-                    StagesDict.Add(obj.Arguments.Trim().Trim(), new StageModel());
-                }
-                else
-                {
-                    foreach (var stage in split)
-                    {
-                        if (StagesList.Contains(stage.Trim()))
-                        {
-                            Messages.Fatal($"Stage '{stage.Trim()}' already defined");
-                            App.End(-1);
-                        }
-                        StagesList.Add(stage.Trim());
-                        StagesDict.Add(stage.Trim(), new StageModel());
-                    } 
+                    SpellChecker.CheckStageName(stage);
+                    StagesList.Add(stage);
+                    StagesDict.Add(stage, new StageModel());
                 }
                 break;
             case "0x700":
@@ -84,7 +67,7 @@ public class Parser
                                    "Or, you entered wrong name.");
                     App.End(-1);
                 }
-                StagesDict[obj.StageObject.StageName].Command = obj.StageObject.StageCommand;
+                StagesDict[obj.StageObject.StageName].Commands.Add(obj.StageObject.StageCommand);
                 break;
             case "0x5fc":
                 string stageName = obj.StageObject.StageName;

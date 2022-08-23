@@ -29,11 +29,17 @@ public class HostHelper
             foreach (var path in pathVariable)
             {
                 foundComponent = File.Exists($"{path}/{component}");
+                
+                if (foundComponent)
+                {
+                    break;
+                }
             }
             
             if (foundComponent)
             {
                 Messages.Good($"{component} was found!");
+                break;
             }
 
             if (!foundComponent)
