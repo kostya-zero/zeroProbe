@@ -1,11 +1,13 @@
-# zeroProbe
+<div align="center">
+    <img src="poster.png"/>
+</div>
 
-<div id="badges" >
+<div id="badges" align="center">
     <a href="https://www.codacy.com/gl/kostya-zero/zeroprobe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/zeroprobe&amp;utm_campaign=Badge_Grade">
         <img src="https://app.codacy.com/project/badge/Grade/ee24203115c542b08553b7e071a14b88"/>
     </a>
     <a href="https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml">
-        <img src="https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml/badge.svg?branch=main"/>
+        <img src="https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml/badge.svg?branch=main&"/>
     </a>
     <a href="https://img.shields.io/github/commit-activity/w/kostya-zero/zeroProbe">
         <img src="https://img.shields.io/github/commit-activity/w/kostya-zero/zeroProbe"/>
