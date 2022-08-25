@@ -1,34 +1,63 @@
 using System.Diagnostics;
+using zeroProbe.Enums;
 using zeroProbe.Models;
 
 namespace zeroProbe.Utils;
 
 public class Shell
 {
-    public ExecuteResult Execute(string path, string arguments)
+    private bool noSendOutput { get; set; } 
+    
+    public void OutputHandler(object s, DataReceivedEventArgs e)
     {
+        if (!noSendOutput)
+        {
+            Console.WriteLine(e.Data);
+        }
+    }
+    
+    public void ErrorHandler(object s, DataReceivedEventArgs e)
+    {
+        if (!noSendOutput)
+        {
+            Console.WriteLine(e.Data);
+        }
+    }
+    
+    public ExecuteResult Execute(string path, string arguments, List<ExecutionOptions> optionsList)
+    {
+        noSendOutput = optionsList.Contains(ExecutionOptions.NoOutputToConsole);
         Process proc = new Process();
         ProcessStartInfo procInfo = new ProcessStartInfo
         {
             FileName = path,
             Arguments = arguments,
             RedirectStandardError = true,
-            RedirectStandardOutput = true,
+            RedirectStandardOutput = !noSendOutput,
             RedirectStandardInput = true,
             CreateNoWindow = true
         };
-        proc.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
-        proc.ErrorDataReceived += (s, e) => Console.WriteLine(e.Data);
+        proc.OutputDataReceived += OutputHandler;
+        proc.ErrorDataReceived += ErrorHandler;
         proc.StartInfo = procInfo;
         proc.Start();
         proc.BeginOutputReadLine();
         string errs = proc.StandardError.ReadToEnd();
         proc.WaitForExit();
+        List<string> outputLines = new List<string>();
+        if (optionsList.Contains(ExecutionOptions.ReturnOutput))
+        {
+            while (!proc.StandardOutput.EndOfStream)
+            {
+                outputLines.Add(proc.StandardOutput.ReadLine() ?? "");
+            }
+        }
         ExecuteResult execRes = new ExecuteResult
         {
             Executed = true,
             GotErrors = errs != "",
-            Error = errs
+            Error = errs,
+            Output = outputLines
         };
         return execRes;
     }

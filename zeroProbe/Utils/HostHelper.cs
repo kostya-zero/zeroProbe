@@ -1,3 +1,4 @@
+using zeroProbe.Enums;
 using zeroProbe.Models;
 
 namespace zeroProbe.Utils;
@@ -60,7 +61,7 @@ public class HostHelper
     {
         ScriptHandler script = new ScriptHandler(fileName, commandToExecute);
         Shell sh = new Shell();
-        var res = sh.Execute("/bin/sh", fileName);
+        var res = sh.Execute("/bin/sh", fileName, new List<ExecutionOptions>());
         script.Remove();
         return res;
     }
