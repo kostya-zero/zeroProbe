@@ -11,7 +11,6 @@ internal class Program
         try
         {
             Console.ForegroundColor = ConsoleColor.White;
-            string configFileName = "stages.pbc";
 
             if (args.Length == 0)
             {
@@ -20,7 +19,10 @@ internal class Program
                 App.End();
             }
 
-            Actions acts = new Actions();
+            Actions acts = new Actions
+            {
+                FilePath = "stages.pbc"
+            };
             foreach (var arg in args)
             {
                 if (arg.StartsWith("--"))
@@ -58,7 +60,7 @@ internal class Program
                                 App.End(-1);
                             }
 
-                            configFileName = splitStrings[1];
+                            acts.FilePath = splitStrings[1];
                             break;
                         case "--debug":
                             acts.AddOption(ParserOptions.Debug, "--debug");
@@ -82,25 +84,25 @@ internal class Program
             switch (args[0])
             {
                 case "run":
-                    if (!File.Exists(configFileName))
+                    if (!File.Exists(acts.FilePath))
                     {
-                        Messages.Fatal($"Looks like '{configFileName}' not exists.");
+                        Messages.Fatal($"Looks like '{acts.FilePath}' not exists.");
                         Messages.Hint("Try to write template configuration with 'writeconfig'.");
                         App.End();
                     }
 
-                    acts.RunStages(configFileName);
+                    acts.RunStages();
                     break;
                 case "writeconfig":
-                    acts.WriteConfig(configFileName);
+                    acts.WriteConfig();
                     break;
                 case "asciiart":
                     HelpMessages.AsciiArt();
                     break;
                 case "runstage":
-                    if (!File.Exists(configFileName))
+                    if (!File.Exists(acts.FilePath))
                     {
-                        Messages.Fatal($"Looks like '{configFileName}' not exists.");
+                        Messages.Fatal($"Looks like '{acts.FilePath}' not exists.");
                         Messages.Hint("Try to write template configuration with 'writeconfig'.");
                         App.End();
                     }
@@ -112,7 +114,7 @@ internal class Program
                         App.End();
                     }
 
-                    acts.RunStage(args[1], configFileName);
+                    acts.RunStage(args[1]);
                     break;
                 case "help":
                     HelpMessages.Help();

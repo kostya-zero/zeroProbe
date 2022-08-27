@@ -8,11 +8,13 @@ public class Actions
 {
     private List<ParserOptions> Options { get; }
     private Parser Parser { get; }
+    public string FilePath { get; set; }
 
     public Actions()
     {
         Options = new List<ParserOptions>();
         Parser = new Parser();
+        FilePath = "";
     }
 
     public void AddOption(ParserOptions option, string optionName)
@@ -25,11 +27,11 @@ public class Actions
         Options.Add(option);
     }
     
-    public void RunStages(string filePath)
+    public void RunStages()
     {
         Parser.ParsingOptions = Options;
         HostHelper helper = new HostHelper();
-        string[] lines = File.ReadAllLines(filePath);
+        string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
         Messages.Info($"Running project: {Parser.ProjectName}");
 
@@ -83,17 +85,17 @@ public class Actions
         Messages.Good("All good! Great job!");
     }
 
-    public void WriteConfig(string filePath)
+    public void WriteConfig()
     {
-        if (File.Exists(filePath))
+        if (File.Exists(FilePath))
         {
             Messages.Info("You already have configuration file.");
             App.End();
         }
         
         Console.WriteLine("Writing new config file...");
-        File.Create(filePath).Close();
-        File.WriteAllText(filePath, @"/* This file was generated with zeroProbe 2.1 Emerging. */
+        File.Create(FilePath).Close();
+        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 2.1 Emerging. */
 
 /* Its a preview of how ProbeConfig file can be. */
 /* Everything about syntax and parameters you can learn on zeroProbe wiki. */
@@ -126,20 +128,20 @@ public class Actions
 !restore.command: echo 'Doing some restore staff...'
 !build.command: echo 'Doing some build staff...'
 !finish.command: echo 'Finishing this deal...'");
-        Console.WriteLine($"Template config ready! It's called '{filePath}'.");
+        Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
 
-    public void RunStage(string name, string filePath)
+    public void RunStage(string name)
     {
-        if (!File.Exists(filePath))
+        if (!File.Exists(FilePath))
         {
-            Console.WriteLine($"Cannot find file '{filePath}'.");
+            Console.WriteLine($"Cannot find file '{FilePath}'.");
             App.End(-1);
         }
 
         HostHelper helper = new HostHelper();
-        string[] allLines = File.ReadAllLines(filePath);
+        string[] allLines = File.ReadAllLines(FilePath);
         Parser.ParseLines(allLines);
 
         Messages.Info($"Running stage of project: {Parser.ProjectName}");
