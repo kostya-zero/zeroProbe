@@ -8,11 +8,13 @@ public class Actions
 {
     private List<ParserOptions> Options { get; }
     private Parser Parser { get; }
+    public string FilePath { get; set; }
 
     public Actions()
     {
         Options = new List<ParserOptions>();
         Parser = new Parser();
+        FilePath = "";
     }
 
     public void AddOption(ParserOptions option, string optionName)
@@ -25,53 +27,18 @@ public class Actions
         Options.Add(option);
     }
     
-    public void RunStages(string filePath)
+    public void RunStages()
     {
+        Parser.ParsingOptions = Options;
         HostHelper helper = new HostHelper();
-        string[] lines = File.ReadAllLines(filePath);
+        string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
         Messages.Info($"Running project: {Parser.ProjectName}");
 
         if (Parser.ComponentsToCheck.Count != 0)
         {
             Messages.Work("Checking for required components...");
-            List<string> pathVar = Env.GetPath();
-            int missingComponentsCount = 0;
-            List<string> foundComponents = new List<string>();
-            foreach (var component in Parser.ComponentsToCheck)
-            {
-                foreach (var path in pathVar)
-                {
-                    if (!foundComponents.Contains(component))
-                    {
-                        bool found = File.Exists($"{path}/{component}");
-                        if (found)
-                        {
-                            foundComponents.Add(component);
-                            Messages.Good($"Found {component}.");
-                        }
-                    }
-                }
-            }
-
-            foreach (var component in Parser.ComponentsToCheck)
-            {
-                if (!foundComponents.Contains(component))
-                {
-                    missingComponentsCount++;
-                }
-            }
-            
-            if (missingComponentsCount > 0)
-            {
-                Messages.Fatal($"{missingComponentsCount.ToString()} are missing. Review a configuration to " +
-                               "check which components missing.");
-                App.End(-1);
-            }
-            else
-            {
-                Messages.Good("All components installed!");
-            }
+            helper.CheckComponents(Parser.ComponentsToCheck);
         }
 
         if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
@@ -85,8 +52,13 @@ public class Actions
             if (Parser.StagesDict.ContainsKey(stage))
             {
                 Messages.Info($"Running stage '{stage}'...");
-                var res = helper.ExecuteStage(stage, Parser.StagesDict[stage].Command);
-
+                StringBuilder shellCommand = new StringBuilder();
+                foreach (var command in Parser.StagesDict[stage].Commands)
+                {
+                    shellCommand.Append($"{command}\n");
+                }
+                string commandToExecute = shellCommand.ToString();
+                var res = helper.ExecuteStage(stage, commandToExecute);
                 if (res.Error != "")
                 {
                     if (Parser.StagesDict[stage].IgnoreErrors)
@@ -100,9 +72,10 @@ public class Actions
                         if (Parser.StagesDict[stage].OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            helper.RunUndoScript(Parser.StagesDict[stage].OnError);
+                            helper.ExecuteCommand(Parser.StagesDict[stage].OnError, "tmp_undo_script.sh");
                             Messages.Good("Undo complete.");
                         }
+
                         App.End(-1);
                     }
                 }
@@ -112,17 +85,17 @@ public class Actions
         Messages.Good("All good! Great job!");
     }
 
-    public void WriteConfig(string filePath)
+    public void WriteConfig()
     {
-        if (File.Exists(filePath))
+        if (File.Exists(FilePath))
         {
-            Console.WriteLine("You already have configuration file.");
+            Messages.Info("You already have configuration file.");
             App.End();
         }
         
         Console.WriteLine("Writing new config file...");
-        File.Create("stages.pbc").Close();
-        File.WriteAllText("stages.pbc", @"/* This file was generated with zeroProbe 2.1 Emerging. */
+        File.Create(FilePath).Close();
+        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 3.0 Rebirth. */
 
 /* Its a preview of how ProbeConfig file can be. */
 /* Everything about syntax and parameters you can learn on zeroProbe wiki. */
@@ -142,97 +115,43 @@ public class Actions
 /* To tell zeroProbe what to do you need to create stages. */
 /* Stages include command that's must be executed. */
 /* Every stage will be executed in order how you wrote him. */
-&stages: restore, build, finish
+&stages: restore build finish
 
-/* !!! Updated in version 2.0 Emerging, read more on wiki. !!! */
 /* Now you need to assign command to stage. */
 /* Use '!' operator for it. */
 /* After '!' enter stage name. */
-/* Next, write '.command' and after double dots enter command to run. */
+/* Next, write '.add_command' and after double dots enter command to add. */
+/* zeroProbe will execute it one by one.
 /* To make stage ignore errors write '.ignore_errors' and after double dots 1 or 0. */
 /* To set command on error use '.on_error'. */
 /* Learn more you can on official wiki on GitLab and GitHub. */
-!restore.command: echo 'Doing some restore staff...'
-!build.command: echo 'Doing some build staff...'
-!finish.command: echo 'Finishing this deal...'");
-        Console.WriteLine("Template config ready! It's called 'stages.pbc'.");
+!restore.add_command: echo 'Doing some restore staff...'
+!build.add_command: echo 'Doing some build staff...'
+!finish.add_command: echo 'Finishing this deal...'");
+        Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
 
-    public void InspectStages(string filePath)
+    public void RunStage(string name)
     {
-        string[] allLines = File.ReadAllLines(filePath);
-        Parser.ParseLines(allLines);
-        
-        List<string> inspectStages = Parser.StagesList;
-        string inspectStagesCount = inspectStages.Count.ToString();
-        bool inspectNoStages = false;
-        string strStages;
-        
-        if (inspectStages.Count == 0)
+        if (!File.Exists(FilePath))
         {
-            inspectNoStages = true;
-        }
-        
-        Console.WriteLine(":::: Inspection results");
-        Console.WriteLine(":: Project info");
-        Console.WriteLine($"Project name: {Parser.ProjectName}");
-        Console.WriteLine("Shell commands: " 
-                          + (Parser.ShellCommands.Count == 0 ? "None" : Parser.ShellCommands.Count.ToString()));
-        StringBuilder reqBuilder = new StringBuilder();
-        foreach (string component in Parser.ComponentsToCheck)
-        {
-            reqBuilder.Append($"{component} ");
-        }
-        Console.WriteLine("Required components: " +
-            reqBuilder.ToString().Trim() == "" ? "None" : reqBuilder.ToString().Trim());
-        if (inspectNoStages)
-        {
-            Console.WriteLine(":: Stages");
-            Console.WriteLine("No stages in this configuration!");
-            App.End();
-        }
-        
-        StringBuilder stringBuilder = new StringBuilder();
-        if (inspectStages.Count == 1)
-        {
-            strStages = inspectStages[0];
-        }
-        else
-        {
-            foreach (var stage in inspectStages)
-            {
-                stringBuilder.Append($"{stage}, ");
-            }
-
-            strStages = stringBuilder.ToString().TrimEnd(',');
-        }
-        Console.WriteLine(":: Stages");
-        Console.WriteLine($"Stages: {strStages}");
-        Console.WriteLine($"Count:  {inspectStagesCount}\n");
-        Console.WriteLine(":: Stages commands");
-        foreach (var stage in inspectStages)
-        {
-            Console.WriteLine($"{stage}: {Parser.StagesDict[stage].Command}");
-        }        
-    }
-
-    public void RunStage(string name, string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine($"Cannot find file '{filePath}'.");
+            Console.WriteLine($"Cannot find file '{FilePath}'.");
             App.End(-1);
         }
 
         HostHelper helper = new HostHelper();
-        string[] allLines = File.ReadAllLines(filePath);
-        foreach (var line in allLines)
-        {
-            Parser.ParseLine(line);
-        }
+        string[] allLines = File.ReadAllLines(FilePath);
+        Parser.ParseLines(allLines);
+
         Messages.Info($"Running stage of project: {Parser.ProjectName}");
 
+        if (Parser.ComponentsToCheck.Count != 0)
+        {
+            Messages.Work("Checking for required components...");
+            helper.CheckComponents(Parser.ComponentsToCheck);
+        }
+        
         if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
         {
             helper.ExecuteShellCommands(Parser.ShellCommands, 
@@ -243,8 +162,13 @@ public class Actions
         if (Parser.StagesDict.ContainsKey(name))
         {
             Messages.Info($"Running stage '{name}'...");
-            var res = helper.ExecuteStage(name, Parser.StagesDict[name].Command);
-
+            StringBuilder shellCommand = new StringBuilder();
+            foreach (var command in Parser.StagesDict[name].Commands)
+            {
+                shellCommand.Append($"{command}\n");
+            }
+            string commandToExecute = shellCommand.ToString();
+            var res = helper.ExecuteStage(name, commandToExecute);
             if (res.Error != "")
             {
                 if (Parser.StagesDict[name].IgnoreErrors)
@@ -258,9 +182,10 @@ public class Actions
                     if (Parser.StagesDict[name].OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        helper.RunUndoScript(Parser.StagesDict[name].OnError);
+                        helper.ExecuteCommand(Parser.StagesDict[name].OnError, "tmp_undo_script.sh");
                         Messages.Good("Undo complete.");
                     }
+
                     App.End(-1);
                 }
             }

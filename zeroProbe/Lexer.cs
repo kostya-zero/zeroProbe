@@ -4,21 +4,21 @@ using zeroProbe.Utils;
 namespace zeroProbe;
 
 public class Lexer {
-    public static LexerObject Lex(string line)
+    public static LexerObject Lex(string line, int lineNumber)
     {
         /*
          * Functions type:
-         * 0x11f - Comment
-         * 0xc88 - Check for components
-         * 0xa33 - Undo script
-         * 0x805 - Shell command
-         * 0x6b8 - Project name
-         * 0x00f - Empty line
+         * 0x11f - Comment.
+         * 0xc88 - Check for components.
+         * 0xa33 - Undo script.
+         * 0x805 - Shell command.
+         * 0x6b8 - Project name.
+         * 0x00f - Empty line.
          *
-         * 0x054 - Stages
-         * 0x700 - Set command to stage
-         * 0x5fc - Set command if error occur
-         * 0x883 - Can ignore errors or not
+         * 0x054 - Stages.
+         * 0x700 - Add command to stage.
+         * 0x5fc - Set command if error occur.
+         * 0x883 - Can ignore errors or not.
          */
         
         LexerObject lexerObject = new LexerObject();
@@ -42,7 +42,8 @@ public class Lexer {
 
         if (!line.Contains(':'))
         {
-            Messages.Fatal($"Bad expression: {line}.");
+            Messages.Fatal("Bad line expression.");
+            Messages.TraceBack(line, lineNumber);
             Messages.Hint("Every line must have command and argument divided by double dots (:).");
             App.End(-1);
         }
@@ -53,14 +54,15 @@ public class Lexer {
         {
             if (!split[0].Contains('.'))
             {
-                Messages.Fatal($"(NEW) Bad stage assign syntax. " +
-                               $"To assign command use: !{split[0].TrimStart('!')}.command: echo 'Your command'");
+                Messages.Fatal("Bad stage assign syntax.");
+                Messages.TraceBack(line, lineNumber);
+                Messages.Hint($"To assign command use: !{split[0].TrimStart('!')}.command: echo 'Your command'"); 
                 App.End(-1);
             }
             string[] splitCommands = split[0].Trim('!').Split('.');
             switch (splitCommands[1])
             {
-                case "command":
+                case "add_command":
                     lexerObject = new LexerObject
                     {
                         FunctionType = "0x700",
@@ -95,6 +97,7 @@ public class Lexer {
                     break;
                 default:
                     Messages.Fatal("Unknown stage property.");
+                    Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Learn more about stages property at zeroProbe wiki.");
                     App.End(-1);
                     break;
@@ -134,6 +137,7 @@ public class Lexer {
                     break;
                 default:
                     Messages.Fatal("Unknown command called.");
+                    Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Learn about available commands at zeroProbe wiki.");
                     App.End(-1);
                     break;

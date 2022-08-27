@@ -1,3 +1,4 @@
+using zeroProbe.Enums;
 using zeroProbe.Models;
 
 namespace zeroProbe.Utils;
@@ -19,26 +20,50 @@ public class HostHelper
         }
     }
 
-    public void CheckComponents()
+    public void CheckComponents(List<string> components)
     {
-        /*
-         * > NOTICE
-         * Make components to check script (or copy from Actions.cs).
-         */
+        List<string> pathVariable = Env.GetPath();
+        List<string> notFoundComponents = new List<string>();
+        bool foundComponent = false;
+        foreach (var component in components)
+        {
+            foreach (var path in pathVariable)
+            {
+                foundComponent = File.Exists($"{path}/{component}");
+                
+                if (foundComponent)
+                {
+                    break;
+                }
+            }
+            
+            if (foundComponent)
+            {
+                Messages.Good($"{component} was found!");
+                break;
+            }
+
+            if (!foundComponent)
+            {
+                notFoundComponents.Add(component);
+                Messages.Warning($"{component} not found!");
+            }
+        }
+
+        if (notFoundComponents.Count > 0)
+        {
+            Messages.Fatal($"{notFoundComponents.Count.ToString()} not found! Cannot continue.");
+            App.End();
+        }
     }
 
     public ExecuteResult ExecuteCommand(string commandToExecute, string fileName)
     {
         ScriptHandler script = new ScriptHandler(fileName, commandToExecute);
         Shell sh = new Shell();
-        var res = sh.Execute("/bin/sh", fileName);
+        var res = sh.Execute("/bin/sh", fileName, new List<ExecutionOptions>());
         script.Remove();
         return res;
-    }
-
-    public void RunUndoScript(string commandToExecute)
-    {
-        ExecuteCommand(commandToExecute, "tmp_undo_script.sh");
     }
 
     public ExecuteResult ExecuteStage(string stageName, string command)

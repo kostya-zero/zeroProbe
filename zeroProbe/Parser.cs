@@ -1,3 +1,4 @@
+using zeroProbe.Enums;
 using zeroProbe.Models;
 using zeroProbe.Utils;
 
@@ -6,12 +7,12 @@ namespace zeroProbe;
 public class Parser
 {
     public Dictionary<string, StageModel> StagesDict { get; }  = new();
-    public bool Debug { get; set; }
     private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
     public List<string> StagesList  { get; } = new();
     public List<string> ShellCommands { get; } = new();
     public List<string> ComponentsToCheck { get; } = new();
+    public List<ParserOptions> ParsingOptions { private get; set; } = new List<ParserOptions>();
 
     public void DebugInstruction(string instruction)
     {
@@ -20,16 +21,18 @@ public class Parser
 
     public void ParseLines(string[] lines)
     {
+        int lineNumber = 0;
         foreach (string line in lines)
         {
-            ParseLine(line);
+            lineNumber++;
+            ParseLine(line, lineNumber);
         }
     }
 
-    public void ParseLine(string line)
+    private void ParseLine(string line, int lineNumber)
     {
-        var obj = Lexer.Lex(line);
-        if (Debug) { DebugInstruction(obj.FunctionType); }
+        var obj = Lexer.Lex(line, lineNumber);
+        if (ParsingOptions.Contains(ParserOptions.Debug)) { DebugInstruction(obj.FunctionType); }
         switch (obj.FunctionType)
         {
             case "0x11f":
@@ -49,29 +52,12 @@ public class Parser
                 }
                 break;
             case "0x054":
-                var split = obj.Arguments.Trim().Split(",");
-                if (!obj.Arguments.Trim().Contains(','))
+                var split = obj.Arguments.Trim().Split();
+                foreach (string stage in split)
                 {
-                    if (StagesList.Contains(obj.Arguments.Trim().Trim()))
-                    {
-                        Messages.Fatal($"Stage '{obj.Arguments.Trim().Trim()}' already defined.");
-                        App.End(-1);
-                    }
-                    StagesList.Add(obj.Arguments.Trim().Trim());
-                    StagesDict.Add(obj.Arguments.Trim().Trim(), new StageModel());
-                }
-                else
-                {
-                    foreach (var stage in split)
-                    {
-                        if (StagesList.Contains(stage.Trim()))
-                        {
-                            Messages.Fatal($"Stage '{stage.Trim()}' already defined");
-                            App.End(-1);
-                        }
-                        StagesList.Add(stage.Trim());
-                        StagesDict.Add(stage.Trim(), new StageModel());
-                    } 
+                    SpellChecker.CheckStageName(stage);
+                    StagesList.Add(stage);
+                    StagesDict.Add(stage, new StageModel());
                 }
                 break;
             case "0x700":
@@ -81,7 +67,7 @@ public class Parser
                                    "Or, you entered wrong name.");
                     App.End(-1);
                 }
-                StagesDict[obj.StageObject.StageName].Command = obj.StageObject.StageCommand;
+                StagesDict[obj.StageObject.StageName].Commands.Add(obj.StageObject.StageCommand);
                 break;
             case "0x5fc":
                 string stageName = obj.StageObject.StageName;
