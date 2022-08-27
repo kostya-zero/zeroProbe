@@ -95,7 +95,7 @@ public class Actions
         
         Console.WriteLine("Writing new config file...");
         File.Create(FilePath).Close();
-        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 2.1 Emerging. */
+        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 3.0 Rebirth. */
 
 /* Its a preview of how ProbeConfig file can be. */
 /* Everything about syntax and parameters you can learn on zeroProbe wiki. */
@@ -115,19 +115,19 @@ public class Actions
 /* To tell zeroProbe what to do you need to create stages. */
 /* Stages include command that's must be executed. */
 /* Every stage will be executed in order how you wrote him. */
-&stages: restore, build, finish
+&stages: restore build finish
 
-/* !!! Updated in version 2.0 Emerging, read more on wiki. !!! */
 /* Now you need to assign command to stage. */
 /* Use '!' operator for it. */
 /* After '!' enter stage name. */
-/* Next, write '.command' and after double dots enter command to run. */
+/* Next, write '.add_command' and after double dots enter command to add. */
+/* zeroProbe will execute it one by one.
 /* To make stage ignore errors write '.ignore_errors' and after double dots 1 or 0. */
 /* To set command on error use '.on_error'. */
 /* Learn more you can on official wiki on GitLab and GitHub. */
-!restore.command: echo 'Doing some restore staff...'
-!build.command: echo 'Doing some build staff...'
-!finish.command: echo 'Finishing this deal...'");
+!restore.add_command: echo 'Doing some restore staff...'
+!build.add_command: echo 'Doing some build staff...'
+!finish.add_command: echo 'Finishing this deal...'");
         Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
     }
