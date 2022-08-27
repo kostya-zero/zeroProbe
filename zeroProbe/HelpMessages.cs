@@ -45,7 +45,6 @@ public class HelpMessages
         Console.WriteLine("run              - runs all stages in stages.conf.");
         Console.WriteLine("asciiart         - shows zeroProbe ASCII art.");
         Console.WriteLine("wiki             - opens zeroProbe wiki page in browser.");
-        Console.WriteLine("remote           - get remote URL (if directory is a git repository).");
         Console.WriteLine("runstage [stage] - runs stage standalone.\n");
         
         Console.ForegroundColor = ConsoleColor.Cyan;
@@ -64,8 +63,8 @@ public class HelpMessages
         Console.WriteLine("Version:      3.0-unstable");
         Console.WriteLine("Codename:     Rebirth");
         Console.WriteLine(".NET Version: 6.0.8");
-        Console.WriteLine("Build Date:   25.08.2022");
-        Console.WriteLine("Build Number: 69");
+        Console.WriteLine("Build Date:   27.08.2022");
+        Console.WriteLine("Build Number: 74");
         Console.WriteLine("Build Engine: 17.0.0");
         App.End();
     }
