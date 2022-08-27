@@ -12,7 +12,7 @@ public class Parser
     public List<string> StagesList  { get; } = new();
     public List<string> ShellCommands { get; } = new();
     public List<string> ComponentsToCheck { get; } = new();
-    public List<ParserOptions> ParsingOptions { private get; set; } 
+    public List<ParserOptions> ParsingOptions { private get; set; } = new List<ParserOptions>();
 
     public void DebugInstruction(string instruction)
     {

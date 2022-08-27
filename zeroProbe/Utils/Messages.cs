@@ -1,5 +1,3 @@
-using Console = System.Console;
-
 namespace zeroProbe.Utils;
 
 public class Messages

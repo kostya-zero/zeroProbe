@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using zeroProbe.Enums;
+﻿using zeroProbe.Enums;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
