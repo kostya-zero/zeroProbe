@@ -39,7 +39,6 @@ In future updates we will bring to zeroProbe more new features to make your work
 
 
 ![img.png](img.png)
-> Not final version. Look may change with release.
 
 ## Features
 ### Your powerful tool
