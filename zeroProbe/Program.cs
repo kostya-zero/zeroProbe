@@ -123,9 +123,6 @@ internal class Program
                 case "version":
                     HelpMessages.Version();
                     break;
-                case "remote":
-                    acts.GetRemote();
-                    break;
                 default:
                     Messages.Fatal($"Unknown argument '{args[0]}'.");
                     Messages.Hint("Run zeroProbe with command 'help' to get list of arguments and actions.");

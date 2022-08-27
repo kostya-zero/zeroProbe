@@ -24,20 +24,6 @@ public class Actions
         }
         Options.Add(option);
     }
-
-    public void GetRemote()
-    {
-        GitTool gitTool = new GitTool();
-        string remote = gitTool.GetRemoteUrl().Trim();
-        if (remote == "")
-        {
-            Messages.Fatal("Not a git repository or no remote set.");
-            Messages.Hint("Check if current directory is a git repository");
-            App.End(-1);
-        }
-
-        Messages.Info(remote);
-    }
     
     public void RunStages(string filePath)
     {
