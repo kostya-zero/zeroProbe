@@ -121,13 +121,6 @@ public class Lexer {
                         Arguments = split[1]
                     };
                     break;
-                case "&shell":
-                    lexerObject = new LexerObject
-                    {
-                        FunctionType = "0x805",
-                        Arguments = split[1]
-                    };
-                    break;
                 case "&project":
                     lexerObject = new LexerObject
                     {

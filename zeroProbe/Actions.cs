@@ -1,5 +1,6 @@
 using System.Text;
 using zeroProbe.Enums;
+using zeroProbe.Models;
 using zeroProbe.Utils;
 
 namespace zeroProbe;
@@ -8,12 +9,16 @@ public class Actions
 {
     private List<ParserOptions> Options { get; }
     private Parser Parser { get; }
+    private HostHelper Helper { get; }
+    private Project Project { get; set; }
     public string FilePath { get; set; }
 
     public Actions()
     {
         Options = new List<ParserOptions>();
         Parser = new Parser();
+        Helper = new HostHelper();
+        Project = new Project();
         FilePath = "";
     }
 
@@ -29,39 +34,40 @@ public class Actions
     
     public void RunStages()
     {
+        Parser.SetProject(Project);
         Parser.ParsingOptions = Options;
-        HostHelper helper = new HostHelper();
         string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
-        Messages.Info($"Running project: {Parser.ProjectName}");
+        Project = Parser.GetProject();
+        Messages.Info($"Running project: {Project.Name}");
 
-        if (Parser.ComponentsToCheck.Count != 0)
+        if (Project.Components.Count != 0)
         {
             Messages.Work("Checking for required components...");
-            helper.CheckComponents(Parser.ComponentsToCheck);
+            Helper.CheckComponents(Project.Components);
         }
 
-        if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
+        if (Project.StagesList.Count == 0)
         {
-            helper.ExecuteShellCommands(Parser.ShellCommands, 
-                Options.Contains(ParserOptions.SkipShellCommandsErrors));
+            Messages.Info("No stages found, aborting...");
+            App.End();
         }
         
-        foreach (var stage in Parser.StagesList)
+        foreach (var stage in Project.StagesList)
         {
-            if (Parser.StagesDict.ContainsKey(stage))
+            if (Project.StagesModels.ContainsKey(stage))
             {
                 Messages.Info($"Running stage '{stage}'...");
                 StringBuilder shellCommand = new StringBuilder();
-                foreach (var command in Parser.StagesDict[stage].Commands)
+                foreach (var command in Project.StagesModels[stage].Commands)
                 {
                     shellCommand.Append($"{command}\n");
                 }
                 string commandToExecute = shellCommand.ToString();
-                var res = helper.ExecuteStage(stage, commandToExecute);
+                var res = Helper.ExecuteStage(stage, commandToExecute);
                 if (res.Error != "")
                 {
-                    if (Parser.StagesDict[stage].IgnoreErrors)
+                    if (Project.StagesModels[stage].IgnoreErrors)
                     {
                         Messages.Info("Error occur but zeroProbe will ignore it.");
                     }
@@ -69,10 +75,10 @@ public class Actions
                     {
                         Messages.Fatal("Stage not passed due an error:");
                         Console.WriteLine(res.Error);
-                        if (Parser.StagesDict[stage].OnError != "")
+                        if (Project.StagesModels[stage].OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            helper.ExecuteCommand(Parser.StagesDict[stage].OnError, "tmp_undo_script.sh");
+                            Helper.ExecuteCommand(Project.StagesModels[stage].OnError, "tmp_undo_script.sh");
                             Messages.Good("Undo complete.");
                         }
 
@@ -105,11 +111,6 @@ public class Actions
 /* Project name are not necessary. */
 /* zeroProbe automatically set your project name to 'unnamed'. */
 &project: test
-
-/* You can add shell commands to execute. */
-/* &shell command can be used multiple times. */
-/* All commands will be executed how you add it. */
-&shell: echo 'This is a small template for screenshot!'
 
 /* Stages are main feature of your config. */
 /* To tell zeroProbe what to do you need to create stages. */
@@ -150,12 +151,6 @@ public class Actions
         {
             Messages.Work("Checking for required components...");
             helper.CheckComponents(Parser.ComponentsToCheck);
-        }
-        
-        if (Parser.ShellCommands.Count != 0 && !Options.Contains(ParserOptions.SkipShellCommands))
-        {
-            helper.ExecuteShellCommands(Parser.ShellCommands, 
-                Options.Contains(ParserOptions.SkipShellCommandsErrors));
         }
         
         Messages.Info($"Running stage of project: {Parser.ProjectName}");

@@ -63,8 +63,8 @@ public class HelpMessages
         Console.WriteLine("Version:      3.0");
         Console.WriteLine("Codename:     Rebirth");
         Console.WriteLine(".NET Version: 6.0.8");
-        Console.WriteLine("Build Date:   27.08.2022");
-        Console.WriteLine("Build Number: 74");
+        Console.WriteLine("Build Date:   07.09.2022");
+        Console.WriteLine("Build Number: 89");
         Console.WriteLine("Build Engine: 17.0.0");
         App.End();
     }

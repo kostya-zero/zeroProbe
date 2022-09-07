@@ -7,16 +7,25 @@ namespace zeroProbe;
 public class Parser
 {
     public Dictionary<string, StageModel> StagesDict { get; }  = new();
-    private bool SetProjectFirstTime { get; set; } = true;
     public string ProjectName { get; private set; }  = "unnamed";
     public List<string> StagesList  { get; } = new();
-    public List<string> ShellCommands { get; } = new();
     public List<string> ComponentsToCheck { get; } = new();
     public List<ParserOptions> ParsingOptions { private get; set; } = new List<ParserOptions>();
+    public Project Project { get; set; } 
 
     public void DebugInstruction(string instruction)
     {
         Messages.Debug($"Calling instruction {instruction}.");
+    }
+
+    public void SetProject(Project newProject)
+    {
+        Project = newProject;
+    }
+    
+    public Project GetProject()
+    {
+        return Project;
     }
 
     public void ParseLines(string[] lines)
@@ -43,12 +52,12 @@ public class Parser
                     string[] splitComponents = obj.Arguments.Trim().Split();
                     foreach (string component in splitComponents)
                     {
-                        ComponentsToCheck.Add(component.Trim());
+                        Project.Components.Add(component.Trim());
                     }
                 }
                 else
                 {
-                    ComponentsToCheck.Add(obj.Arguments.Trim());
+                    Project.Components.Add(obj.Arguments.Trim());
                 }
                 break;
             case "0x054":
@@ -56,30 +65,30 @@ public class Parser
                 foreach (string stage in split)
                 {
                     SpellChecker.CheckStageName(stage);
-                    StagesList.Add(stage);
-                    StagesDict.Add(stage, new StageModel());
+                    Project.StagesList.Add(stage);
+                    Project.StagesModels.Add(stage, new StageModel());
                 }
                 break;
             case "0x700":
-                if (!StagesList.Contains(obj.StageObject.StageName))
+                if (!Project.StagesList.Contains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. " +
                                    "Or, you entered wrong name.");
                     App.End(-1);
                 }
-                StagesDict[obj.StageObject.StageName].Commands.Add(obj.StageObject.StageCommand);
+                Project.StagesModels[obj.StageObject.StageName].Commands.Add(obj.StageObject.StageCommand);
                 break;
             case "0x5fc":
                 string stageName = obj.StageObject.StageName;
-                if (!StagesList.Contains(stageName))
+                if (!Project.StagesList.Contains(stageName))
                 {
                     Messages.Fatal($"Stage '{stageName}' not defined. Or, you entered wrong name.");
                     App.End(-1);
                 }
-                StagesDict[stageName].OnError = obj.StageObject.StageCommand;
+                Project.StagesModels[stageName].OnError = obj.StageObject.StageCommand;
                 break;
             case "0x883":
-                if (!StagesList.Contains(obj.StageObject.StageName))
+                if (!Project.StagesList.Contains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. Or, you entered wrong name.");
                     App.End(-1);
@@ -87,20 +96,20 @@ public class Parser
                 switch (obj.StageObject.StageCommand.Trim())
                 {
                     case "1":
-                        if (StagesDict[obj.StageObject.StageName].OnError != "")
+                        if (Project.StagesModels[obj.StageObject.StageName].OnError != "")
                         {
                             Messages.Fatal("You can't set ignore errors if you set an error command.");
                             App.End(-1);
                         }
-                        StagesDict[obj.StageObject.StageName].IgnoreErrors = true;
+                        Project.StagesModels[obj.StageObject.StageName].IgnoreErrors = true;
                         break;
                     case "0":
-                        if (StagesDict[obj.StageObject.StageName].OnError != "")
+                        if (Project.StagesModels[obj.StageObject.StageName].OnError != "")
                         {
                             Messages.Fatal("You can't set ignore errors if you set an error command.");
                             App.End(-1);
                         }
-                        StagesDict[obj.StageObject.StageName].IgnoreErrors = false;
+                        Project.StagesModels[obj.StageObject.StageName].IgnoreErrors = false;
                         break;
                     default:
                         Messages.Fatal("Bad syntax. You can set only 1 or 0 for 'ignore_errors'.");
@@ -108,16 +117,8 @@ public class Parser
                         break;
                 }
                 break;
-            case "0x805":
-                ShellCommands.Add(obj.Arguments);
-                break;
             case "0x6b8":
-                if (!SetProjectFirstTime)
-                {
-                    Messages.Warning("Project name already assigned.");
-                }
-                SetProjectFirstTime = false;
-                ProjectName = obj.Arguments.Trim();
+                Project.Name = obj.Arguments.Trim();
                 break;
             case "0x00f":
                 break;
