@@ -68,8 +68,9 @@ public class Parser
             case "0x700":
                 if (!Project.StagesList.Contains(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. " +
-                                   "Or, you entered wrong name.");
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
+                    Messages.TraceBack(line, lineNumber);
+                    Messages.Hint("Check your config. Maybe you haven't defined this stage."); 
                     App.End(-1);
                 }
                 Project.StagesModels[obj.StageObject.StageName].Commands.Add(obj.StageObject.StageCommand);
@@ -78,7 +79,9 @@ public class Parser
                 string stageName = obj.StageObject.StageName;
                 if (!Project.StagesList.Contains(stageName))
                 {
-                    Messages.Fatal($"Stage '{stageName}' not defined. Or, you entered wrong name.");
+                    Messages.Fatal($"Stage '{stageName}' not defined.");
+                    Messages.TraceBack(line, lineNumber);
+                    Messages.Hint("Check your config. Maybe you haven't defined this stage."); 
                     App.End(-1);
                 }
                 Project.StagesModels[stageName].OnError = obj.StageObject.StageCommand;
@@ -105,6 +108,7 @@ public class Parser
                         break;
                     default:
                         Messages.Fatal("Bad value for 'arch'.");
+                        Messages.TraceBack(line, lineNumber);
                         Messages.Hint("You can set only 64 or 32.");
                         App.End(-1);
                         break;
@@ -122,6 +126,7 @@ public class Parser
                         if (Project.StagesModels[obj.StageObject.StageName].OnError != "")
                         {
                             Messages.Fatal("You can't set ignore errors if you set an error command.");
+                            Messages.TraceBack(line, lineNumber);
                             App.End(-1);
                         }
                         Project.StagesModels[obj.StageObject.StageName].IgnoreErrors = true;
@@ -130,12 +135,14 @@ public class Parser
                         if (Project.StagesModels[obj.StageObject.StageName].OnError != "")
                         {
                             Messages.Fatal("You can't set ignore errors if you set an error command.");
+                            Messages.TraceBack(line, lineNumber);
                             App.End(-1);
                         }
                         Project.StagesModels[obj.StageObject.StageName].IgnoreErrors = false;
                         break;
                     default:
                         Messages.Fatal("Bad syntax. You can set only 1 or 0 for 'ignore_errors'.");
+                        Messages.TraceBack(line, lineNumber);
                         App.End(-1);
                         break;
                 }
@@ -147,6 +154,7 @@ public class Parser
                 break;
             default:
                 Messages.Fatal($"Illegal instruction called -> {obj.FunctionType}");
+                Messages.TraceBack(line, lineNumber);
                 App.End(-1);
                 break;
         }
