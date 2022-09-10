@@ -22,6 +22,16 @@ public class Actions
         FilePath = "";
     }
 
+    public void CheckForConfigFile()
+    {
+        if (!File.Exists(FilePath))
+        {
+            Messages.Fatal($"Looks like '{FilePath}' not exists.");
+            Messages.Hint("Try to write template configuration with 'writeconfig' action.");
+            App.End(-1);
+        }
+    }
+
     public void AddOption(ParserOptions option, string optionName)
     {
         if (Options.Contains(option))
@@ -101,7 +111,7 @@ public class Actions
         
         Console.WriteLine("Writing new config file...");
         File.Create(FilePath).Close();
-        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 3.0 Rebirth. */
+        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 4.0 Voyage. */
 
 /* Its a preview of how ProbeConfig file can be. */
 /* Everything about syntax and parameters you can learn on zeroProbe wiki. */
@@ -110,13 +120,13 @@ public class Actions
 
 /* Project name are not necessary. */
 /* zeroProbe automatically set your project name to 'unnamed'. */
-&project: test
+project: test
 
 /* Stages are main feature of your config. */
 /* To tell zeroProbe what to do you need to create stages. */
 /* Stages include command that's must be executed. */
 /* Every stage will be executed in order how you wrote him. */
-&stages: restore build finish
+stages: restore build finish
 
 /* Now you need to assign command to stage. */
 /* Use '!' operator for it. */

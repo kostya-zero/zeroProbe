@@ -44,21 +44,6 @@ internal class Program
                     switch (splitStrings[0])
                     {
                         case "--file":
-                            if (!File.Exists(splitStrings[1]))
-                            {
-                                Messages.Fatal($"Looks like '{splitStrings[1]}' not exists.");
-                                Messages.Hint("Try to write template configuration with 'writeconfig' action.");
-                                App.End(-1);
-                            }
-
-                            Console.WriteLine(Path.GetExtension(splitStrings[1]));
-                            if (Path.GetExtension(splitStrings[1]) != "pbc")
-                            {
-                                Messages.Fatal("File not associate with ProbeConfig.");
-                                Messages.Hint("Set file extension to '.pbc'.");
-                                App.End(-1);
-                            }
-
                             acts.FilePath = splitStrings[1];
                             break;
                         case "--debug":
