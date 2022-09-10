@@ -103,46 +103,44 @@ public class Lexer {
                     break;
             }
         }
-        else if (split[0].StartsWith("&"))
+        switch (split[0])
         {
-            switch (split[0])
-            {
-                case "&check_for":
-                    lexerObject = new LexerObject
-                    {
-                        FunctionType = "0xc88",
-                        Arguments = split[1]
-                    };
-                    break;
-                case "&stages":
-                    lexerObject = new LexerObject
-                    {
-                        FunctionType = "0x054",
-                        Arguments = split[1]
-                    };
-                    break;
-                case "&shell":
-                    lexerObject = new LexerObject
-                    {
-                        FunctionType = "0x805",
-                        Arguments = split[1]
-                    };
-                    break;
-                case "&project":
-                    lexerObject = new LexerObject
-                    {
-                        FunctionType = "0x6b8",
-                        Arguments = split[1]
-                    };
-                    break;
-                default:
-                    Messages.Fatal("Unknown command called.");
-                    Messages.TraceBack(line, lineNumber);
-                    Messages.Hint("Learn about available commands at zeroProbe wiki.");
-                    App.End(-1);
-                    break;
-            }
+            case "check_for":
+                lexerObject = new LexerObject
+                {
+                    FunctionType = "0xc88",
+                    Arguments = split[1]
+                };
+                break;
+            case "stages":
+                lexerObject = new LexerObject
+                {
+                    FunctionType = "0x054",
+                    Arguments = split[1]
+                };
+                break;
+            case "shell":
+                lexerObject = new LexerObject
+                {
+                    FunctionType = "0x805",
+                    Arguments = split[1]
+                };
+                break;
+            case "project":
+                lexerObject = new LexerObject
+                {
+                    FunctionType = "0x6b8",
+                    Arguments = split[1]
+                };
+                break;
+            default:
+                Messages.Fatal("Unknown command called.");
+                Messages.TraceBack(line, lineNumber);
+                Messages.Hint("Learn about available commands at zeroProbe wiki.");
+                App.End(-1);
+                break;
         }
+        
         return lexerObject;
     }
 }
