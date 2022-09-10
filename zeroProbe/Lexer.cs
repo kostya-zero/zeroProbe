@@ -14,6 +14,7 @@ public class Lexer {
          * 0x805 - Set shell.
          * 0x6b8 - Project name.
          * 0x00f - Empty line.
+         * 0xa58 - Architecture
          *
          * 0x054 - Stages.
          * 0x700 - Add command to stage.
@@ -130,6 +131,13 @@ public class Lexer {
                 lexerObject = new LexerObject
                 {
                     FunctionType = "0x6b8",
+                    Arguments = split[1].Trim()
+                };
+                break;
+            case "arch":
+                lexerObject = new LexerObject
+                {
+                    FunctionType = "0xa58",
                     Arguments = split[1].Trim()
                 };
                 break;

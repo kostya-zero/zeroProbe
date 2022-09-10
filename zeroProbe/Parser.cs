@@ -83,9 +83,32 @@ public class Parser
                 }
                 Project.StagesModels[stageName].OnError = obj.StageObject.StageCommand;
                 break;
-            // 0x805
             case "0x805":
                 Project.Shell = obj.Arguments;
+                break;
+            case "0xa58":
+                switch (obj.Arguments)
+                {
+                    case "64":
+                        if (!Environment.Is64BitOperatingSystem)
+                        {
+                            Messages.Fatal("This config can be used only on 64 bit systems.");
+                            App.End(-1);
+                        }
+                        break;
+                    case "32":
+                        if (Environment.Is64BitOperatingSystem)
+                        {
+                            Messages.Fatal("This config can be used only on 32 bit systems.");
+                            App.End(-1);
+                        }
+                        break;
+                    default:
+                        Messages.Fatal("Bad value for 'arch'.");
+                        Messages.Hint("You can set only 64 or 32.");
+                        App.End(-1);
+                        break;
+                }
                 break;
             case "0x883":
                 if (!Project.StagesList.Contains(obj.StageObject.StageName))
