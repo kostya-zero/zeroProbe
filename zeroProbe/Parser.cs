@@ -6,14 +6,10 @@ namespace zeroProbe;
 
 public class Parser
 {
-    public Dictionary<string, StageModel> StagesDict { get; }  = new();
-    public string ProjectName { get; private set; }  = "unnamed";
-    public List<string> StagesList  { get; } = new();
-    public List<string> ComponentsToCheck { get; } = new();
     public List<ParserOptions> ParsingOptions { private get; set; } = new List<ParserOptions>();
-    public Project Project { get; set; } 
+    private Project Project { get; set; }
 
-    public void DebugInstruction(string instruction)
+    private void DebugInstruction(string instruction)
     {
         Messages.Debug($"Calling instruction {instruction}.");
     }

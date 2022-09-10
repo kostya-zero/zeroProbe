@@ -84,20 +84,6 @@ internal class Program
                     HelpMessages.AsciiArt();
                     break;
                 case "runstage":
-                    if (!File.Exists(acts.FilePath))
-                    {
-                        Messages.Fatal($"Looks like '{acts.FilePath}' not exists.");
-                        Messages.Hint("Try to write template configuration with 'writeconfig'.");
-                        App.End();
-                    }
-
-                    if (args.Length != 2)
-                    {
-                        Console.WriteLine("To run stage you need to enter name of stage you want to run.");
-                        Console.WriteLine("Example: zeroProbe runstage build (where 'build' - name of stage).");
-                        App.End();
-                    }
-
                     acts.RunStage(args[1]);
                     break;
                 case "help":

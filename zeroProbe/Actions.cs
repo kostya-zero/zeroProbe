@@ -22,7 +22,7 @@ public class Actions
         FilePath = "";
     }
 
-    public void CheckForConfigFile()
+    private void CheckForConfigFile()
     {
         if (!File.Exists(FilePath))
         {
@@ -44,6 +44,7 @@ public class Actions
     
     public void RunStages()
     {
+        CheckForConfigFile();
         Parser.SetProject(Project);
         Parser.ParsingOptions = Options;
         string[] lines = File.ReadAllLines(FilePath);
@@ -145,38 +146,33 @@ stages: restore build finish
 
     public void RunStage(string name)
     {
-        if (!File.Exists(FilePath))
-        {
-            Console.WriteLine($"Cannot find file '{FilePath}'.");
-            App.End(-1);
-        }
+        CheckForConfigFile();
+        Parser.SetProject(Project);
+        Parser.ParsingOptions = Options;
+        string[] lines = File.ReadAllLines(FilePath);
+        Parser.ParseLines(lines);
+        Project = Parser.GetProject();
+        Messages.Info($"Running stage of project: {Project.Name}");
 
-        HostHelper helper = new HostHelper();
-        string[] allLines = File.ReadAllLines(FilePath);
-        Parser.ParseLines(allLines);
-
-        Messages.Info($"Running stage of project: {Parser.ProjectName}");
-
-        if (Parser.ComponentsToCheck.Count != 0)
+        if (Project.Components.Count != 0)
         {
             Messages.Work("Checking for required components...");
-            helper.CheckComponents(Parser.ComponentsToCheck);
+            Helper.CheckComponents(Project.Components);
         }
-        
-        Messages.Info($"Running stage of project: {Parser.ProjectName}");
-        if (Parser.StagesDict.ContainsKey(name))
+
+        if (Project.StagesModels.ContainsKey(name))
         {
             Messages.Info($"Running stage '{name}'...");
             StringBuilder shellCommand = new StringBuilder();
-            foreach (var command in Parser.StagesDict[name].Commands)
+            foreach (var command in Project.StagesModels[name].Commands)
             {
                 shellCommand.Append($"{command}\n");
             }
             string commandToExecute = shellCommand.ToString();
-            var res = helper.ExecuteStage(name, commandToExecute, Project.Shell);
+            var res = Helper.ExecuteStage(name, commandToExecute, Project.Shell);
             if (res.Error != "")
             {
-                if (Parser.StagesDict[name].IgnoreErrors)
+                if (Project.StagesModels[name].IgnoreErrors)
                 {
                     Messages.Info("Error occur but zeroProbe will ignore it.");
                 }
@@ -184,10 +180,10 @@ stages: restore build finish
                 {
                     Messages.Fatal("Stage not passed due an error:");
                     Console.WriteLine(res.Error);
-                    if (Parser.StagesDict[name].OnError != "")
+                    if (Project.StagesModels[name].OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        helper.ExecuteCommand(Parser.StagesDict[name].OnError, "tmp_undo_script.sh", Project.Shell);
+                        Helper.ExecuteCommand(Project.StagesModels[name].OnError, "tmp_undo_script.sh", Project.Shell);
                         Messages.Good("Undo complete.");
                     }
 
