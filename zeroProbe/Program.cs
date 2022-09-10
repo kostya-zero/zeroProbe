@@ -134,7 +134,6 @@ internal class Program
         catch (InvalidOperationException ex)
         {
             Messages.Fatal("zeroProbe got an exception and was immediately stopped.");
-            Messages.Fatal("Error code: 0x2c02afa"); // Got null result
             Messages.Debug(ex.Message);
             Messages.Debug(ex.StackTrace ?? "");
             Messages.Info("Please, report this accident to developers to fix it.");
@@ -142,7 +141,6 @@ internal class Program
         catch (Exception ex)
         {
             Messages.Fatal("zeroProbe got an exception and was immediately stopped.");
-            Messages.Fatal("Error code: 0x0000040"); // Got unhandled exception
             Messages.Debug(ex.Message);
             Messages.Info("Please, report this accident to developers to fix it.");
         }
