@@ -70,13 +70,6 @@ internal class Program
             switch (args[0])
             {
                 case "run":
-                    if (!File.Exists(acts.FilePath))
-                    {
-                        Messages.Fatal($"Looks like '{acts.FilePath}' not exists.");
-                        Messages.Hint("Try to write template configuration with 'writeconfig'.");
-                        App.End();
-                    }
-
                     acts.RunStages();
                     break;
                 case "writeconfig":

@@ -11,7 +11,7 @@ public class Actions
     private Parser Parser { get; }
     private HostHelper Helper { get; }
     private Project Project { get; set; }
-    public string FilePath { get; set; }
+    public string FilePath { private get; set; }
 
     public Actions()
     {
