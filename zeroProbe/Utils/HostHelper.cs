@@ -42,7 +42,7 @@ public class HostHelper
         }
     }
 
-    public ExecuteResult ExecuteCommand(string commandToExecute, string fileName, string shell = "/bin/sh")
+    public ExecuteResult ExecuteCommand(string commandToExecute, string fileName, string shell)
     {
         ScriptHandler script = new ScriptHandler(fileName, commandToExecute);
         Shell sh = new Shell();
@@ -51,8 +51,12 @@ public class HostHelper
         return res;
     }
 
-    public ExecuteResult ExecuteStage(string stageName, string command, string shell = "/bin/sh")
+    public ExecuteResult ExecuteStage(string stageName, string command, string shell)
     {
+        if (shell == "")
+        {
+            shell = "/bin/sh";
+        }
         var res = ExecuteCommand(command, $"tmp_stage_{stageName}.sh", shell);
         return res;
     }
