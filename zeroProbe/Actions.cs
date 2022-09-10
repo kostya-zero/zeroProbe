@@ -64,7 +64,7 @@ public class Actions
                     shellCommand.Append($"{command}\n");
                 }
                 string commandToExecute = shellCommand.ToString();
-                var res = Helper.ExecuteStage(stage, commandToExecute);
+                var res = Helper.ExecuteStage(stage, commandToExecute, Project.Shell);
                 if (res.Error != "")
                 {
                     if (Project.StagesModels[stage].IgnoreErrors)
@@ -78,7 +78,7 @@ public class Actions
                         if (Project.StagesModels[stage].OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            Helper.ExecuteCommand(Project.StagesModels[stage].OnError, "tmp_undo_script.sh");
+                            Helper.ExecuteCommand(Project.StagesModels[stage].OnError, "tmp_undo_script.sh", Project.Shell);
                             Messages.Good("Undo complete.");
                         }
 
@@ -163,7 +163,7 @@ public class Actions
                 shellCommand.Append($"{command}\n");
             }
             string commandToExecute = shellCommand.ToString();
-            var res = helper.ExecuteStage(name, commandToExecute);
+            var res = helper.ExecuteStage(name, commandToExecute, Project.Shell);
             if (res.Error != "")
             {
                 if (Parser.StagesDict[name].IgnoreErrors)
@@ -177,7 +177,7 @@ public class Actions
                     if (Parser.StagesDict[name].OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        helper.ExecuteCommand(Parser.StagesDict[name].OnError, "tmp_undo_script.sh");
+                        helper.ExecuteCommand(Parser.StagesDict[name].OnError, "tmp_undo_script.sh", Project.Shell);
                         Messages.Good("Undo complete.");
                     }
 

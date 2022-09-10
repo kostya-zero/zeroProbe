@@ -11,7 +11,7 @@ public class Lexer {
          * 0x11f - Comment.
          * 0xc88 - Check for components.
          * 0xa33 - Undo script.
-         * 0x805 - Shell command.
+         * 0x805 - Set shell.
          * 0x6b8 - Project name.
          * 0x00f - Empty line.
          *
@@ -118,6 +118,13 @@ public class Lexer {
                     lexerObject = new LexerObject
                     {
                         FunctionType = "0x054",
+                        Arguments = split[1]
+                    };
+                    break;
+                case "&shell":
+                    lexerObject = new LexerObject
+                    {
+                        FunctionType = "0x805",
                         Arguments = split[1]
                     };
                     break;

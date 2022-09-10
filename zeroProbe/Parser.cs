@@ -87,6 +87,10 @@ public class Parser
                 }
                 Project.StagesModels[stageName].OnError = obj.StageObject.StageCommand;
                 break;
+            // 0x805
+            case "0x805":
+                Project.Shell = obj.Arguments;
+                break;
             case "0x883":
                 if (!Project.StagesList.Contains(obj.StageObject.StageName))
                 {
