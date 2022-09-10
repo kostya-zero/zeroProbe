@@ -24,11 +24,13 @@ public class HelpMessages
         string firstWord = firstWords[rand.Next(0, 3)];
         string secondWord = secondWords[rand.Next(0, 3)];
         
-        Console.WriteLine(@"                        ____             __       
- ____  ___  _________  / __ \_________  / /_  ___ 
-/_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
- / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 4.0
+        Console.WriteLine(@"
+                           __________              ___.           
+ ________ ___________  ____\______   \_______  ____\_ |__   ____  
+ \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
+  /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
+ /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
+       \/    \/                                         \/     \/  4.0
 ");
         Console.WriteLine($"\x1B[4m{firstWord}\x1B[24m and \x1B[4m{secondWord}\x1B[24m utility" +
                           " to create, run and manage tests.");
@@ -62,7 +64,7 @@ public class HelpMessages
     {
         Console.WriteLine("Version:      4.0-unstable");
         Console.WriteLine("Codename:     Voyage");
-        Console.WriteLine(".NET Version: 6.0.8");
+        Console.WriteLine(".NET Version: 6.0.108");
         Console.WriteLine("Build Date:   10.09.2022");
         Console.WriteLine("Build Number: 102");
         Console.WriteLine("Build Engine: 17.0.0");
@@ -71,11 +73,13 @@ public class HelpMessages
 
     public static void AsciiArt()
     {
-        Console.WriteLine(@"                        ____             __
- ____  ___  _________  / __ \_________  / /_  ___ 
-/_  / / _ \/ ___/ __ \/ /_/ / ___/ __ \/ __ \/ _ \
- / /_/  __/ /  / /_/ / ____/ /  / /_/ / /_/ /  __/
-/___/\___/_/   \____/_/   /_/   \____/_.___/\___/ 4.0
+        Console.WriteLine(@"
+                           __________              ___.           
+ ________ ___________  ____\______   \_______  ____\_ |__   ____  
+ \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
+  /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
+ /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
+       \/    \/                                         \/     \/  4.0
 "); 
         App.End();
     }
