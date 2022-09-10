@@ -63,11 +63,22 @@ public class Actions
             Messages.Info("No stages found, aborting...");
             App.End();
         }
+
+        if (Project.StagesList.Count == 0)
+        {
+            Messages.Info("No stages defined. Exiting...");
+            App.End(0);
+        }
         
         foreach (var stage in Project.StagesList)
         {
             if (Project.StagesModels.ContainsKey(stage))
             {
+                if (Project.StagesModels[stage].Commands.Count == 0)
+                {
+                    Messages.Info($"Stage '{stage}' will be skipped. No command assigned.");
+                    continue;
+                }
                 Messages.Info($"Running stage '{stage}'...");
                 StringBuilder shellCommand = new StringBuilder();
                 foreach (var command in Project.StagesModels[stage].Commands)
@@ -159,9 +170,20 @@ stages: restore build finish
             Messages.Work("Checking for required components...");
             Helper.CheckComponents(Project.Components);
         }
+        
+        if (Project.StagesList.Count == 0)
+        {
+            Messages.Info("No stages defined. Exiting...");
+            App.End(0);
+        }
 
         if (Project.StagesModels.ContainsKey(name))
         {
+            if (Project.StagesModels[name].Commands.Count == 0)
+            {
+                Messages.Info($"Stage '{name}' will be skipped. No command assigned.");
+                App.End(0);
+            }
             Messages.Info($"Running stage '{name}'...");
             StringBuilder shellCommand = new StringBuilder();
             foreach (var command in Project.StagesModels[name].Commands)
