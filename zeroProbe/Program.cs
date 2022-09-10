@@ -1,6 +1,8 @@
 ﻿using zeroProbe.Enums;
 using zeroProbe.Utils;
 
+[assembly: System.Reflection.AssemblyVersion("4.0.*")]
+
 namespace zeroProbe;
 
 internal class Program

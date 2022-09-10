@@ -8,7 +8,7 @@ public class Shell
 {
     private bool noSendOutput { get; set; } 
     
-    public void OutputHandler(object s, DataReceivedEventArgs e)
+    private void OutputHandler(object s, DataReceivedEventArgs e)
     {
         if (!noSendOutput)
         {
@@ -16,7 +16,7 @@ public class Shell
         }
     }
     
-    public void ErrorHandler(object s, DataReceivedEventArgs e)
+    private void ErrorHandler(object s, DataReceivedEventArgs e)
     {
         if (!noSendOutput)
         {

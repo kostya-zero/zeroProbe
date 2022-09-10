@@ -6,6 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latestmajor</LangVersion>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Deterministic>False</Deterministic>
     </PropertyGroup>
 
 </Project>
