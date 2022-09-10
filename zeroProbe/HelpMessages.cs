@@ -35,7 +35,8 @@ public class HelpMessages
         Console.WriteLine($"\x1B[4m{firstWord}\x1B[24m and \x1B[4m{secondWord}\x1B[24m utility" +
                           " to create, run and manage tests.");
         Console.WriteLine("This is a help message. ");
-        Console.WriteLine("usage: zeroProbe [action] [option,...]\n");
+        Console.WriteLine("usage: zeroProbe [action]\n");
+        Console.WriteLine("   or: zeroProbe [action] [option,...]\n");
         
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.Write(":: ");
