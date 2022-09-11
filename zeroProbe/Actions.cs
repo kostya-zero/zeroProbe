@@ -120,39 +120,70 @@ public class Actions
             Messages.Info("You already have configuration file.");
             App.End();
         }
+
+        ConfigsTemplates templates = new ConfigsTemplates();
         
-        Console.WriteLine("Writing new config file...");
-        File.Create(FilePath).Close();
-        File.WriteAllText(FilePath, @"/* This file was generated with zeroProbe 4.0 Voyage. */
-
-/* Its a preview of how ProbeConfig file can be. */
-/* Everything about syntax and parameters you can learn on zeroProbe wiki. */
-/* GitLab wiki: https://gitlab.com/kostya-zero/zeroprobe/-/wikis/home */
-/* GitHub wiki: https://github.com/kostya-zero/zeroProbe/wiki */
-
-/* Project name are not necessary. */
-/* zeroProbe automatically set your project name to 'unnamed'. */
-project: test
-
-/* Stages are main feature of your config. */
-/* To tell zeroProbe what to do you need to create stages. */
-/* Stages include command that's must be executed. */
-/* Every stage will be executed in order how you wrote him. */
-stages: restore build finish
-
-/* Now you need to assign command to stage. */
-/* Use '!' operator for it. */
-/* After '!' enter stage name. */
-/* Next, write '.add_command' and after double dots enter command to add. */
-/* zeroProbe will execute it one by one.
-/* To make stage ignore errors write '.ignore_errors' and after double dots 1 or 0. */
-/* To set command on error use '.on_error'. */
-/* Learn more you can on official wiki on GitLab and GitHub. */
-!restore.add_command: echo 'Doing some restore staff...'
-!build.add_command: echo 'Doing some build staff...'
-!finish.add_command: echo 'Finishing this deal...'");
-        Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-        Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+        Console.WriteLine("Welcome to zeroProbe Configuration Wizard!");
+        Console.WriteLine("Here you can select template to use. Available templates:");
+        Console.WriteLine("    (1) : Empty configuration.\n" +
+                          "    (2) : Default config with stages.\n" +
+                          "    (3) : Tutorial config (classic).\n" +
+                          "    (4) : .NET Build Test.\n" +
+                          "    (5) : GCC Build Test.\n" + 
+                          "    (6) : Clangd Build Test.");
+        while (true)
+        {
+            Console.Write("Your choice: ");
+            var answer = Console.ReadLine();
+            switch (answer)
+            {
+                case "1":
+                    File.Create(FilePath).Close();
+                    File.WriteAllText(FilePath, templates.Default);      
+                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+                    App.End(0);
+                    break;
+                case "2":
+                    File.Create(FilePath).Close();
+                    File.WriteAllText(FilePath, templates.DefaultWithStages);      
+                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+                    App.End(0);
+                    break;
+                case "3":
+                    File.Create(FilePath).Close();
+                    File.WriteAllText(FilePath, templates.TutorialConfig);      
+                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+                    App.End(0);
+                    break;
+                case "4":
+                    File.Create(FilePath).Close();
+                    File.WriteAllText(FilePath, templates.DotNetBuildTest);      
+                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+                    App.End(0);
+                    break;
+                case "5":
+                    File.Create(FilePath).Close();
+                    File.WriteAllText(FilePath, templates.GccBuildTest);      
+                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+                    App.End(0);
+                    break;
+                case "6":
+                    File.Create(FilePath).Close();
+                    File.WriteAllText(FilePath, templates.ClangdBuildTest);      
+                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+                    App.End(0);
+                    break;
+                default:
+                    Console.WriteLine("Bad answer.");
+                    break;
+            }
+        }
     }
 
     public void RunStage(string name)
