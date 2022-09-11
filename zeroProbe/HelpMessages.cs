@@ -63,7 +63,7 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:      4.0-unstable");
+        Console.WriteLine("Version:      4.0");
         Console.WriteLine("Codename:     Voyage");
         Console.WriteLine(".NET Version: 6.0.108");
         Console.WriteLine("Build Date:   11.09.2022");
