@@ -66,8 +66,8 @@ public class HelpMessages
         Console.WriteLine("Version:      4.0-unstable");
         Console.WriteLine("Codename:     Voyage");
         Console.WriteLine(".NET Version: 6.0.108");
-        Console.WriteLine("Build Date:   10.09.2022");
-        Console.WriteLine("Build Number: 102");
+        Console.WriteLine("Build Date:   11.09.2022");
+        Console.WriteLine("Build Number: 112");
         Console.WriteLine("Build Engine: 17.0.0");
         App.End();
     }

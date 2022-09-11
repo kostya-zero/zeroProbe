@@ -40,7 +40,16 @@ public class Shell
         proc.OutputDataReceived += OutputHandler;
         proc.ErrorDataReceived += ErrorHandler;
         proc.StartInfo = procInfo;
-        proc.Start();
+        try
+        {
+            proc.Start();
+        }
+        catch (InvalidOperationException)
+        {
+            Messages.Fatal("Cannot start shell process due to error.");
+            Messages.Hint("Check if selected shell are exists in your system.");
+            App.End(-1);
+        }
         proc.BeginOutputReadLine();
         string errs = proc.StandardError.ReadToEnd();
         proc.WaitForExit();
