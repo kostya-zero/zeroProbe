@@ -7,7 +7,12 @@ public class HostHelper
 {
     public void CheckComponents(List<string> components)
     {
-        List<string> pathVariable = Env.GetPath();
+        List<string> pathVariable = new List<string>();
+        var envPath = Environment.GetEnvironmentVariable("PATH")?.Split(':');
+        if (envPath != null)
+        {
+            pathVariable = new List<string>(envPath);
+        }
         List<string> notFoundComponents = new List<string>();
         bool foundComponent = false;
         foreach (var component in components)
