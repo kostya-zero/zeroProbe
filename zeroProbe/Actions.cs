@@ -50,7 +50,7 @@ public class Actions
         string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
         Project = Parser.GetProject();
-        Messages.Info($"Running project: {Project.Name}");
+        Messages.Info($"Running project: {Project.GetProjectName()}");
 
         if (Project.Components.Count != 0)
         {
@@ -86,7 +86,7 @@ public class Actions
                     shellCommand.Append($"{command}\n");
                 }
                 string commandToExecute = shellCommand.ToString();
-                var res = Helper.ExecuteStage(stage, commandToExecute, Project.Shell);
+                var res = Helper.ExecuteStage(stage, commandToExecute, Project.GetShell());
                 if (res.Error != "")
                 {
                     if (Project.StagesModels[stage].IgnoreErrors)
@@ -100,7 +100,7 @@ public class Actions
                         if (Project.StagesModels[stage].OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            Helper.ExecuteCommand(Project.StagesModels[stage].OnError, "tmp_undo_script.sh", Project.Shell);
+                            Helper.ExecuteCommand(Project.StagesModels[stage].OnError, "tmp_undo_script.sh", Project.GetShell());
                             Messages.Good("Undo complete.");
                         }
 
@@ -194,7 +194,7 @@ public class Actions
         string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
         Project = Parser.GetProject();
-        Messages.Info($"Running stage of project: {Project.Name}");
+        Messages.Info($"Running stage of project: {Project.GetProjectName()}");
 
         if (Project.Components.Count != 0)
         {
@@ -222,7 +222,7 @@ public class Actions
                 shellCommand.Append($"{command}\n");
             }
             string commandToExecute = shellCommand.ToString();
-            var res = Helper.ExecuteStage(name, commandToExecute, Project.Shell);
+            var res = Helper.ExecuteStage(name, commandToExecute, Project.GetShell());
             if (res.Error != "")
             {
                 if (Project.StagesModels[name].IgnoreErrors)
@@ -236,7 +236,7 @@ public class Actions
                     if (Project.StagesModels[name].OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        Helper.ExecuteCommand(Project.StagesModels[name].OnError, "tmp_undo_script.sh", Project.Shell);
+                        Helper.ExecuteCommand(Project.StagesModels[name].OnError, "tmp_undo_script.sh", Project.GetShell());
                         Messages.Good("Undo complete.");
                     }
 

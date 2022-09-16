@@ -87,7 +87,7 @@ public class Parser
                 Project.StagesModels[stageName].OnError = obj.StageObject.StageCommand;
                 break;
             case "0x805":
-                Project.Shell = obj.Arguments;
+                Project.SetShell(obj.Arguments);
                 break;
             case "0xa58":
                 switch (obj.Arguments)
@@ -148,7 +148,7 @@ public class Parser
                 }
                 break;
             case "0x6b8":
-                Project.Name = obj.Arguments.Trim();
+                Project.SetProjectName(obj.Arguments.Trim());
                 break;
             case "0x00f":
                 break;
