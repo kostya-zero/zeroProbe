@@ -17,7 +17,7 @@ internal class Program
             {
                 Messages.Info("No arguments provided.");
                 Messages.Hint("Use 'help' argument to see what zeroProbe can do.");
-                App.End();
+                Environment.Exit(0);
             }
 
             Actions acts = new Actions
@@ -32,7 +32,7 @@ internal class Program
                     {
                         Messages.Fatal($"Argument syntax error: {arg}.");
                         Messages.Hint("Arguments must looks like this: argument=value");
-                        App.End(-1);
+                        Environment.Exit(-1);
                     }
 
                     string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
@@ -40,7 +40,7 @@ internal class Program
                     {
                         Messages.Fatal($"Nothing provided after equals character: {arg}.");
                         Messages.Hint("Arguments value mustn't be empty!");
-                        App.End(-1);
+                        Environment.Exit(-1);
                     }
 
                     switch (splitStrings[0])
@@ -61,7 +61,7 @@ internal class Program
                         default:
                             Messages.Fatal($"Unknown argument: {splitStrings[0]}.");
                             Messages.Hint("Run zeroProbe with command 'help' to get list of arguments.");
-                            App.End(-1);
+                            Environment.Exit(-1);
                             break;
                     }
                 }
@@ -93,7 +93,7 @@ internal class Program
                 default:
                     Messages.Fatal($"Unknown argument '{args[0]}'.");
                     Messages.Hint("Run zeroProbe with command 'help' to get list of arguments and actions.");
-                    App.End(-1);
+                    Environment.Exit(-1);
                     break;
             }
         }

@@ -46,7 +46,7 @@ public class Lexer {
             Messages.Fatal("Bad line expression.");
             Messages.TraceBack(line, lineNumber);
             Messages.Hint("Every line must have command and argument divided by double dots (:).");
-            App.End(-1);
+            Environment.Exit(-1);
         }
         
         string[] split = line.Split(":", 2);
@@ -58,7 +58,7 @@ public class Lexer {
                 Messages.Fatal("Bad stage assign syntax.");
                 Messages.TraceBack(line, lineNumber);
                 Messages.Hint($"To assign command use: !{split[0].TrimStart('!')}.command: echo 'Your command'"); 
-                App.End(-1);
+                Environment.Exit(-1);
             }
             string[] splitCommands = split[0].Trim('!').Split('.');
             switch (splitCommands[1])
@@ -100,7 +100,7 @@ public class Lexer {
                     Messages.Fatal("Unknown stage property.");
                     Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Learn more about stages property at zeroProbe wiki.");
-                    App.End(-1);
+                    Environment.Exit(-1);
                     break;
             }
         }
@@ -147,7 +147,7 @@ public class Lexer {
                     Messages.Fatal("Unknown command called.");
                     Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Learn about available commands at zeroProbe wiki.");
-                    App.End(-1);
+                    Environment.Exit(-1);
                 }
                 break;
         }

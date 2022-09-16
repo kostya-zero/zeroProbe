@@ -58,7 +58,7 @@ public class HelpMessages
         Console.WriteLine("--file=[path]                      - Use file by given location.");
         Console.WriteLine("--skip-shell-commands=[0,1]        - Skip shells scripts execution.");
         Console.WriteLine("--skip-shell-commands-errors=[0,1] - Ignores shell commands execution errors.\n");
-        App.End();
+        Environment.Exit(0);
     }
 
     public static void Version()
@@ -69,7 +69,7 @@ public class HelpMessages
         Console.WriteLine("Build Date:   11.09.2022");
         Console.WriteLine("Build Number: 112");
         Console.WriteLine("Build Engine: 17.0.0");
-        App.End();
+        Environment.Exit(0);
     }
 
     public static void AsciiArt()
@@ -82,7 +82,7 @@ public class HelpMessages
  /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
        \/    \/                                         \/     \/  4.0
 "); 
-        App.End();
+        Environment.Exit(0);
     }
 
     public static void Wiki()

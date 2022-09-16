@@ -48,7 +48,7 @@ public class Shell
         {
             Messages.Fatal("Cannot start shell process due to error.");
             Messages.Hint("Check if selected shell are exists in your system.");
-            App.End(-1);
+            Environment.Exit(-1);
         }
         proc.BeginOutputReadLine();
         string errs = proc.StandardError.ReadToEnd();

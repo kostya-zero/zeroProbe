@@ -28,7 +28,7 @@ public class Actions
         {
             Messages.Fatal($"Looks like '{FilePath}' not exists.");
             Messages.Hint("Try to write template configuration with 'writeconfig' action.");
-            App.End(-1);
+            Environment.Exit(-1);
         }
     }
 
@@ -37,7 +37,7 @@ public class Actions
         if (Options.Contains(option))
         {
             Messages.Fatal($"Option '{optionName}' already added.");
-            App.End();
+            Environment.Exit(0);
         }
         Options.Add(option);
     }
@@ -61,13 +61,13 @@ public class Actions
         if (Project.StagesList.Count == 0)
         {
             Messages.Info("No stages found, aborting...");
-            App.End();
+            Environment.Exit(0);
         }
 
         if (Project.StagesList.Count == 0)
         {
             Messages.Info("No stages defined. Exiting...");
-            App.End(0);
+            Environment.Exit(0);
         }
         
         foreach (var stage in Project.StagesList)
@@ -104,7 +104,7 @@ public class Actions
                             Messages.Good("Undo complete.");
                         }
 
-                        App.End(-1);
+                        Environment.Exit(-1);
                     }
                 }
                 Messages.Good("Stage passed without errors!");
@@ -118,7 +118,7 @@ public class Actions
         if (File.Exists(FilePath))
         {
             Messages.Info("You already have configuration file.");
-            App.End();
+            Environment.Exit(0);
         }
 
         ConfigsTemplates templates = new ConfigsTemplates();
@@ -142,42 +142,42 @@ public class Actions
                     File.WriteAllText(FilePath, templates.Default);      
                     Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
                     Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    App.End(0);
+                    Environment.Exit(0);
                     break;
                 case "2":
                     File.Create(FilePath).Close();
                     File.WriteAllText(FilePath, templates.DefaultWithStages);      
                     Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
                     Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    App.End(0);
+                    Environment.Exit(0);
                     break;
                 case "3":
                     File.Create(FilePath).Close();
                     File.WriteAllText(FilePath, templates.TutorialConfig);      
                     Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
                     Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    App.End(0);
+                    Environment.Exit(0);
                     break;
                 case "4":
                     File.Create(FilePath).Close();
                     File.WriteAllText(FilePath, templates.DotNetBuildTest);      
                     Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
                     Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    App.End(0);
+                    Environment.Exit(0);
                     break;
                 case "5":
                     File.Create(FilePath).Close();
                     File.WriteAllText(FilePath, templates.GccBuildTest);      
                     Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
                     Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    App.End(0);
+                    Environment.Exit(0);
                     break;
                 case "6":
                     File.Create(FilePath).Close();
                     File.WriteAllText(FilePath, templates.ClangdBuildTest);      
                     Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
                     Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    App.End(0);
+                    Environment.Exit(0);
                     break;
                 default:
                     Console.WriteLine("Bad answer.");
@@ -205,7 +205,7 @@ public class Actions
         if (Project.StagesList.Count == 0)
         {
             Messages.Info("No stages defined. Exiting...");
-            App.End(0);
+            Environment.Exit(0);
         }
 
         if (Project.StagesModels.ContainsKey(name))
@@ -213,7 +213,7 @@ public class Actions
             if (Project.StagesModels[name].Commands.Count == 0)
             {
                 Messages.Info($"Stage '{name}' will be skipped. No command assigned.");
-                App.End(0);
+                Environment.Exit(0);
             }
             Messages.Info($"Running stage '{name}'...");
             StringBuilder shellCommand = new StringBuilder();
@@ -240,7 +240,7 @@ public class Actions
                         Messages.Good("Undo complete.");
                     }
 
-                    App.End(-1);
+                    Environment.Exit(-1);
                 }
             }
             Messages.Good("Stage passed without errors!");

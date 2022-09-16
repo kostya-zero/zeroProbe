@@ -43,7 +43,7 @@ public class HostHelper
         if (notFoundComponents.Count > 0)
         {
             Messages.Fatal($"{notFoundComponents.Count.ToString()} not found! Cannot continue.");
-            App.End();
+            Environment.Exit(-1);
         }
     }
 
