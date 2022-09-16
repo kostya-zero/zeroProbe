@@ -54,10 +54,8 @@ public class HelpMessages
         Console.Write(":: ");
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("Options");
-        Console.WriteLine("--debug=[0,1]                      - Enables debug mode.");
-        Console.WriteLine("--file=[path]                      - Use file by given location.");
-        Console.WriteLine("--skip-shell-commands=[0,1]        - Skip shells scripts execution.");
-        Console.WriteLine("--skip-shell-commands-errors=[0,1] - Ignores shell commands execution errors.\n");
+        Console.WriteLine("--debug=[0,1] - Enables debug mode.");
+        Console.WriteLine("--file=[path] - Use file by given location.\n");
         Environment.Exit(0);
     }
 

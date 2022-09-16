@@ -51,13 +51,6 @@ internal class Program
                         case "--debug":
                             acts.AddOption(ParserOptions.Debug, "--debug");
                             break;
-                        case "--skip-shell-commands":
-                            acts.AddOption(ParserOptions.Debug, "--skip-shell-commands");
-                            break;
-                        case "--skip-shell-commands-errors":
-                            acts.AddOption(ParserOptions.SkipShellCommandsErrors,
-                                "--skip-shell-commands-errors");
-                            break;
                         default:
                             Messages.Fatal($"Unknown argument: {splitStrings[0]}.");
                             Messages.Hint("Run zeroProbe with command 'help' to get list of arguments.");
