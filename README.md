@@ -27,11 +27,6 @@
     </a>
  </div>
 
-<div align="center">
-    <img src="img.png" alt="Demonstration of zeroProbe.">
-    <em>Demonstration of zeroProbe.</em>
-</div>
-
 ## Features
 ### Your powerful tool
 zeroProbe allows you to automate your test or scripts.
