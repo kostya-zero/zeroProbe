@@ -52,10 +52,10 @@ public class Actions
         Project = Parser.GetProject();
         Messages.Info($"Running project: {Project.GetProjectName()}");
 
-        if (Project.Components.Count != 0)
+        if (Project.GetComponents().Count != 0)
         {
             Messages.Work("Checking for required components...");
-            Helper.CheckComponents(Project.Components);
+            Helper.CheckComponents(Project.GetComponents());
         }
 
         if (Project.CountStages() == 0)
@@ -183,10 +183,10 @@ public class Actions
         Project = Parser.GetProject();
         Messages.Info($"Running stage of project: {Project.GetProjectName()}");
 
-        if (Project.Components.Count != 0)
+        if (Project.GetComponents().Count != 0)
         {
             Messages.Work("Checking for required components...");
-            Helper.CheckComponents(Project.Components);
+            Helper.CheckComponents(Project.GetComponents());
         }
         
         if (Project.CountStages() == 0)

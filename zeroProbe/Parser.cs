@@ -48,12 +48,12 @@ public class Parser
                     string[] splitComponents = obj.Arguments.Trim().Split();
                     foreach (string component in splitComponents)
                     {
-                        Project.Components.Add(component.Trim());
+                        Project.AddComponent(component.Trim());
                     }
                 }
                 else
                 {
-                    Project.Components.Add(obj.Arguments.Trim());
+                    Project.AddComponent(obj.Arguments.Trim());
                 }
                 break;
             case "0x054":

@@ -11,7 +11,7 @@ public class Project
     private Dictionary<string, StageModel> StagesModels { get; } = new Dictionary<string, StageModel>();
 
     // Components
-    public List<string> Components { get; } = new List<string>();
+    private List<string> Components { get; } = new List<string>();
     
     public void SetProjectName(string name)
     {
@@ -71,5 +71,15 @@ public class Project
     public void AssignCommandToStage(string stage, string command)
     {
         StagesModels[stage].Commands.Add(command);
+    }
+
+    public List<string> GetComponents()
+    {
+        return Components;
+    }
+
+    public void AddComponent(string component)
+    {
+        Components.Add(component);
     }
 }
