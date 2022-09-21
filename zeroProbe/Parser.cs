@@ -7,7 +7,7 @@ namespace zeroProbe;
 public class Parser
 {
     public List<ParserOptions> ParsingOptions { private get; set; } = new List<ParserOptions>();
-    private Project Project { get; set; }
+    private Project Project { get; set; } = new Project();
 
     private void DebugInstruction(string instruction)
     {
@@ -61,30 +61,30 @@ public class Parser
                 foreach (string stage in split)
                 {
                     SpellChecker.CheckStageName(stage);
-                    Project.StagesList.Add(stage);
-                    Project.StagesModels.Add(stage, new StageModel());
+                    Project.GetStagesList().Add(stage);
+                    Project.AddStage(stage, new StageModel());
                 }
                 break;
             case "0x700":
-                if (!Project.StagesList.Contains(obj.StageObject.StageName))
+                if (!Project.GetStagesList().Contains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
                     Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Check your config. Maybe you haven't defined this stage."); 
                     Environment.Exit(-1);
                 }
-                Project.StagesModels[obj.StageObject.StageName].Commands.Add(obj.StageObject.StageCommand);
+                Project.AssignCommandToStage(obj.StageObject.StageName, obj.StageObject.StageCommand);
                 break;
             case "0x5fc":
                 string stageName = obj.StageObject.StageName;
-                if (!Project.StagesList.Contains(stageName))
+                if (!Project.StagesContains(stageName))
                 {
                     Messages.Fatal($"Stage '{stageName}' not defined.");
                     Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Check your config. Maybe you haven't defined this stage."); 
                     Environment.Exit(-1);
                 }
-                Project.StagesModels[stageName].OnError = obj.StageObject.StageCommand;
+                Project.GetStageObject(stageName).OnError = obj.StageObject.StageCommand;
                 break;
             case "0x805":
                 Project.SetShell(obj.Arguments);
@@ -115,7 +115,7 @@ public class Parser
                 }
                 break;
             case "0x883":
-                if (!Project.StagesList.Contains(obj.StageObject.StageName))
+                if (!Project.StagesContains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. Or, you entered wrong name.");
                     Environment.Exit(-1);
@@ -123,22 +123,22 @@ public class Parser
                 switch (obj.StageObject.StageCommand.Trim())
                 {
                     case "1":
-                        if (Project.StagesModels[obj.StageObject.StageName].OnError != "")
+                        if (Project.GetStageObject(obj.StageObject.StageName).OnError != "")
                         {
                             Messages.Fatal("You can't set ignore errors if you set an error command.");
                             Messages.TraceBack(line, lineNumber);
                             Environment.Exit(-1);
                         }
-                        Project.StagesModels[obj.StageObject.StageName].IgnoreErrors = true;
+                        Project.GetStageObject(obj.StageObject.StageName).IgnoreErrors = true;
                         break;
                     case "0":
-                        if (Project.StagesModels[obj.StageObject.StageName].OnError != "")
+                        if (Project.GetStageObject(obj.StageObject.StageName).OnError != "")
                         {
                             Messages.Fatal("You can't set ignore errors if you set an error command.");
                             Messages.TraceBack(line, lineNumber);
                             Environment.Exit(-1);
                         }
-                        Project.StagesModels[obj.StageObject.StageName].IgnoreErrors = false;
+                        Project.GetStageObject(obj.StageObject.StageName).IgnoreErrors = false;
                         break;
                     default:
                         Messages.Fatal("Bad syntax. You can set only 1 or 0 for 'ignore_errors'.");

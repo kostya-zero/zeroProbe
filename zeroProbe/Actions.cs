@@ -58,30 +58,24 @@ public class Actions
             Helper.CheckComponents(Project.Components);
         }
 
-        if (Project.StagesList.Count == 0)
+        if (Project.CountStages() == 0)
         {
             Messages.Info("No stages found, aborting...");
             Environment.Exit(0);
         }
-
-        if (Project.StagesList.Count == 0)
-        {
-            Messages.Info("No stages defined. Exiting...");
-            Environment.Exit(0);
-        }
         
-        foreach (var stage in Project.StagesList)
+        foreach (var stage in Project.GetStagesList())
         {
-            if (Project.StagesModels.ContainsKey(stage))
+            if (Project.StagesContains(stage))
             {
-                if (Project.StagesModels[stage].Commands.Count == 0)
+                if (Project.GetStageObject(stage).Commands.Count == 0)
                 {
                     Messages.Info($"Stage '{stage}' will be skipped. No command assigned.");
                     continue;
                 }
                 Messages.Info($"Running stage '{stage}'...");
                 StringBuilder shellCommand = new StringBuilder();
-                foreach (var command in Project.StagesModels[stage].Commands)
+                foreach (var command in Project.GetStageObject(stage).Commands)
                 {
                     shellCommand.Append($"{command}\n");
                 }
@@ -89,7 +83,7 @@ public class Actions
                 var res = Helper.ExecuteStage(stage, commandToExecute, Project.GetShell());
                 if (res.Error != "")
                 {
-                    if (Project.StagesModels[stage].IgnoreErrors)
+                    if (Project.GetStageObject(stage).IgnoreErrors)
                     {
                         Messages.Info("Error occur but zeroProbe will ignore it.");
                     }
@@ -97,10 +91,10 @@ public class Actions
                     {
                         Messages.Fatal("Stage not passed due an error:");
                         Console.WriteLine(res.Error);
-                        if (Project.StagesModels[stage].OnError != "")
+                        if (Project.GetStageObject(stage).OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
-                            Helper.ExecuteCommand(Project.StagesModels[stage].OnError, "tmp_undo_script.sh", Project.GetShell());
+                            Helper.ExecuteCommand(Project.GetStageObject(stage).OnError, "tmp_undo_script.sh", Project.GetShell());
                             Messages.Good("Undo complete.");
                         }
 
@@ -131,59 +125,52 @@ public class Actions
                           "    (4) : .NET Build Test.\n" +
                           "    (5) : GCC Build Test.\n" + 
                           "    (6) : Clangd Build Test.");
+        
         while (true)
         {
             Console.Write("Your choice: ");
             var answer = Console.ReadLine();
+            bool failed = false;
             switch (answer)
             {
                 case "1":
                     File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.Default);      
-                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    Environment.Exit(0);
+                    File.WriteAllText(FilePath, templates.Default);
                     break;
                 case "2":
                     File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.DefaultWithStages);      
-                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    Environment.Exit(0);
+                    File.WriteAllText(FilePath, templates.DefaultWithStages);
                     break;
                 case "3":
                     File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.TutorialConfig);      
-                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    Environment.Exit(0);
+                    File.WriteAllText(FilePath, templates.TutorialConfig);
                     break;
                 case "4":
                     File.Create(FilePath).Close();
                     File.WriteAllText(FilePath, templates.DotNetBuildTest);      
-                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    Environment.Exit(0);
                     break;
                 case "5":
                     File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.GccBuildTest);      
-                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    Environment.Exit(0);
+                    File.WriteAllText(FilePath, templates.GccBuildTest);
                     break;
                 case "6":
                     File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.ClangdBuildTest);      
-                    Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
-                    Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
-                    Environment.Exit(0);
+                    File.WriteAllText(FilePath, templates.ClangdBuildTest);
                     break;
                 default:
                     Console.WriteLine("Bad answer.");
+                    failed = true;
                     break;
             }
+
+            if (!failed)
+            {
+                break;
+            }
         }
+        Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+        Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
+        Environment.Exit(0);
     }
 
     public void RunStage(string name)
@@ -202,22 +189,22 @@ public class Actions
             Helper.CheckComponents(Project.Components);
         }
         
-        if (Project.StagesList.Count == 0)
+        if (Project.CountStages() == 0)
         {
             Messages.Info("No stages defined. Exiting...");
             Environment.Exit(0);
         }
 
-        if (Project.StagesModels.ContainsKey(name))
+        if (Project.StagesContains(name))
         {
-            if (Project.StagesModels[name].Commands.Count == 0)
+            if (Project.GetStageObject(name).Commands.Count == 0)
             {
                 Messages.Info($"Stage '{name}' will be skipped. No command assigned.");
                 Environment.Exit(0);
             }
             Messages.Info($"Running stage '{name}'...");
             StringBuilder shellCommand = new StringBuilder();
-            foreach (var command in Project.StagesModels[name].Commands)
+            foreach (var command in Project.GetStageObject(name).Commands)
             {
                 shellCommand.Append($"{command}\n");
             }
@@ -225,7 +212,7 @@ public class Actions
             var res = Helper.ExecuteStage(name, commandToExecute, Project.GetShell());
             if (res.Error != "")
             {
-                if (Project.StagesModels[name].IgnoreErrors)
+                if (Project.GetStageObject(name).IgnoreErrors)
                 {
                     Messages.Info("Error occur but zeroProbe will ignore it.");
                 }
@@ -233,10 +220,10 @@ public class Actions
                 {
                     Messages.Fatal("Stage not passed due an error:");
                     Console.WriteLine(res.Error);
-                    if (Project.StagesModels[name].OnError != "")
+                    if (Project.GetStageObject(name).OnError != "")
                     {
                         Messages.Work("Running stage undo command...");
-                        Helper.ExecuteCommand(Project.StagesModels[name].OnError, "tmp_undo_script.sh", Project.GetShell());
+                        Helper.ExecuteCommand(Project.GetStageObject(name).OnError, "tmp_undo_script.sh", Project.GetShell());
                         Messages.Good("Undo complete.");
                     }
 

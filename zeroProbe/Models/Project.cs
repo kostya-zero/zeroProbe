@@ -7,8 +7,8 @@ public class Project
     private string Shell { get; set; } = "/bin/sh";
     
     //Stages
-    public List<string> StagesList { get; } = new List<string>();
-    public Dictionary<string, StageModel> StagesModels { get; } = new Dictionary<string, StageModel>();
+    private List<string> StagesList { get; } = new List<string>();
+    private Dictionary<string, StageModel> StagesModels { get; } = new Dictionary<string, StageModel>();
 
     // Components
     public List<string> Components { get; } = new List<string>();
@@ -56,5 +56,20 @@ public class Project
         }
 
         return StagesModels[stageName];
+    }
+
+    public bool StagesContains(string stageName)
+    {
+        return StagesModels.ContainsKey(stageName);
+    }
+
+    public void AddStage(string stageName, StageModel stage)
+    {
+        StagesModels.Add(stageName, stage);
+    }
+
+    public void AssignCommandToStage(string stage, string command)
+    {
+        StagesModels[stage].Commands.Add(command);
     }
 }
