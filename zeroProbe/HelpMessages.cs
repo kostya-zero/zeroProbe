@@ -30,7 +30,7 @@ public class HelpMessages
  \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
   /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
  /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
-       \/    \/                                         \/     \/  4.0
+       \/    \/                                         \/     \/  4.1
 ");
         Console.WriteLine($"\x1B[4m{firstWord}\x1B[24m and \x1B[4m{secondWord}\x1B[24m utility" +
                           " to create, run and manage tests.");
@@ -61,11 +61,11 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:      4.0");
+        Console.WriteLine("Version:      4.1");
         Console.WriteLine("Codename:     Voyage");
         Console.WriteLine(".NET Version: 6.0.108");
-        Console.WriteLine("Build Date:   11.09.2022");
-        Console.WriteLine("Build Number: 112");
+        Console.WriteLine("Build Date:   22.09.2022");
+        Console.WriteLine("Build Number: 129");
         Console.WriteLine("Build Engine: 17.0.0");
         Environment.Exit(0);
     }
@@ -78,7 +78,7 @@ public class HelpMessages
  \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
   /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
  /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
-       \/    \/                                         \/     \/  4.0
+       \/    \/                                         \/     \/  4.1
 "); 
         Environment.Exit(0);
     }
