@@ -78,12 +78,11 @@ You can check step-by-step guide [here](CONTRIBUTING.md).
 
 ### :earth_asia: Links
 
-[GitLab Repository](https://gitlab.com/kostya-zero/zeroprobe) - main repository of zeroProbe.
-[GitHub Repository](https://github.com/kostya-zero/zeroProbe) - mirror of zeroProbe for GitHub.
-[GitHub Workflow: .NET](https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml) - build status.
-
-[Trello Board](https://trello.com/b/jLdiw40c/zeroprobe) - check out what we are planing and what we are doing now.
-[Codacy](https://www.codacy.com/gl/kostya-zero/zeroprobe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/zeroprobe&amp;utm_campaign=Badge_Grade) - code ranking and issues.
+- [GitLab Repository](https://gitlab.com/kostya-zero/zeroprobe) - main repository of zeroProbe.
+- [GitHub Repository](https://github.com/kostya-zero/zeroProbe) - mirror of zeroProbe for GitHub.
+- [GitHub Workflow: .NET](https://github.com/kostya-zero/zeroProbe/actions/workflows/dotnet.yml) - build status.
+- [Trello Board](https://trello.com/b/jLdiw40c/zeroprobe) - check out what we are planing and what we are doing now.
+- [Codacy](https://www.codacy.com/gl/kostya-zero/zeroprobe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/zeroprobe&amp;utm_campaign=Badge_Grade) - code ranking and issues.
 
 ### :envelope: Message from Author
 
