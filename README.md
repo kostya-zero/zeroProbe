@@ -74,6 +74,7 @@ It make your test automated, it works so fast and has an easy configuration styl
 Want to help us in development? Sounds good!
 Feel free to fork this repository and make a pull request.
 Also, if you have problems, tell us in issues on GitHub or GitLab about what's wrong or where you got stuck.
+You can check step-by-step guide [here](CONTRIBUTING.md).
 
 ### :earth_asia: Links
 
