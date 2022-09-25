@@ -22,8 +22,8 @@
 
 zeroProbe is a compact and simple application focus on testing things.
 You can test everything, from building an application to test runs with different arguments.
-zeroProbe are open-source project and absolutly free.
-It has not too much functionallity, but in the feature it will increase.
+zeroProbe are open-source project and absolutely free.
+It has not too much functionality, but in the feature it will increase.
 You can use it on your server for testing after each change.
 The configuration allows you to make test scripts for everything you want.
 Just try it.
@@ -31,8 +31,8 @@ Just try it.
 ### :scroll: Configuration
 
 zeroProbe use it own configuration system named ProbeConfig.
-It looks similliar to INI files.
-ProbeConfig are focus on being simple, flexible and have pretty look.
+It looks similar to INI files.
+ProbeConfig are focus on being simple, flexible and have pretty looked.
 
 ```text
 project: .NET Build Test
@@ -58,9 +58,9 @@ Generate and start making your work more productive!
 ### :rocket: Fast as possible
 
 zeroProbe was developed in C#. It works on .NET and it so-o-o fast. Really, just try it.
-.NET 6 allows us to build more faster and feature-rich applications with C#.
+.NET 6 allows us to build faster and feature-rich applications with C#.
 zeroProbe are fast tool for your tests.
-It make your test automated, it works so fast and has an easy configuration style - that's so cool!
+It makes your test automated, it works so fast and has an easy configuration style - that's so cool!
 
 ### :floppy_disk: Installation
 
@@ -74,7 +74,7 @@ It make your test automated, it works so fast and has an easy configuration styl
 Want to help us in development? Sounds good!
 Feel free to fork this repository and make a pull request.
 Also, if you have problems, tell us in issues on GitHub or GitLab about what's wrong or where you got stuck.
-You can check step-by-step guide [here](CONTRIBUTING.md).
+You can check a step-by-step guide [here](CONTRIBUTING.md).
 
 ### :earth_asia: Links
 
