@@ -61,12 +61,17 @@ public class HelpMessages
 
     public static void Version()
     {
-        Console.WriteLine("Version:      4.1");
-        Console.WriteLine("Codename:     Voyage");
-        Console.WriteLine(".NET Version: 6.0.108");
-        Console.WriteLine("Build Date:   22.09.2022");
-        Console.WriteLine("Build Number: 129");
-        Console.WriteLine("Build Engine: 17.0.0");
+        Console.WriteLine("Information about zeroProbe:");
+        Console.WriteLine("     Version:      4.1");
+        Console.WriteLine("     Codename:     Voyage");
+        Console.WriteLine("     .NET Version: 6.0.108");
+        Console.WriteLine("     Build Date:   22.09.2022");
+        Console.WriteLine("     Build Number: 129");
+        Console.WriteLine("     Build Engine: 17.0.0\n");
+        Console.WriteLine("Environment:");
+        Console.WriteLine($"     System:  {Environment.OSVersion}");
+        Console.WriteLine($"     Version: {Environment.Version}");
+        Console.WriteLine($"     Domain:  {Environment.UserDomainName}");
         Environment.Exit(0);
     }
 
