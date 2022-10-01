@@ -32,7 +32,7 @@ public class Lexer {
             return lexerObject;
         }
         
-        if (line.StartsWith("/*") && line.EndsWith("*/"))
+        if (line.StartsWith("//"))
         {
             lexerObject = new LexerObject
             {
@@ -51,7 +51,7 @@ public class Lexer {
         
         string[] split = line.Split(":", 2);
 
-        if (split[0].StartsWith('!'))
+        if (split[0].StartsWith(';'))
         {
             if (!split[0].Contains('.'))
             {
