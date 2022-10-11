@@ -51,7 +51,7 @@ public class HostHelper
     {
         ScriptHandler script = new ScriptHandler(fileName, commandToExecute);
         Shell sh = new Shell();
-        var res = sh.Execute(shell, fileName, new List<ExecutionOptions>());
+        var res = sh.Execute(shell, fileName);
         script.Remove();
         return res;
     }

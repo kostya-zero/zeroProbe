@@ -82,4 +82,24 @@ public class Project
     {
         Components.Add(component);
     }
+
+    public void StageAddCommand(string stage, string arg)
+    {
+        StagesModels[stage].Commands.Add(arg);
+    }
+    
+    public void StageSetOnError(string stage, string arg)
+    {
+        StagesModels[stage].OnError = arg;
+    }
+    
+    public void StageSetIgnoreError(string stage, bool arg)
+    {
+        StagesModels[stage].IgnoreErrors = arg;
+    }
+    
+    public void StageSetDirectory(string stage, string arg)
+    {
+        StagesModels[stage].Directory = arg;
+    }
 }

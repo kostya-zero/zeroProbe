@@ -38,10 +38,9 @@ public class Parser
     {
         var obj = Lexer.Lex(line, lineNumber);
         if (ParsingOptions.Contains(ParserOptions.Debug)) { DebugInstruction(obj.FunctionType); }
+        Console.WriteLine(obj.FunctionType);
         switch (obj.FunctionType)
         {
-            case "0x11f":
-                break;
             case "0xc88":
                 if (obj.Arguments.Trim().Contains(','))
                 {
@@ -56,7 +55,7 @@ public class Parser
                     Project.AddComponent(obj.Arguments.Trim());
                 }
                 break;
-            case "0x054":
+            case "0xs54":
                 var split = obj.Arguments.Trim().Split();
                 foreach (string stage in split)
                 {
@@ -65,7 +64,7 @@ public class Parser
                     Project.AddStage(stage, new StageModel());
                 }
                 break;
-            case "0x700":
+            case "0xs00":
                 if (!Project.GetStagesList().Contains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
@@ -75,20 +74,32 @@ public class Parser
                 }
                 Project.AssignCommandToStage(obj.StageObject.StageName, obj.StageObject.StageCommand);
                 break;
-            case "0x5fc":
-                string stageName = obj.StageObject.StageName;
-                if (!Project.StagesContains(stageName))
+            case "0xs34":
+                if (!Project.StagesContains(obj.StageObject.StageName))
                 {
-                    Messages.Fatal($"Stage '{stageName}' not defined.");
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
                     Messages.TraceBack(line, lineNumber);
                     Messages.Hint("Check your config. Maybe you haven't defined this stage."); 
                     Environment.Exit(-1);
                 }
-                Project.GetStageObject(stageName).OnError = obj.StageObject.StageCommand;
+                Project.StageSetOnError(obj.StageObject.StageName, obj.StageObject.StageCommand);
                 break;
+            
+            case "0xs55":
+                if (!Project.StagesContains(obj.StageObject.StageName))
+                {
+                    Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined.");
+                    Messages.TraceBack(line, lineNumber);
+                    Messages.Hint("Check your config. Maybe you haven't defined this stage."); 
+                    Environment.Exit(-1);
+                }
+                Project.StageSetDirectory(obj.StageObject.StageName, obj.Arguments.Trim());
+                break;
+            
             case "0x805":
                 Project.SetShell(obj.Arguments);
                 break;
+            
             case "0xa58":
                 switch (obj.Arguments)
                 {
@@ -114,7 +125,7 @@ public class Parser
                         break;
                 }
                 break;
-            case "0x883":
+            case "0xs83":
                 if (!Project.StagesContains(obj.StageObject.StageName))
                 {
                     Messages.Fatal($"Stage '{obj.StageObject.StageName}' not defined. Or, you entered wrong name.");
@@ -123,22 +134,10 @@ public class Parser
                 switch (obj.StageObject.StageCommand.Trim())
                 {
                     case "1":
-                        if (Project.GetStageObject(obj.StageObject.StageName).OnError != "")
-                        {
-                            Messages.Fatal("You can't set ignore errors if you set an error command.");
-                            Messages.TraceBack(line, lineNumber);
-                            Environment.Exit(-1);
-                        }
-                        Project.GetStageObject(obj.StageObject.StageName).IgnoreErrors = true;
+                        Project.StageSetIgnoreError(obj.StageObject.StageName, true);
                         break;
                     case "0":
-                        if (Project.GetStageObject(obj.StageObject.StageName).OnError != "")
-                        {
-                            Messages.Fatal("You can't set ignore errors if you set an error command.");
-                            Messages.TraceBack(line, lineNumber);
-                            Environment.Exit(-1);
-                        }
-                        Project.GetStageObject(obj.StageObject.StageName).IgnoreErrors = false;
+                        Project.StageSetIgnoreError(obj.StageObject.StageName, false);
                         break;
                     default:
                         Messages.Fatal("Bad syntax. You can set only 1 or 0 for 'ignore_errors'.");
@@ -148,6 +147,9 @@ public class Parser
                 }
                 break;
             case "0x6b8":
+                Project.SetProjectName(obj.Arguments.Trim());
+                break;
+            case "0xa55":
                 Project.SetProjectName(obj.Arguments.Trim());
                 break;
             case "0x00f":

@@ -6,34 +6,26 @@ namespace zeroProbe.Utils;
 
 public class Shell
 {
-    private bool noSendOutput { get; set; } 
     
     private void OutputHandler(object s, DataReceivedEventArgs e)
     {
-        if (!noSendOutput)
-        {
-            Console.WriteLine(e.Data);
-        }
+        Console.WriteLine(e.Data);
     }
     
     private void ErrorHandler(object s, DataReceivedEventArgs e)
     {
-        if (!noSendOutput)
-        {
-            Console.WriteLine(e.Data);
-        }
+        Console.WriteLine(e.Data);
     }
     
-    public ExecuteResult Execute(string path, string arguments, List<ExecutionOptions> optionsList)
+    public ExecuteResult Execute(string path, string arguments)
     {
-        noSendOutput = optionsList.Contains(ExecutionOptions.NoOutputToConsole);
         Process proc = new Process();
         ProcessStartInfo procInfo = new ProcessStartInfo
         {
             FileName = path,
             Arguments = arguments,
             RedirectStandardError = true,
-            RedirectStandardOutput = !noSendOutput,
+            RedirectStandardOutput = true,
             RedirectStandardInput = true,
             CreateNoWindow = true
         };
@@ -53,20 +45,11 @@ public class Shell
         proc.BeginOutputReadLine();
         string errs = proc.StandardError.ReadToEnd();
         proc.WaitForExit();
-        List<string> outputLines = new List<string>();
-        if (optionsList.Contains(ExecutionOptions.ReturnOutput))
-        {
-            while (!proc.StandardOutput.EndOfStream)
-            {
-                outputLines.Add(proc.StandardOutput.ReadLine() ?? "");
-            }
-        }
         ExecuteResult execRes = new ExecuteResult
         {
             Executed = true,
             GotErrors = errs != "",
-            Error = errs,
-            Output = outputLines
+            Error = errs
         };
         return execRes;
     }

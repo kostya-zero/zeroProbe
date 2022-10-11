@@ -64,6 +64,7 @@ public class Actions
             Environment.Exit(0);
         }
         
+        
         foreach (var stage in Project.GetStagesList())
         {
             if (Project.StagesContains(stage))
@@ -75,6 +76,13 @@ public class Actions
                 }
                 Messages.Info($"Running stage '{stage}'...");
                 StringBuilder shellCommand = new StringBuilder();
+                
+                if (Project.GetStageObject(stage).Directory != "")
+                {
+                    Messages.Info("Changing directory...");
+                    shellCommand.Append($"cd {Project.GetStageObject(stage).Directory}\n");
+                }
+                
                 foreach (var command in Project.GetStageObject(stage).Commands)
                 {
                     shellCommand.Append($"{command}\n");
