@@ -1,5 +1,4 @@
-﻿using zeroProbe.Enums;
-using zeroProbe.Utils;
+﻿using zeroProbe.Utils;
 
 [assembly: System.Reflection.AssemblyVersion("4.0.*")]
 
@@ -49,7 +48,7 @@ internal class Program
                             acts.FilePath = splitStrings[1];
                             break;
                         case "--debug":
-                            acts.AddOption(ParserOptions.Debug, "--debug");
+                            acts.EnableDebug();
                             break;
                         default:
                             Messages.Fatal($"Unknown argument: {splitStrings[0]}.");

@@ -1,5 +1,4 @@
 using System.Text;
-using zeroProbe.Enums;
 using zeroProbe.Models;
 using zeroProbe.Utils;
 
@@ -7,7 +6,6 @@ namespace zeroProbe;
 
 public class Actions
 {
-    private List<ParserOptions> Options { get; }
     private Parser Parser { get; }
     private HostHelper Helper { get; }
     private Project Project { get; set; }
@@ -15,12 +13,16 @@ public class Actions
 
     public Actions()
     {
-        Options = new List<ParserOptions>();
         Parser = new Parser();
         Helper = new HostHelper();
         Project = new Project();
         FilePath = "";
     }
+
+    public void EnableDebug()
+    {
+        Parser.Debug = true;
+    } 
 
     private void CheckForConfigFile()
     {
@@ -32,21 +34,11 @@ public class Actions
         }
     }
 
-    public void AddOption(ParserOptions option, string optionName)
-    {
-        if (Options.Contains(option))
-        {
-            Messages.Fatal($"Option '{optionName}' already added.");
-            Environment.Exit(0);
-        }
-        Options.Add(option);
-    }
     
     public void RunStages()
     {
         CheckForConfigFile();
         Parser.SetProject(Project);
-        Parser.ParsingOptions = Options;
         string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
         Project = Parser.GetProject();
@@ -185,7 +177,6 @@ public class Actions
     {
         CheckForConfigFile();
         Parser.SetProject(Project);
-        Parser.ParsingOptions = Options;
         string[] lines = File.ReadAllLines(FilePath);
         Parser.ParseLines(lines);
         Project = Parser.GetProject();

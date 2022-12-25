@@ -10,4 +10,8 @@
         <Deterministic>False</Deterministic>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Enums" />
+    </ItemGroup>
+
 </Project>

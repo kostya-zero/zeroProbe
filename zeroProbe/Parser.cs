@@ -1,4 +1,3 @@
-using zeroProbe.Enums;
 using zeroProbe.Models;
 using zeroProbe.Utils;
 
@@ -6,9 +5,9 @@ namespace zeroProbe;
 
 public class Parser
 {
-    public List<ParserOptions> ParsingOptions { private get; set; } = new List<ParserOptions>();
     private Project Project { get; set; } = new Project();
 
+    public bool Debug { get; set; } = false;
     private void DebugInstruction(string instruction)
     {
         Messages.Debug($"Calling instruction {instruction}.");
@@ -37,7 +36,7 @@ public class Parser
     private void ParseLine(string line, int lineNumber)
     {
         var obj = Lexer.Lex(line, lineNumber);
-        if (ParsingOptions.Contains(ParserOptions.Debug)) { DebugInstruction(obj.FunctionType); }
+        if (Debug) { DebugInstruction(obj.FunctionType); }
         Console.WriteLine(obj.FunctionType);
         switch (obj.FunctionType)
         {
