@@ -20,39 +20,6 @@ internal class Program
             }
 
             Actions acts = new Actions();
-            foreach (var arg in args)
-            {
-                if (arg.StartsWith("--"))
-                {
-                    if (!arg.Contains('='))
-                    {
-                        Messages.Fatal($"Argument syntax error: {arg}.");
-                        Messages.Hint("Arguments must looks like this: argument=value");
-                        Environment.Exit(-1);
-                    }
-
-                    string[] splitStrings = arg.Split("=", 2, StringSplitOptions.RemoveEmptyEntries);
-                    if (splitStrings.Length == 1)
-                    {
-                        Messages.Fatal($"Nothing provided after equals character: {arg}.");
-                        Messages.Hint("Arguments value mustn't be empty!");
-                        Environment.Exit(-1);
-                    }
-
-                    switch (splitStrings[0])
-                    {
-                        case "--debug":
-                            acts.EnableDebug();
-                            break;
-                        default:
-                            Messages.Fatal($"Unknown argument: {splitStrings[0]}.");
-                            Messages.Hint("Run zeroProbe with command 'help' to get list of arguments.");
-                            Environment.Exit(-1);
-                            break;
-                    }
-                }
-            }
-
             switch (args[0])
             {
                 case "run":

@@ -1,6 +1,6 @@
 namespace zeroProbe.Utils;
 
-public class Messages
+public static class Terminal
 {
     public static void Good(string text)
     {
@@ -56,21 +56,5 @@ public class Messages
         Console.Write("** ");
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine($"HINT: {text}");
-    }
-    
-    public static void TraceBack(string line, int lineNumber)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write("** ");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("Traceback");
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write("* ");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"Line: {line}");
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write("* ");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"Line Number: {lineNumber.ToString()}");
     }
 }
