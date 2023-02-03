@@ -111,7 +111,7 @@ public class Lexer {
         }
         switch (split[0])
         {
-            case "check_for":
+            case "required":
                 lexerObject = new LexerObject
                 {
                     FunctionType = "0xc88",

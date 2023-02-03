@@ -19,10 +19,7 @@ internal class Program
                 Environment.Exit(0);
             }
 
-            Actions acts = new Actions
-            {
-                FilePath = "stages.pbc"
-            };
+            Actions acts = new Actions();
             foreach (var arg in args)
             {
                 if (arg.StartsWith("--"))
@@ -44,9 +41,6 @@ internal class Program
 
                     switch (splitStrings[0])
                     {
-                        case "--file":
-                            acts.FilePath = splitStrings[1];
-                            break;
                         case "--debug":
                             acts.EnableDebug();
                             break;

@@ -9,14 +9,12 @@ public class Actions
     private Parser Parser { get; }
     private HostHelper Helper { get; }
     private Project Project { get; set; }
-    public string FilePath { private get; set; }
 
     public Actions()
     {
         Parser = new Parser();
         Helper = new HostHelper();
         Project = new Project();
-        FilePath = "";
     }
 
     public void EnableDebug()
@@ -26,11 +24,11 @@ public class Actions
 
     private void CheckForConfigFile()
     {
-        if (!File.Exists(FilePath))
+        if (!File.Exists("stages.pbc"))
         {
-            Messages.Fatal($"Looks like '{FilePath}' not exists.");
+            Messages.Fatal("Looks like 'stages.pcf' not exists.");
             Messages.Hint("Try to write template configuration with 'writeconfig' action.");
-            Environment.Exit(-1);
+            Environment.Exit(1);
         }
     }
 
@@ -39,7 +37,7 @@ public class Actions
     {
         CheckForConfigFile();
         Parser.SetProject(Project);
-        string[] lines = File.ReadAllLines(FilePath);
+        string[] lines = File.ReadAllLines("stages.pbc");
         Parser.ParseLines(lines);
         Project = Parser.GetProject();
         Messages.Info($"Running project: {Project.GetProjectName()}");
@@ -81,7 +79,7 @@ public class Actions
                 }
                 string commandToExecute = shellCommand.ToString();
                 var res = Helper.ExecuteStage(stage, commandToExecute, Project.GetShell());
-                if (res.Error != "")
+                if (!res.Error)
                 {
                     if (Project.GetStageObject(stage).IgnoreErrors)
                     {
@@ -89,8 +87,7 @@ public class Actions
                     }
                     else
                     {
-                        Messages.Fatal("Stage not passed due an error:");
-                        Console.WriteLine(res.Error);
+                        Messages.Fatal("Stage not passed due an error!");
                         if (Project.GetStageObject(stage).OnError != "")
                         {
                             Messages.Work("Running stage undo command...");
@@ -109,7 +106,7 @@ public class Actions
 
     public void WriteConfig()
     {
-        if (File.Exists(FilePath))
+        if (File.Exists("stages.pbc"))
         {
             Messages.Info("You already have configuration file.");
             Environment.Exit(0);
@@ -134,28 +131,28 @@ public class Actions
             switch (answer)
             {
                 case "1":
-                    File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.Default);
+                    File.Create("stages.pbc").Close();
+                    File.WriteAllText("stages.pbc", templates.Default);
                     break;
                 case "2":
-                    File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.DefaultWithStages);
+                    File.Create("stages.pbc").Close();
+                    File.WriteAllText("stages.pbc", templates.DefaultWithStages);
                     break;
                 case "3":
-                    File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.TutorialConfig);
+                    File.Create("stages.pbc").Close();
+                    File.WriteAllText("stages.pbc", templates.TutorialConfig);
                     break;
                 case "4":
-                    File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.DotNetBuildTest);      
+                    File.Create("stages.pbc").Close();
+                    File.WriteAllText("stages.pbc", templates.DotNetBuildTest);      
                     break;
                 case "5":
-                    File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.GccBuildTest);
+                    File.Create("stages.pbc").Close();
+                    File.WriteAllText("stages.pbc", templates.GccBuildTest);
                     break;
                 case "6":
-                    File.Create(FilePath).Close();
-                    File.WriteAllText(FilePath, templates.ClangdBuildTest);
+                    File.Create("stages.pbc").Close();
+                    File.WriteAllText("stages.pbc", templates.ClangdBuildTest);
                     break;
                 default:
                     Console.WriteLine("Bad answer.");
@@ -168,7 +165,7 @@ public class Actions
                 break;
             }
         }
-        Console.WriteLine($"Template config ready! It's called '{FilePath}'.");
+        Console.WriteLine($"Template config ready! It's called '{"stages.pbc"}'.");
         Console.WriteLine("If you got stuck, go to wiki on GitLab or GitHub and search what you want.");
         Environment.Exit(0);
     }
@@ -177,7 +174,7 @@ public class Actions
     {
         CheckForConfigFile();
         Parser.SetProject(Project);
-        string[] lines = File.ReadAllLines(FilePath);
+        string[] lines = File.ReadAllLines("stages.pbc");
         Parser.ParseLines(lines);
         Project = Parser.GetProject();
         Messages.Info($"Running stage of project: {Project.GetProjectName()}");
@@ -209,7 +206,7 @@ public class Actions
             }
             string commandToExecute = shellCommand.ToString();
             var res = Helper.ExecuteStage(name, commandToExecute, Project.GetShell());
-            if (res.Error != "")
+            if (!res.Error)
             {
                 if (Project.GetStageObject(name).IgnoreErrors)
                 {
