@@ -5,56 +5,56 @@ public static class Terminal
     public static void Good(string text)
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.Write("** ");
+        Console.Write("[ GOOD ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"GOOD: {text}");
+        Console.WriteLine($" : {text}");
     }
 
     public static void Fatal(string text)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write("** ");
+        Console.Write("[ FATAL ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"FATAL: {text}");
+        Console.WriteLine($" : {text}");
     }
 
     public static void Warning(string text)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("** ");
+        Console.Write("[ WARN ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"WARN: {text}");
+        Console.WriteLine($" : {text}");
     }
 
     public static void Work(string text)
     {
         Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write("** ");
+        Console.Write("[ WORK ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"WORK: {text}");
+        Console.WriteLine($" : {text}");
     }
     
     public static void Info(string text)
     {
         Console.ForegroundColor = ConsoleColor.Blue;
-        Console.Write("** ");
+        Console.Write("[ INFO ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"INFO: {text}");
+        Console.WriteLine($" : {text}");
     }
     
     public static void Debug(string text)
     {
         Console.ForegroundColor = ConsoleColor.DarkCyan;
-        Console.Write("** ");
+        Console.Write("[ DEBUG ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"DEBUG: {text}");
+        Console.WriteLine($" : {text}");
     }
 
     public static void Hint(string text)
     {
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.Write("** ");
+        Console.Write("[ HINT ]");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"HINT: {text}");
+        Console.WriteLine($" : {text}");
     }
 }
