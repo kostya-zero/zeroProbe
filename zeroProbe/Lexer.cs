@@ -30,7 +30,7 @@ public class Lexer
         {
             if (line.StartsWith(";;") || line.Trim() == "")
             {
-                break;
+                continue;
             }
 
             if (!line.Contains(':'))
