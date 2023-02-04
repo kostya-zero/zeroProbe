@@ -57,4 +57,9 @@ public static class Terminal
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine($" : {text}");
     }
+
+    public static void Exit(int exitCode)
+    {
+        Environment.Exit(exitCode);
+    }
 }

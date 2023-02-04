@@ -30,7 +30,7 @@ public class HelpMessages
  \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
   /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
  /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
-       \/    \/                                         \/     \/  4.1
+       \/    \/                                         \/     \/  5.0
 ");
         Console.WriteLine($"\x1B[4m{firstWord}\x1B[24m and \x1B[4m{secondWord}\x1B[24m utility" +
                           " to create, run and manage tests.");
@@ -49,25 +49,15 @@ public class HelpMessages
         Console.WriteLine("asciiart         - shows zeroProbe ASCII art.");
         Console.WriteLine("wiki             - opens zeroProbe wiki page in browser.");
         Console.WriteLine("runstage [stage] - runs stage standalone.\n");
-        
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.Write(":: ");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("Options");
-        Console.WriteLine("--debug=[0,1] - Enables debug mode.");
-        Console.WriteLine("--file=[path] - Use file by given location.\n");
         Environment.Exit(0);
     }
 
     public static void Version()
     {
         Console.WriteLine("Information about zeroProbe:");
-        Console.WriteLine("     Version:      4.1");
-        Console.WriteLine("     Codename:     Voyage");
-        Console.WriteLine("     .NET Version: 6.0.108");
-        Console.WriteLine("     Build Date:   22.09.2022");
-        Console.WriteLine("     Build Number: 129");
-        Console.WriteLine("     Build Engine: 17.0.0\n");
+        Console.WriteLine("     Version:      5.0");
+        Console.WriteLine("     Codename:     Wise");
+        Console.WriteLine("     .NET Version: 7");
         Console.WriteLine("Environment:");
         Console.WriteLine($"     System:  {Environment.OSVersion}");
         Console.WriteLine($"     Version: {Environment.Version}");
@@ -83,17 +73,8 @@ public class HelpMessages
  \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
   /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
  /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
-       \/    \/                                         \/     \/  4.1
+       \/    \/                                         \/     \/  5.0
 "); 
         Environment.Exit(0);
-    }
-
-    public static void Wiki()
-    {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = "https://github.com/kostya-zero/zeroProbe/wiki",
-            UseShellExecute = true
-        });
     }
 }
