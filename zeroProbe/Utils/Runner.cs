@@ -7,15 +7,17 @@ public class Runner
 {
      private LexObject project { get; set; }
 
-     public bool CheckConfig()
+     public void CheckConfig()
      {
-          return File.Exists("stages.pcf");
+         if (!File.Exists("stages.pcf"))
+         {
+             Terminal.Fatal("Cannot find configuration file (stages.pcf).");
+         }
      }
 
      private bool CheckExecutable(string name)
      {
          string[] path = Environment.GetEnvironmentVariable("PATH").Split(':');
-         bool found;
          foreach (var dest in path)
          {
              if (File.Exists(dest + "/" + name))
@@ -29,7 +31,7 @@ public class Runner
 
      private void CheckRequired()
      {
-         int foundCount;
+         int notFoundCount = 0;
          foreach (string component in project.Required)
          {
              bool componentFound = CheckExecutable(component);
@@ -40,8 +42,15 @@ public class Runner
 
              if (!componentFound)
              {
-                 Terminal.Fatal($"{component} not found."); 
+                 Terminal.Fatal($"{component} not found.");
+                 notFoundCount++;
              }
+         }
+
+         if (notFoundCount > 0)
+         {
+             Terminal.Fatal($"{notFoundCount.ToString()} components not found.");
+             Terminal.Exit(2);
          }
      }
 
@@ -77,7 +86,7 @@ public class Runner
              CheckRequired();
          }
 
-         if (project.Stages.Length == 0)
+         if (project.Stages.Count == 0)
          {
              Terminal.Info("No stage specified! Finishing.");
              Terminal.Exit(0);
@@ -85,7 +94,7 @@ public class Runner
 
          foreach (string stage in project.Stages)
          {
-             Terminal.Info($"Running stage - {stage}");
+             Terminal.Info($"Running stage - {project.StagesContainer[stage].Name}");
 
              if (!project.StagesContainer.ContainsKey(stage))
              {

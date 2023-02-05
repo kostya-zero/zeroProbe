@@ -46,35 +46,12 @@ public class HelpMessages
         Console.WriteLine("version          - return version of zeroProbe.");
         Console.WriteLine("writeconfig      - writes template config.");
         Console.WriteLine("run              - runs all stages in stages.conf.");
-        Console.WriteLine("asciiart         - shows zeroProbe ASCII art.");
-        Console.WriteLine("wiki             - opens zeroProbe wiki page in browser.");
-        Console.WriteLine("runstage [stage] - runs stage standalone.\n");
         Environment.Exit(0);
     }
 
     public static void Version()
     {
-        Console.WriteLine("Information about zeroProbe:");
-        Console.WriteLine("     Version:      5.0");
-        Console.WriteLine("     Codename:     Wise");
-        Console.WriteLine("     .NET Version: 7");
-        Console.WriteLine("Environment:");
-        Console.WriteLine($"     System:  {Environment.OSVersion}");
-        Console.WriteLine($"     Version: {Environment.Version}");
-        Console.WriteLine($"     Domain:  {Environment.UserDomainName}");
-        Environment.Exit(0);
-    }
-
-    public static void AsciiArt()
-    {
-        Console.WriteLine(@"
-                           __________              ___.           
- ________ ___________  ____\______   \_______  ____\_ |__   ____  
- \___   // __ \_  __ \/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
-  /    /\  ___/|  | \(  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
- /_____ \\___  >__|   \____/|____|     |__|   \____/|___  /\___  >
-       \/    \/                                         \/     \/  5.0
-"); 
-        Environment.Exit(0);
+        Console.WriteLine($"{VersionInfo.Version}");
+        Terminal.Exit(0);
     }
 }

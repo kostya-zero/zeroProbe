@@ -30,7 +30,7 @@ public class LexObject
     /// List of stages to do.
     /// </summary>
     /// <example> stages: prepare test deploy </example>
-    public string[] Stages { get; set; } = { };
+    public List<string> Stages { get; set; } = new List<string>();
 
     /// <summary>
     /// Container with stage models.

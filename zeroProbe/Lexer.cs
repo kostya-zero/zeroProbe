@@ -35,10 +35,11 @@ public class Lexer
 
             if (!line.Contains(':'))
             {
-                // TODO: Throw error.
+                Terminal.Fatal($"Bad expression: {line}");
+                Terminal.Exit(2);
             }
 
-            var splitLine = line.Split(':');
+            var splitLine = line.Split(':', 2);
             var command = new LexerLineObject
             {
                 Name = splitLine[0].Trim(),
@@ -63,13 +64,25 @@ public class Lexer
                         lexObject.Required = command.Argument.Split(' ');
                         break;
                     case "stages":
-                        lexObject.Stages = command.Argument.Split(' ');
+                        foreach (string stage in command.Argument.Split(' '))
+                        {
+                            if (!stage.StartsWith('!'))
+                            {
+                                lexObject.Stages.Add(stage);
+                            }
+                        }
                         break;
                 }
             }
 
             if (command.IsStage)
             {
+                if (!command.Name.Contains('.'))
+                {
+                    Terminal.Fatal($"Bad expression: {line}");
+                    Terminal.Exit(2);
+                }
+                
                 string[] stageSplit = command.Name.Split('.');
                 string stageName = stageSplit[0].Trim().TrimStart('@');
                 string stageAction = stageSplit[1].Trim();
@@ -77,10 +90,14 @@ public class Lexer
                 if (!lexObject.StagesContainer.ContainsKey(stageName))
                 {
                     lexObject.StagesContainer.Add(stageName, new StageModel());
+                    lexObject.StagesContainer[stageName].Name = stageName;
                 }
 
                 switch (stageAction)
                 {
+                    case "name":
+                        lexObject.StagesContainer[stageName].Name = command.Argument.Trim();
+                        break;
                     case "command":
                         lexObject.StagesContainer[stageName].Commands.Add(command.Argument);
                         break;

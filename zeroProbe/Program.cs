@@ -1,7 +1,5 @@
 ﻿using zeroProbe.Utils;
 
-[assembly: System.Reflection.AssemblyVersion("4.0.*")]
-
 namespace zeroProbe;
 
 internal class Program
@@ -23,13 +21,14 @@ internal class Program
                 runner.CheckConfig();
                 runner.Run();
                 break;
-            case "writeconfig":
-                break;
-            case "runstage":
+            case "makeconfig":
+                acts.MakeConfig();
                 break;
             case "help":
+                HelpMessages.Help();
                 break;
             case "version":
+                HelpMessages.Version();
                 break;
             default:
                 Terminal.Fatal($"Unknown argument '{args[0]}'.");
