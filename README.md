@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="poster.png"/>
+    <img src="header.svg"/>
     <h3>Lightweight and simple solution for projects testing.</h3>
 </div>
 
