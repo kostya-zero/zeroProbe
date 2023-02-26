@@ -11,7 +11,7 @@ public class Lexer
         // @build.command: npm init
 
         /*
-         * ;; Example of Probe Instruction (ProbeConfig v2).
+         * ;; Example of Probe Instructions (ProbeConfig v2).
          * project: test
          * author: zero
          * required: npm nodejs
@@ -103,6 +103,9 @@ public class Lexer
                         break;
                     case "predictFail":
                         lexObject.StagesContainer[stageName].PredictFail = Convert.ToBoolean(command.Argument);
+                        break;
+                    case "showOnlyErrors":
+                        lexObject.StagesContainer[stageName].PredictFail = Convert.ToBoolean(command.Argument); 
                         break;
                 }
             }

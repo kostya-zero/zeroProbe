@@ -54,14 +54,15 @@ public class Runner
          }
      }
 
-     private bool RunCommand(string command)
+     private bool RunCommand(string command, bool showOnlyErrors)
      {
          Process proc = new Process();
          proc.StartInfo = new ProcessStartInfo
          {
              FileName = project.Shell,
              Arguments = $"-c \"{command}\"",
-             CreateNoWindow = true
+             CreateNoWindow = true,
+             RedirectStandardOutput = showOnlyErrors
          };
          Terminal.Work(command);
          proc.Start();
@@ -111,7 +112,7 @@ public class Runner
 
              foreach (string command in stageModel.Commands)
              {
-                 bool executeResult = RunCommand(command);
+                 bool executeResult = RunCommand(command, stageModel.ShowOnlyErrors);
                  if (!executeResult)
                  {
                      if (!stageModel.PredictFail)
