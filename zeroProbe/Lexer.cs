@@ -7,9 +7,6 @@ public class Lexer
 {
     public static LexObject Lex(string[] lines)
     {
-        // project: test
-        // @build.command: npm init
-
         /*
          * ;; Example of Probe Instructions (ProbeConfig v2).
          * project: test

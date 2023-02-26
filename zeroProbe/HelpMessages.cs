@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using zeroProbe.Utils;
 namespace zeroProbe;
 
